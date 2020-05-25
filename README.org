@@ -1,0 +1,12 @@
+#+BEGIN_QUOTE
+By “recognizing” things and patterns that were not given, inceptionist neural networks eventually end up effectively identifying a new totality of aesthetic and social relations.
+
+But inceptionism is not just a digital hallucination. It is a document of an era that trains smartphones to identify kittens, thus hardwiring truly terrifying jargons of cutesy into the means of production. It demonstrates a version of corporate animism in which commodities are not only fetishes but morph into franchised chimeras.
+#+END_QUOTE
+
+— Hito Steyerl, /Duty Free Art/
+
+# Requirements
+
+pytorch ~sudo pip3 install torch~
+hugging face transformers ~sudo pip3 install transformers~

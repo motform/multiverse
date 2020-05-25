@@ -1,0 +1,18 @@
+# _*_ restclient _*_
+#
+## Get home page
+
+GET http://localhost:3333/
+Accept-Charset: utf-8
+
+## Fetch 10 cocktails from the feed, in transit-json
+
+POST http://localhost:3232/bartender/cocktails?start=0&end=10
+Accept-Charset: utf-8
+Accept: application/transit+json
+
+## Get continuaton
+
+GET http://localhost:3333/progress
+Accept-Charset: utf-8
+Accept: application/transit+json
