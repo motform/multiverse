@@ -5,8 +5,3 @@ But inceptionism is not just a digital hallucination. It is a document of an era
 #+END_QUOTE
 
 — Hito Steyerl, /Duty Free Art/
-
-# Requirements
-
-pytorch ~sudo pip3 install torch~
-hugging face transformers ~sudo pip3 install transformers~
