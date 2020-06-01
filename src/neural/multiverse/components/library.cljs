@@ -18,6 +18,10 @@
 (defn library []
   (let [stories @(rf/subscribe [:stories])]
     [:main.library
-     (for [story stories]
-       ^{:key (:title story)}
-       [library-item story])]))
+     (if stories 
+       (for [story stories]
+         ^{:key (:title story)}
+         [library-item story])
+       [:section.landing>div "The Library is empty, go" [:br]
+        [:a {:href (routes/url-for :new-story)} "explore"]
+        " a literary space."])]))
