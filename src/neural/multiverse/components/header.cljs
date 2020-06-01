@@ -2,13 +2,6 @@
   (:require [neural.multiverse.routes :as routes]
             [re-frame.core :as rf]))
 
-(defn new-story []
-  [:a
-   {:on-click #(when (.confirm js/window "Starting a new story will override the current one, are you sure?")
-                 (rf/dispatch [:reset]))
-    :href (routes/url-for :story)}
-   "New Story"])
-
 (defn header-item [label key active-page]
   [:a.hitem
    {:class (when (= key active-page) "highlight")
