@@ -560,12 +560,16 @@ aside > section:nth-child(2) {
 }
 
 .clear-library:hover {
-    cursor: pointer;
-    color: var(--fg);
-    border-color: var(--fg);
 }
 
 .clear-library > span {
     border: 1px solid;
     padding: 3rem 4rem 3rem 4rem;
+}
+
+.clear-library > span:hover {
+    cursor: pointer;
+    color: var(--bg);
+    border-color: var(--fg);
+    background-color: var(--fg);
 }
