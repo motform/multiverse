@@ -530,7 +530,42 @@ aside > section:nth-child(2) {
 }
 
 .linfo {
+    display: flex;
+
     color: var(--ia);
     text-transform: uppercase;
     font-size: 2rem;
+}
+
+.library-item:hover .delete {
+    display: block;
+}
+
+.delete {
+    margin-left: auto;
+    display: none;
+}
+
+.delete:hover {
+    color: red;
+}
+
+.clear-library {
+    margin: 0 0 5rem 5rem;
+    text-transform: uppercase;
+    grid-column: span 3;
+    height: 5rem;
+    color: var(--ia);
+    border-color: var(--ia);
+}
+
+.clear-library:hover {
+    cursor: pointer;
+    color: var(--fg);
+    border-color: var(--fg);
+}
+
+.clear-library > span {
+    border: 1px solid;
+    padding: 3rem 4rem 3rem 4rem;
 }

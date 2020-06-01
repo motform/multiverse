@@ -147,6 +147,18 @@
  (fn [db [_ k v]]
    (assoc-in db [:state :new-story k] v)))
 
+(reg-event-db
+ :dissoc-story
+ [spec-interceptor local-storage-interceptor]
+ (fn [db [_ id]]
+   (update-in db [:stories] dissoc id)))
+
+(reg-event-db
+ :clear-library
+ [spec-interceptor local-storage-interceptor]
+ (fn [db _]
+   (assoc db :stories {})))
+
 ;;; Story
 
 (defn ->children
