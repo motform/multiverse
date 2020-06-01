@@ -24,7 +24,7 @@
 
 (defn walk-sentences
   ([sentences]
-   (let [[root _] (-> sentences keys first sentences :path)]
+   (let [root (-> sentences keys first sentences :path first)]
      [:nav
       (walk-sentences sentences root)]))
   ([sentences id]
@@ -34,6 +34,6 @@
                (walk-sentences sentences c))))))
 
 (defn tree-map []
-  (let [sentence-tree @(rf/subscribe [:sentence-tree])]
+  (let [sentences @(rf/subscribe [:sentence-tree])]
     [:section.map
-     [walk-sentences sentence-tree]]))
+     [walk-sentences sentences]]))

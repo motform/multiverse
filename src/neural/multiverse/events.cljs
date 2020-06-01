@@ -3,8 +3,11 @@
             [clojure.spec.alpha :as s]
             [nano-id.core :refer [nano-id]]
             [neural.multiverse.db :as db]
+            [neural.multiverse.routes :as routes]
             [neural.util :as util]
-            [re-frame.core :as rf :refer [reg-event-db reg-event-fx inject-cofx path after debug]]))
+            [re-frame.core :as rf :refer [reg-event-db reg-event-fx reg-fx inject-cofx path after debug]]))
+
+;; TODO replace localhost
 
 (defn ->node [id text path children]
   {:id id :text text :path path :children children})
@@ -30,6 +33,15 @@
 (def check-spec-interceptor (after (partial check-and-throw :neural.multiverse.db/db)))
 (def spec-interceptor [#_check-spec-interceptor])
 
+;;; fx-handlers
+
+(reg-fx
+ :title
+ (fn [name]
+   (let [separator (when name " | ")
+         title (str "Multiverse" separator name)]
+     (set! (.-title js/document) title))))
+
 ;;; State
 
 (reg-event-db
@@ -44,11 +56,23 @@
  (fn [db [_ default-db]]
    (merge db default-db)))
 
-(reg-event-db
+(reg-event-fx
  :active-page
  [spec-interceptor]
- (fn [db [_ page]]
-   (assoc-in db [:state :active-page] page)))
+ (fn [{:keys [db]} [_ page]]
+   {:db (assoc-in db [:state :active-page] page)
+    :dispatch [:page-title page]}))
+
+(reg-event-fx
+ :page-title
+ (fn [_ [_ page]]
+   (let [page-name (routes/titles page)]
+     {:title page-name})))
+
+(reg-event-fx
+ :page-title-story
+ (fn [_ [_ title]]
+   {:title title}))
 
 (reg-event-db
  :active-story
@@ -109,7 +133,7 @@
      {:db (-> db
               (assoc-in [:state :active-page] :story)
               (assoc-in [:state :new-story :text] ""))
-      :dispatch (rf/dispatch [:story input])})))
+      :dispatch [:story input]})))
 
 (reg-event-fx
  :story
@@ -121,7 +145,7 @@
               (assoc-in [:stories story-id] (->story story-id sentence-id input))
               (assoc-in [:state :active-sentence] sentence-id)
               (assoc-in [:state :active-story] story-id))
-      :dispatch (rf/dispatch [:request-title])})))
+      :dispatch [:request-title]})))
 
 (reg-event-db
  :prompt-text
@@ -170,7 +194,7 @@
               (update-in [:stories story :sentences] merge children)
               (assoc-in [:stories story :sentences parent :children] child-ids)
               (assoc-in [:state :pending-request?] false))
-      :dispatch (rf/dispatch [:request-title])})))
+      :dispatch [:request-title]})))
 
 (reg-event-db
  :handle-title

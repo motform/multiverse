@@ -66,7 +66,8 @@
     "Generating title..."))
 
 (defn sidebar []
-  (let [{:keys [title model author]} @(rf/subscribe [:meta])]
+  (let [{:keys [title model author]} @(rf/subscribe [:meta])
+        _ (rf/dispatch [:page-title-story title])]
     [:aside
      [:section.title>h1 (format-title title)]
      [:section.byline "By " author " & " model]
