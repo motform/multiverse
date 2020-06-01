@@ -102,26 +102,26 @@
 
 ;;; Prompt
 
-(reg-event-db
+(reg-event-fx
  :submit-new-story
- (fn [db _]
+ (fn [{:keys [db]} _]
    (let [input (get-in db [:state :new-story])]
-     (rf/dispatch [:story input])
-     (-> db
-         (assoc-in [:state :active-page] :story)
-         (assoc-in [:state :new-story :text] "")))))
+     {:db (-> db
+              (assoc-in [:state :active-page] :story)
+              (assoc-in [:state :new-story :text] ""))
+      :dispatch (rf/dispatch [:story input])})))
 
-(reg-event-db
+(reg-event-fx
  :story
  [spec-interceptor]
- (fn [db [_ input]]
+ (fn [{:keys [db]} [_ input]]
    (let [story-id (nano-id 10)
          sentence-id (nano-id 10)]
-     (rf/dispatch [:request-title])
-     (-> db
-         (assoc-in [:stories story-id] (->story story-id sentence-id input))
-         (assoc-in [:state :active-sentence] sentence-id)
-         (assoc-in [:state :active-story] story-id)))))
+     {:db (-> db
+              (assoc-in [:stories story-id] (->story story-id sentence-id input))
+              (assoc-in [:state :active-sentence] sentence-id)
+              (assoc-in [:state :active-story] story-id))
+      :dispatch (rf/dispatch [:request-title])})))
 
 (reg-event-db
  :prompt-text
@@ -158,21 +158,19 @@
               (assoc children id (->node id text (conj parent-path id) [])))
             {} child-pairs)))
 
-;; A slightly more imperative function than I would have liked, but
-;; it is important that the appending of children is an atomic translation
-(reg-event-db
+(reg-event-fx
  :handle-children
  [spec-interceptor]
- (fn [db [_ parent texts]]
+ (fn [{:keys [db]} [_ parent texts]]
    (let [story (get-in db [:state :active-story])
          parent-path (get-in db [:stories story :sentences parent :path])
          child-ids (repeatedly 3 #(nano-id 10))
          children (->children parent-path child-ids texts)]
-     (rf/dispatch [:request-title])
-     (-> db
-         (update-in [:stories story :sentences] merge children)
-         (assoc-in [:stories story :sentences parent :children] child-ids)
-         (assoc-in [:state :pending-request?] false)))))
+     {:db (-> db
+              (update-in [:stories story :sentences] merge children)
+              (assoc-in [:stories story :sentences parent :children] child-ids)
+              (assoc-in [:state :pending-request?] false))
+      :dispatch (rf/dispatch [:request-title])})))
 
 (reg-event-db
  :handle-title
