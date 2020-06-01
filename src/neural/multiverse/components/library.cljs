@@ -29,7 +29,8 @@
      [library-item story])
    [:div.clear-library
     [:span
-     {:on-click #(rf/dispatch [:clear-library])}
+     {:on-click #(when (.confirm js/window "Do you really want to clear the library? This can not be undone!")
+                   (rf/dispatch [:clear-library]))}
      "empty library"]]])
 
 (defn empty-library []
