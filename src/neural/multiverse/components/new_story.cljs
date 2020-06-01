@@ -6,7 +6,7 @@
 (defn li-model [name description active-model]
   [:li
    {:class (if (= name active-model) "model-active" "model-inactive")
-    :on-click #(rf/dispatch [:prompt-model name])}   
+    :on-click #(rf/dispatch [:prompt :model name])}   
    name
    [:div description]])
 
@@ -15,7 +15,7 @@
    [:label "Enter your name"]
    [:textarea
     {:value author
-     :on-change #(rf/dispatch [:prompt-author (-> % .-target .-value)])}]])
+     :on-change #(rf/dispatch [:prompt :author (-> % .-target .-value)])}]])
 
 (defn select-model [model]
   [:section.model
@@ -39,7 +39,7 @@
    [:textarea 
     {:value text
      :autoFocus true
-     :on-change #(rf/dispatch [:prompt-text (-> % .-target .-value)])}]])
+     :on-change #(rf/dispatch [:prompt :text (-> % .-target .-value)])}]])
 
 (defn new-story []
   (let [{:keys [text author model] :as input} @(rf/subscribe [:new-story])]

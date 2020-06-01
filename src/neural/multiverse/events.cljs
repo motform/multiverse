@@ -63,6 +63,13 @@
    {:db (assoc-in db [:state :active-page] page)
     :dispatch [:page-title page]}))
 
+(reg-fx
+ :title
+ (fn [name]
+   (let [separator (when name " | ")
+         title (str "Multiverse" separator name)]
+     (set! (.-title js/document) title))))
+
 (reg-event-fx
  :page-title
  (fn [_ [_ page]]
@@ -148,31 +155,11 @@
       :dispatch [:request-title]})))
 
 (reg-event-db
- :prompt-text
- (fn [db [_ text]]
-   (assoc-in db [:state :new-story :text] text)))
-
-(reg-event-db
- :prompt-author
- (fn [db [_ author]]
-   (assoc-in db [:state :new-story :author] author)))
-
-(reg-event-db
- :prompt-model
- (fn [db [_ model]]
-   (assoc-in db [:state :new-story :model] model)))
+ :prompt
+ (fn [db [_ k v]]
+   (assoc-in db [:state :new-story k] v)))
 
 ;;; Story
-
-(reg-event-db
- :sentence
- (fn [db [_ id]]
-   (let [story (get-in db [:state :active-sentence])
-         path (get-in db [:stories story :sentences id :path])]
-     ;; we do a `reduce` as opposed to a `select-keys` in order to retain order
-     (reduce (fn [sentences id]
-               (conj sentences (get-in db [:stories story :sentences id :text])))
-             [] path))))
 
 (defn ->children
   "Make children map to be merged into sentences."
