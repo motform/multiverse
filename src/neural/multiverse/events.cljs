@@ -33,28 +33,16 @@
 (def check-spec-interceptor (after (partial check-and-throw :neural.multiverse.db/db)))
 (def spec-interceptor [#_check-spec-interceptor])
 
-;;; fx-handlers
-
-(reg-fx
- :title
- (fn [name]
-   (let [separator (when name " | ")
-         title (str "Multiverse" separator name)]
-     (set! (.-title js/document) title))))
+(def ->local-storage (after db/collections->local-storage))
+(def local-storage-interceptor [->local-storage])
 
 ;;; State
 
-(reg-event-db
- :reset
- [spec-interceptor]
- (fn [_ _]
-   db/default-db))
-
-(reg-event-db
+(reg-event-fx
  :initialize-db
- [spec-interceptor]
- (fn [db [_ default-db]]
-   (merge db default-db)))
+ [(inject-cofx :local-store-collections) spec-interceptor]
+ (fn [{:keys [local-store-collections]} [_ default-db]]
+   {:db (util/?assoc default-db :stories local-store-collections)}))
 
 (reg-event-fx
  :active-page
@@ -144,7 +132,7 @@
 
 (reg-event-fx
  :story
- [spec-interceptor]
+ [spec-interceptor local-storage-interceptor]
  (fn [{:keys [db]} [_ input]]
    (let [story-id (nano-id 10)
          sentence-id (nano-id 10)]
@@ -171,7 +159,7 @@
 
 (reg-event-fx
  :handle-children
- [spec-interceptor]
+ [spec-interceptor local-storage-interceptor]
  (fn [{:keys [db]} [_ parent texts]]
    (let [story (get-in db [:state :active-story])
          parent-path (get-in db [:stories story :sentences parent :path])
@@ -185,7 +173,7 @@
 
 (reg-event-db
  :handle-title
- [spec-interceptor]
+ [spec-interceptor local-storage-interceptor]
  (fn [db [_ title]]
    (let [story (get-in db [:state :active-story])]
      (assoc-in db [:stories story :meta :title] title))))

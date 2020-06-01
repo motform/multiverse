@@ -1,7 +1,9 @@
 (ns neural.multiverse.db
-  (:require [cljs.spec.alpha :as s]))
+  (:require [cljs.reader :as reader]
+            [cljs.spec.alpha :as s]
+            [re-frame.core :as rf]))
 
-;; We store sentences as graph implemented by as an indexed map.
+;; We store sentences as tree implemented by as an indexed map.
 ;; The map uses nano id's to index at root level, an entry always looks like this:
 ;;  
 ;; "h7yr0N3hOX" {:text "foo", :id "h7yr0N3hOX", :path ["lnhSB6_qB7" "h7yr0N3hOX"], :children []}
@@ -15,10 +17,6 @@
 ;; Using a shallow map and indexes, we should have constant access times (every step is O(log₃₂n), so constant-ish).
 ;;  
 ;; — LLA, 200514
-
-(def =id-coll-item
-  ^{:doc "The key in the containing map is the same `:id` as in the item."} 
-  (s/every (fn [[k v]] (= (:id v) k))))
 
 (s/def ::id (s/and string? #(= 10 (count %))))
 
@@ -52,7 +50,6 @@
 (s/def ::path (s/coll-of ::id))
 (s/def ::children (s/coll-of ::id))
 
-
 (def default-db
   {:state {:active-page :story
            :active-sentence nil
@@ -64,3 +61,17 @@
                        :author ""
                        :model "GPT-2"}}
    :stories {}})
+
+;;; local-storage
+
+(def ls-key "multiverse.stories")
+
+(defn collections->local-storage [db]
+  (.setItem js/localStorage ls-key (str (:stories db))))
+
+(rf/reg-cofx
+ ;; source: re-frame docs
+ :local-store-collections
+ (fn [cofx _]
+   (assoc cofx :local-store-collections
+          (some->> (.getItem js/localStorage ls-key) (reader/read-string)))))

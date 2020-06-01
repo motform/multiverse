@@ -30,6 +30,12 @@
   [xs ys]
   (mapv (fn [x y] [x y]) xs ys))
 
+(defn ?assoc
+  "Associates the `k` into the `m` if the `v` is truthy, otherwise returns `m`.
+  NOTE: this version of ?assoc only does a single kv pair."
+  [m k v]
+  (if v (assoc m k v) m))
+
 (defn title-case
   "A simple title case by short list of common stop words."
   [s]
