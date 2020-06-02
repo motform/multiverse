@@ -3,8 +3,8 @@
  :builds {:app {:target :browser
                 :output-dir "resources/public/js/"
                 :asset-path "/js"
-                :modules {:main {:entries [neural.multiverse.main]
-                                 :init-fn neural.multiverse.main/mount}}
+                :modules {:main {:entries [multiverse.main]
+                                 :init-fn multiverse.main/mount}}
                 :compiler-options {:closure-defines {"re_frame.trace.trace_enabled_QMARK_"  true
                                                      "day8.re-frame.tracing.trace-enabled?" true
                                                      "goog.DEBUG" true}}

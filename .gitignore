@@ -20,9 +20,9 @@ guideline/
 feedback/
 seminar/
 thesis_archive/
-src/.clj-kondo
-src/.shadow-cljs/
-src/node_modules/
-src/!resources/public
-src/resources/public/js/
-src/package-lock.json
+.clj-kondo
+.shadow-cljs/
+node_modules/
+!resources/public
+resources/public/js/
+package-lock.json

@@ -29,5 +29,5 @@
         reagent                    {:mvn/version "0.9.1"}
         re-frame                   {:mvn/version "0.11.0"}}
 
- :aliases {:cli    {:main-opts ["-m" "neural.novelty.cli"]}
-           :server {:main-opts ["-m" "neural.novelty.server"]}}}
+ :aliases {:cli    {:main-opts ["-m" "multiverse.cli"]}
+           :server {:main-opts ["-m" "multiverse.server"]}}}
