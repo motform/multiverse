@@ -59,3 +59,8 @@
   "Returns space-delimited str from a vec of `sentences`"
   [sentences]
   (->> sentences (map :text) (interpose " ") (apply str)))
+
+(defn proper-separation [strings]
+  (let [comma-sep (into [] (interpose ", " strings))
+        idx (- (count comma-sep) 2)]
+    (when (pos? idx) (assoc comma-sep idx " & "))))

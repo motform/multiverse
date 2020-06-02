@@ -1,18 +1,18 @@
 (ns multiverse.components.library
   (:require [re-frame.core :as rf]
             [multiverse.routes :as routes]
-            [util :as util]
+            [multiverse.util :as util]
             [clojure.string :as str]))
 
 (defn library-item [{:keys [meta sentences]}]
-  (let [{:keys [title author model id]} meta]
+  (let [{:keys [title authors id]} meta]
     [:a.library-item
      {:href (routes/url-for :story)
       :on-click #(do (rf/dispatch [:active-story id])
                      (rf/dispatch [:active-page :story])
                      true)}
      [:h1 (if-not (str/blank? title) (util/title-case title) "Generating title...")]
-     [:div.lauthor (str "By " author " & " model)]
+     [:div.lauthor "By " (apply str (util/proper-separation authors))]
      [:div.linfo
       [:div (str (count sentences) " º")]
       ;; TODO Right now, this will obliviously not work as the parent on-click

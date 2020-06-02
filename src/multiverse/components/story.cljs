@@ -65,13 +65,25 @@
     (-> title (str/replace #"[',\"\.\!]" "") util/title-case)
     "Generating title..."))
 
+(defn li-model [name active-model]
+  [:li
+   {:class (if (= name active-model) "active" "inactive")
+    :on-click #(rf/dispatch [:change-model name])}
+   name])
+
 (defn sidebar []
-  (let [{:keys [title model author]} @(rf/subscribe [:meta])
+  (let [{:keys [title model authors]} @(rf/subscribe [:meta])
         _ (rf/dispatch [:page-title-story title])]
     [:aside
      [:section.title>h1 (format-title title)]
-     [:section.byline "By " author " & " model]
+     [:section.byline "By " (apply str (util/proper-separation authors))]
      [tree-map]
+     [:section.model-sidebar
+      [:label "Writing partner"]
+      [:ul
+       [li-model "GPT-2"  model]
+       [li-model "BERT"   model]
+       [li-model "XLNet"  model]]]
      [:section.meta "Last Exploration 14:32, 2020-01-21"]]))
 
 ;;; Main

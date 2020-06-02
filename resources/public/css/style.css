@@ -197,27 +197,28 @@ aside > section:nth-child(2) { color: var(--ia);
                                margin-bottom: 5rem; }
 
 aside > section:nth-child(4) { margin-top: auto; }
-aside > section:last-child { margin-bottom: 5rem; }
 
 aside ul { margin: 5rem 0 5rem 0;
            display: flex;
            align-content: space-between;
-           align-items: center;
-           border: 2px solid var(--ia); }
+           align-items: center; }
 
 aside li { padding: 3rem;
            flex-basis: 0;
            flex-grow: 1;
-           border: 1px solid var(--ia);
-           border-width: 0 2px 0 2px;
+           color: var(--ia);
+           border: 2px solid var(--ia);
            text-align: center; }
 
-aside li:last-child { border: 0; }
-aside li:first-child { border: 0; }
+aside li:first-child { border-width: 2px 0 2px 2px; }
+aside li:last-child { border-width: 2px 2px 2px 0; }
 
-aside li:hover { background-color: var(--fg);
+aside li:hover { background-color: var(--ia);
+                 border-color: var(--ia);
                  color: var(--bg);
                  cursor: pointer; }
+
+aside li.active { color: var(--fg); }
 
 .byline { text-transform: capitalize; }
 
@@ -367,9 +368,11 @@ aside li:hover { background-color: var(--fg);
                    margin-bottom: 3rem; }
 
 .library-item:hover { color: var(--bg);
-                      background-color: var(--fg);  cursor: pointer;}
+                      background-color: var(--fg);
+                      cursor: pointer;}
 
-.lauthor { margin-bottom: 5rem; }
+.lauthor { margin-bottom: 5rem;
+           color: var(--ia); }
 
 .linfo { display: flex;
 

@@ -1,23 +1,14 @@
 (ns multiverse.events
   (:require [ajax.core :as ajax]
             [clojure.spec.alpha :as s]
-            [nano-id.core :refer [nano-id]]
             [multiverse.db :as db]
             [multiverse.routes :as routes]
             [multiverse.util :as util]
+            [nano-id.core :refer [nano-id]]
             [re-frame.core :as rf :refer [reg-event-db reg-event-fx reg-fx inject-cofx path after debug]]))
 
 ;; TODO replace localhost
 
-(defn ->node [id text path children]
-  {:id id :text text :path path :children children})
-
-(defn ->story [story-id sentence-id {:keys [text author model]}]
-  {:meta {:id story-id
-          :author author
-          :title ""
-          :model model}
-   :sentences {sentence-id (->node sentence-id text [sentence-id] [])}})
 
 ;;; Interceptors
 
@@ -119,7 +110,26 @@
          (assoc-in [:state :active-sentence] real-active-sentence)
          (assoc-in [:state :preview] nil)))))
 
+(reg-event-db
+ :change-model
+ [spec-interceptor]
+ (fn [db [_ model]]
+   (let [story (get-in db [:state :active-story])]
+     (-> db
+         (update-in [:stories story :meta :authors] conj model)
+         (assoc-in [:stories story :meta :model] model)))))
+
 ;;; Prompt
+
+(defn ->node [id text path children]
+  {:id id :text text :path path :children children})
+
+(defn ->story [story-id sentence-id {:keys [text author model]}]
+  {:meta {:id story-id
+          :authors #{author model}
+          :title ""
+          :model model}
+   :sentences {sentence-id (->node sentence-id text [sentence-id] [])}})
 
 (reg-event-fx
  :submit-new-story
