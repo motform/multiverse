@@ -253,6 +253,8 @@ aside li.active { color: var(--fg); }
 .sentences { display: flex;
              flex-direction: column; }
 
+.sentences > div { cursor: pointer; }
+
 .sentence { padding-bottom: 5rem;
             cursor: pointer; }
 
@@ -260,7 +262,7 @@ aside li.active { color: var(--fg); }
            color: var(--ia);
            font-style: italic; }
 
-.highlight { color: var(--fg); }
+.highlight { color: var(--fg);}
 
 .inactive { color: var(--ia); }
 
@@ -273,6 +275,8 @@ aside li.active { color: var(--fg); }
 
 .child:hover { color: var(--fg); }
 
+.scribble { height: 5rem;
+          }
 
 /* story map */
 

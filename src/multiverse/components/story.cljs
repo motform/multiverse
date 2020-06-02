@@ -36,7 +36,8 @@
    (if (str/blank? text) "..." text)])
 
 (defn pending []
-  [:div.pending "Generating text…"])
+  [:div.pending
+   [:img.scribble {:src "assets/scribble-story.gif" :alt "Generating text…"}]])
 
 ;; NOTE this implementation means there can only be a single request out per parent,
 ;;      in theory, it is possible/preferable to have multiple ones
@@ -63,7 +64,7 @@
 (defn format-title [title]
   (if-not (str/blank? title)
     (-> title (str/replace #"[',\"\.\!]" "") util/title-case)
-    "Generating title..."))
+    [:img.scribble {:src "assets/scribble-title.gif" :alt "Generating title…"}]))
 
 (defn li-model [name active-model]
   [:li
