@@ -70,7 +70,8 @@
  :active-sentence
  [spec-interceptor]
  (fn [db [_ id]]
-   (assoc-in db [:state :active-sentence] id)))
+   (let [story (get-in db [:state :active-story])]
+     (assoc-in db [:stories story :meta :active-sentence] id))))
 
 (reg-event-db
  :highlight-sentence
@@ -88,26 +89,29 @@
  :select-sentence
  [spec-interceptor]
  (fn [db [_ sentence]]
-   (-> db
-       (assoc-in [:state :preview] sentence)
-       (assoc-in [:state :active-sentence] sentence))))
+   (let [story (get-in db [:state :active-story])]
+     (-> db
+         (assoc-in [:state :preview] sentence)
+         (assoc-in [:stories story :meta :active-sentence] sentence)))))
 
 (reg-event-db
  :preview-sentence
  [spec-interceptor]
  (fn [db [_ sentence]]
-   (let [active-sentence (get-in db [:state :active-sentence])]
+   (let [story (get-in db [:state :active-story])
+         active-sentence (get-in db [:stories story :meta :active-sentence])]
      (-> db
          (assoc-in [:state :preview] active-sentence)
-         (assoc-in [:state :active-sentence] sentence)))))
+         (assoc-in [:stories story :meta :active-sentence] sentence)))))
 
 (reg-event-db
  :remove-preview
  [spec-interceptor]
  (fn [db _]
-   (let [real-active-sentence (get-in db [:state :preview])]
+   (let [real-active-sentence (get-in db [:state :preview])
+         story (get-in db [:state :active-story])]
      (-> db
-         (assoc-in [:state :active-sentence] real-active-sentence)
+         (assoc-in [:stories story :meta :active-sentence] real-active-sentence)
          (assoc-in [:state :preview] nil)))))
 
 (reg-event-db
@@ -126,6 +130,7 @@
 
 (defn ->story [story-id sentence-id {:keys [text author model]}]
   {:meta {:id story-id
+          :active-sentence sentence-id
           :authors #{author model}
           :title ""
           :model model}
@@ -148,7 +153,6 @@
          sentence-id (nano-id 10)]
      {:db (-> db
               (assoc-in [:stories story-id] (->story story-id sentence-id input))
-              (assoc-in [:state :active-sentence] sentence-id)
               (assoc-in [:state :active-story] story-id))
       :dispatch [:request-title]})))
 

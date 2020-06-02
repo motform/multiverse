@@ -18,7 +18,8 @@
 (reg-sub
  :active-sentence
  (fn [db _]
-   (get-in db [:state :active-sentence])))
+   (let [story (get-in db [:state :active-story])]
+     (get-in db [:stories story :meta :active-sentence]))))
 
 (reg-sub
  :active-story
