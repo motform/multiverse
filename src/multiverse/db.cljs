@@ -42,7 +42,8 @@
 (s/def ::meta (s/keys :req-un [::title ::authors ::model ::id ::active-sentence]))
 (s/def ::title string?)
 (s/def ::authors set?)
-(s/def ::active-sentence (s/nilable ::id))
+(s/def ::active-sentence ::id)
+
 (s/def ::sentences (s/and (s/map-of ::id ::sentence)
                           (s/every (fn [[k v]] (= (:id v) k)))))
 (s/def ::sentence (s/keys :req-un [::text ::id ::path ::children]))

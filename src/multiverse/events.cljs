@@ -22,7 +22,7 @@
     (throw (ex-info (str "spec check failed: " (s/explain-str a-spec db)) {}))))
 
 (def check-spec-interceptor (after (partial check-and-throw :multiverse.db/db)))
-(def spec-interceptor [#_check-spec-interceptor])
+(def spec-interceptor [check-spec-interceptor])
 
 (def ->local-storage (after db/collections->local-storage))
 (def local-storage-interceptor [->local-storage])
