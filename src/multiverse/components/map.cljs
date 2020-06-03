@@ -13,8 +13,7 @@
     "branch"
     "leaf"))
 
-(defn level [{:keys [text id path children]}]
-  ^{:key (str id "-M")}
+(defn level [{:keys [id path children]}]
   [:div.level
    {:id id :class (str (leaf? children) "-" (highlight? id))
     :style {:margin-left (str (* 3 (count path)) "rem")}
@@ -29,7 +28,7 @@
       (walk-sentences sentences root)]))
   ([sentences id]
    (let [node (sentences id)]
-     (concat [[level node]]
+     (concat [^{:key id} [level node]]
              (for [c (:children node)]
                (walk-sentences sentences c))))))
 

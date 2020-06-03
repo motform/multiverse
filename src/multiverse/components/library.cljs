@@ -26,7 +26,7 @@
 (defn library-items [stories]
   [:<>
    (for [story stories]
-     ^{:key (:title story)}
+     ^{:key (get-in story [:meta :id])}
      [library-item story])
    [:div.clear-library
     [:span

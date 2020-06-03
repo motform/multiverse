@@ -39,10 +39,11 @@
                         (s/every (fn [[k v]] (= (get-in v [:meta :id]) k)))))
 (s/def ::story (s/keys :req-un [::meta ::sentences]))
 
-(s/def ::meta (s/keys :req-un [::title ::authors ::model ::id ::active-sentence]))
+(s/def ::meta (s/keys :req-un [::title ::authors ::model ::id ::active-sentence ::updated]))
 (s/def ::title string?)
 (s/def ::authors set?)
 (s/def ::active-sentence ::id)
+(s/def ::updated inst?)
 
 (s/def ::sentences (s/and (s/map-of ::id ::sentence)
                           (s/every (fn [[k v]] (= (:id v) k)))))
