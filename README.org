@@ -1,3 +1,5 @@
+* Multiverse 
+
 #+BEGIN_QUOTE
 By “recognizing” things and patterns that were not given, inceptionist neural networks eventually end up effectively identifying a new totality of aesthetic and social relations.
 
@@ -5,3 +7,21 @@ But inceptionism is not just a digital hallucination. It is a document of an era
 #+END_QUOTE
 
 — Hito Steyerl, /Duty Free Art/
+
+Multiverse is a proof-of-concept prototype of a system for cybertextual generative literature. 
+
+** Overview
+   Multiverse affords cybertextual user-readers a dialog with text generating neural networks, together exploring literary space. It is very much influenced by this Jean-Pierre Balpe’s essay [[http://dichtung-digital.de/2005/1/Balpe/][Principles and Processes of Generative Literature]]. This exploration is bidirectional is nature, and is supported by an interactive spatial map, providing direct feedback and scrubbing of the currently explored literary space. It makes more sense when you try it out.
+
+** Usage
+   Three times the Clojure, three times the fun! 
+
+   Multiverse uses a simple client-server architecture, with a JVM Clojure back-end and a re-frame Clojurescript front-end. The machine learning parts are powered by the [[https://github.com/huggingface/transformers][HugginFace Transformers]], which we access through [[https://github.com/clj-python/libpython-clj][libpython-clj]]. Once the server is running on your localhost, you can set out to explore! 
+
+   ~libpython-clj~ requires you to have a python3 environment available, with the dependencies in ~requirements.txt~ installed (~$ pip install -r requirements.txt~). If you are just running the application, you first need to compile the ClojureScript with ~$ shadow-cljs compile app~, after which you can start the server with the alias ~$ clj -A:server~. If you want to hack away on the front-end, you should probably consult the [[https://shadow-cljs.github.io/docs/UsersGuide.html][shadow-cljs users guide.]]
+
+** Limitations
+   Due to licensing, this repo does not include the typefaces used in the original project. If you are so inclined, they might be found via the marvelous Future Fonts: [[https://www.futurefonts.xyz/ohno/obviously][Obviously]] and [[https://www.futurefonts.xyz/rohernandez/pigeonette][Pigeonette]]
+
+** Notes
+   This prototype was part of my master thesis in interaction design at Malmö University.
