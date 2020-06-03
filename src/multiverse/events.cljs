@@ -168,11 +168,19 @@
  (fn [db [_ id]]
    (update-in db [:stories] dissoc id)))
 
+;;; Library
+
 (reg-event-db
  :clear-library
  [spec-interceptor local-storage-interceptor]
  (fn [db _]
    (assoc db :stories {})))
+
+(reg-event-db
+ :library-sort
+ [spec-interceptor]
+ (fn [db [_ sorting]]
+   (assoc-in db [:state :sorting] sorting)))
 
 ;;; Story
 

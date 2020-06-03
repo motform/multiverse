@@ -350,9 +350,11 @@ aside li.active { color: var(--fg); }
 /* library */
 
 .library { margin: 0;
+           flex-grow: 0; /* HACK */
            padding: 5rem 5rem 10rem 5rem; }
 
 .library a {  text-decoration: none; }
+
 .library-item { grid-column: span 1;
 
                 display: flex;
@@ -394,17 +396,39 @@ aside li.active { color: var(--fg); }
 
 .delete:hover { color: red; }
 
-.clear-library { margin: 0 0 5rem 5rem;
-                 text-transform: uppercase;
-                 grid-column: span 3;
-                 height: 5rem;
-                 color: var(--ia);
-                 border-color: var(--ia); }
+.toggles { margin: 0 0 5rem 5rem;
+           text-transform: uppercase;
+           font-size: 3rem;
+           grid-column: span 3;
+           height: 5rem;
+           color: var(--ia);
+           display: flex;
+           align-items: center;
+           height: 8rem;
+           border-color: var(--ia); }
 
-.clear-library > span { border: 1px solid;
-                        padding: 3rem 4rem 3rem 4rem; }
+.toggles > select { padding: 0;
+                    font-family: "Obviously";
+                    font-size: 3rem;
+                    text-transform: uppercase;
+                    background-color: var(--bg);
+                    color: var(--ia);
+                    margin: 0 auto 0 2rem;
+                    border: 0px solid var(--fg);
+                    appearance: none; }
 
-.clear-library > span:hover { cursor: pointer;
-                              color: var(--bg);
-                              border-color: var(--fg);
-                              background-color: var(--fg); }
+.toggles > div { margin-bottom: -1px; }
+
+.toggle > select > option { text-transform: lowercase;}
+
+.toggles > select:hover { color: var(--fg);
+                          cursor: pointer; }
+
+.toggles > span { border: 1px solid;
+                  margin-right: 5rem;
+                  padding: 3rem 4rem 3rem 4rem; }
+
+.toggles > span:hover { cursor: pointer;
+                        color: var(--bg);
+                        border-color: var(--fg);
+                        background-color: var(--fg); }

@@ -56,11 +56,12 @@
            :active-sentence nil
            :active-story nil
            :highlight nil
-           :preview nil
-           :pending-request? false
            :new-story {:text ""
                        :author ""
-                       :model "GPT-2"}}
+                       :model "GPT-2"}
+           :preview nil
+           :pending-request? false
+           :sorting {:order :updated :desc? false}}
    :stories {}})
 
 ;;; local-storage

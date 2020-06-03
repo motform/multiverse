@@ -52,6 +52,11 @@
      (get-in db [:stories story :meta]))))
 
 (reg-sub
+ :sorting
+ (fn [db _]
+   (get-in db [:state :sorting])))
+
+(reg-sub
  :path
  (fn [db [_ id]]
    (let [story (get-in db [:state :active-story])]

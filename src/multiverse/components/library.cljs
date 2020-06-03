@@ -1,8 +1,17 @@
 (ns multiverse.components.library
-  (:require [re-frame.core :as rf]
+  (:require [cljs.reader :as reader]
+            [clojure.string :as str]
             [multiverse.routes :as routes]
             [multiverse.util :as util]
-            [clojure.string :as str]))
+            [re-frame.core :as rf]))
+
+(defn stort-library [stories {:keys [order desc?]} ]
+  (let [sort-fn (case order
+                  :updated #(get-in % [:meta :updated])
+                  :nodes #(count (:sentences %)))]
+    (cond->> stories
+      sort-fn (sort-by sort-fn)
+      desc? reverse)))
 
 (defn library-item [{:keys [meta sentences]}]
   (let [{:keys [updated title authors id]} meta]
@@ -24,15 +33,24 @@
          "Delete story"]]]))
 
 (defn library-items [stories]
-  [:<>
-   (for [story stories]
-     ^{:key (get-in story [:meta :id])}
-     [library-item story])
-   [:div.clear-library
-    [:span
-     {:on-click #(when (.confirm js/window "Do you really want to clear the library? This can not be undone!")
-                   (rf/dispatch [:clear-library]))}
-     "empty library"]]])
+  (let [sorting @(rf/subscribe [:sorting])
+        sorted-stories (stort-library stories sorting)]
+    [:<>
+     (for [story sorted-stories]
+       ^{:key (get-in story [:meta :id])}
+       [library-item story])]))
+
+(defn library-toggles []
+  [:div.toggles
+   [:div "SORT BY"]
+   [:select {:on-change #(rf/dispatch [:library-sort (-> % .-target .-value reader/read-string)])} ;; HACK
+    [:option {:value "{:order :updated :desc? true}"} "Last explored"]
+    [:option {:value "{:order :updated :desc? false}"} "Unlast explored"]
+    [:option {:value "{:order :nodes :desc? true}"} "Most nodes"]
+    [:option {:value "{:order :nodes :desc? false}"} "Least nodes"]]
+   [:span {:on-click #(when (.confirm js/window "Do you really want to clear the library? This can not be undone!")
+                        (rf/dispatch [:clear-library]))}
+    "empty library"]])
 
 (defn empty-library []
   [:section.landing>div "The Library is empty, go" [:br]
@@ -43,5 +61,7 @@
   (let [stories @(rf/subscribe [:stories])]
     [:main.library
      (if stories 
-       [library-items stories]
+       [:<>
+        [library-toggles]
+        [library-items stories]]
        [empty-library])]))
