@@ -26,7 +26,7 @@ html, body { height: 100%;
              margin: 0; }
 
 html { font-size: 5px;
-       font-family: "Obviously";
+       font-family: "Obviously", sans-serif;
        font-weight: normal;
        color: var(--fg); }
 
@@ -92,7 +92,7 @@ header > a { color: var(--ia);
              padding-left: 5rem; }
 
 header :first-child { padding-left: 0rem;
-                      font-family: "Obviously Wide";
+                      font-family: "Obviously Wide", "Verdana", sans-serif;
                       margin-right: auto; }
 
 
@@ -101,7 +101,7 @@ header :first-child { padding-left: 0rem;
 textarea { resize: none;
            background-color: var(--bg);
            border: 1px solid var(--fg);
-           font-family: "Pigeonette";
+           font-family: "Pigeonette", "Courier", monospace;
            font-size: 4rem;
            color: var(--fg);
            padding: 5rem;
@@ -112,7 +112,7 @@ textarea { resize: none;
               padding: 3rem;
               cursor: pointer;
 
-              font-family: "Obviously";
+              font-family: "Obviously", sans-serif;
               text-transform: uppercase;
               color: var(--fg);
               font-size: 4rem;
@@ -186,7 +186,7 @@ aside { grid-column: span 1;
         align-items: left;
         font-size: 3rem; }
 
-aside h1 { font-family: "Obviously Narrow";
+aside h1 { font-family: "Obviously Narrow", "Arial Narrow", sans-serif;
            color: var(--fg);
            margin-top: -2rem;
            font-size: 13rem;
@@ -246,7 +246,7 @@ aside li.active { color: var(--fg); }
 
 /* story view */
 
-.story { font-family: "Pigeonette";
+.story { font-family: "Pigeonette", "Courier", monospace;
          grid-column: span 2;
          overflow: auto; }
 
@@ -319,7 +319,7 @@ aside li.active { color: var(--fg); }
            display: flex;
            flex-direction: column; }
 
-.landing > h1 { font-family: "Obviously Wide Thin";
+.landing > h1 { font-family: "Obviously Wide Thin", "Arial Narrow", sans-serif;
                 font-size: 10vw;
                 padding-bottom: 5rem; }
 
@@ -368,7 +368,7 @@ aside li.active { color: var(--fg); }
                 margin-bottom: 5rem;
                 max-height: 300px; /* TODO this might be too little */ }
 
-.library-item h1 { font-family: "Obviously Narrow";
+.library-item h1 { font-family: "Obviously Narrow", "Arial Narrow", sans-serif;
                    margin-top: -2rem;
                    font-size: 13rem;
                    line-height: 12rem;
@@ -408,7 +408,7 @@ aside li.active { color: var(--fg); }
            border-color: var(--ia); }
 
 .toggles > select { padding: 0;
-                    font-family: "Obviously";
+                    font-family: "Obviously", sans-serif;
                     font-size: 3rem;
                     text-transform: uppercase;
                     background-color: var(--bg);
