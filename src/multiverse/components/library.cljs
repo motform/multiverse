@@ -5,7 +5,7 @@
             [clojure.string :as str]))
 
 (defn library-item [{:keys [meta sentences]}]
-  (let [{:keys [title authors id]} meta]
+  (let [{:keys [updated title authors id]} meta]
     [:a.library-item
      {:href (routes/url-for :story)
       :on-click #(do (rf/dispatch [:active-story id])
@@ -14,13 +14,14 @@
      [:h1 (if-not (str/blank? title) (util/title-case title) "Generating title...")]
      [:div.lauthor "By " (apply str (util/proper-separation authors))]
      [:div.linfo
-      [:div (str (count sentences) " º")]
+      [:div (str (count sentences) " nodes")]
+      [:div "Last explored " (util/format-date updated)]
       ;; TODO Right now, this will obliviously not work as the parent on-click
       ;;      acts before this one, making for all sorts of strange things.
       ;;      Will solve this when I'm a bit more attentive.
-      [:div.delete
-       {:on-click #(rf/dispatch [:dissoc-story id])}
-       "Delete story"]]]))
+      #_[:div.delete
+         {:on-click #(rf/dispatch [:dissoc-story id])}
+         "Delete story"]]]))
 
 (defn library-items [stories]
   [:<>

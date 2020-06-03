@@ -64,3 +64,11 @@
   (let [comma-sep (into [] (interpose ", " strings))
         idx (- (count comma-sep) 2)]
     (if (pos? idx) (assoc comma-sep idx " & ") strings)))
+
+(defn two-digitize [x]
+  (if (> 10 x) (str "0" x) x))
+
+#?(:cljs
+   (defn format-date [date]
+     (str (two-digitize (.getHours date)) ":" (two-digitize (.getMinutes date)) ", "
+          (.getFullYear date) "–" (two-digitize (.getMonth date)) "–"  (two-digitize (.getDay date)))))

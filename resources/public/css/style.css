@@ -12,7 +12,7 @@
 
 @media (prefers-color-scheme: dark) {  :root { --bg: #1e1e1e;
                                                --fg: whitesmoke;
-                                              --ia: gray;} }
+                                               --ia: gray;} }
 
 
 /* global  */
@@ -273,10 +273,11 @@ aside li.active { color: var(--fg); }
 .story > section > div { padding-bottom: 5rem;
                          line-height: 1.5; }
 
-.child:hover { color: var(--fg); }
+.child:hover
+{ color: var(--fg); }
 
-.scribble { height: 5rem;
-          }
+.scribble
+{ height: 5rem; }
 
 /* story map */
 
@@ -383,6 +384,8 @@ aside li.active { color: var(--fg); }
          color: var(--ia);
          text-transform: uppercase;
          font-size: 2rem; }
+
+.linfo > div:last-child { margin-left: auto; }
 
 .library-item:hover .delete { display: block; }
 

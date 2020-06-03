@@ -133,7 +133,8 @@
           :active-sentence sentence-id
           :authors #{author model}
           :title ""
-          :model model}
+          :model model
+          :updated (js/Date.)}
    :sentences {sentence-id (->node sentence-id text [sentence-id] [])}})
 
 (reg-event-fx
@@ -194,6 +195,7 @@
      {:db (-> db
               (update-in [:stories story :sentences] merge children)
               (assoc-in [:stories story :sentences parent :children] child-ids)
+              (assoc-in [:stories story :meta :updated] (js/Date.))
               (assoc-in [:state :pending-request?] false))
       :dispatch [:request-title]})))
 

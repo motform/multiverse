@@ -73,7 +73,7 @@
    name])
 
 (defn sidebar []
-  (let [{:keys [title model authors]} @(rf/subscribe [:meta])
+  (let [{:keys [title model authors updated]} @(rf/subscribe [:meta])
         _ (rf/dispatch [:page-title-story title])]
     [:aside
      [:section.title>h1 (format-title title)]
@@ -85,7 +85,7 @@
        [li-model "GPT-2"  model]
        [li-model "BERT"   model]
        [li-model "XLNet"  model]]]
-     [:section.meta "Last Exploration 14:32, 2020-01-21"]]))
+     [:section.meta "Last Exploration " (util/format-date updated)]]))
 
 ;;; Main
 
