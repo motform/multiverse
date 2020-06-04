@@ -325,10 +325,6 @@ aside li.active { color: var(--fg); }
 
 .landing > div { margin: 0 auto; }
 
-.landing img { margin: 10rem 0 10rem 0;
-               display: over;
-               max-height: 450px; }
-
 .landing > div:nth-child(2) { font-size: 2.1vw; }
 
 .landing > div:nth-child(3) { font-size: 2.1vw;
@@ -346,6 +342,12 @@ aside li.active { color: var(--fg); }
                    background-color: var(--fg);
                    cusor: pointer; }
 
+.circles { margin: 5rem 0 5rem 0; }
+
+.circle { transition: 0.3s; }
+
+.circle.filled:hover { fill: var(--fg);
+                       stroke: var(--fg); }
 
 /* library */
 

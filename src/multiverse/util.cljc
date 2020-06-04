@@ -9,21 +9,10 @@
   #?(:cljs (transit/write (transit/writer :json) data)
      :clj (muuntaja/encode "application/transit+json" data)))
 
-(defn enumerate-str
-  "Returns `xs` enumerated as \"i. (str `x`)\", starting from 1."
-  [xs]
-  (map-indexed (fn [i x] (str (inc i) ". " x)) xs))
-
 (defn enumerate
   "Returns `xs` enumerated as \"i. (str `x`)\", starting from 1."
   [xs]
   (map-indexed (fn [i x] [i x]) xs))
-
-(defn gen-key
-  "Generates a React key by hashing the str representation of `x`
-  `rest`, and a random int to prevent collisions."
-  [x & rest]
-  (hash (str (rand-int 255) x rest)))
 
 (defn pairs
   "Returns a vec with two-tuples [[x1 y1] [x2 y2]] from `xs` and `ys`."
@@ -51,9 +40,8 @@
 (defn format-title
   "Applies title-case and removes punctuation in `title`."
   [title]
-  (if-not (str/blank? title)
-    (-> title (str/replace #"[',\"\.\!]" "") title-case)
-    "Generating title..."))
+  (when-not (str/blank? title)
+    (-> title (str/replace #"[',\"\.\!]" "") title-case)))
 
 (defn format-story
   "Returns space-delimited str from a vec of `sentences`"

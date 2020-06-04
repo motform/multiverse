@@ -15,11 +15,25 @@
 
 ;;; Landing
 
+(defn circle [r cx cy]
+  (let [filled? (when (< 2 (rand-int 5)) {:fill "gray" :class "filled"})]
+    (when (< 1 (rand-int 5))
+      [:circle.circle (merge {:r r :cx cx :cy cy :stroke "gray" :stroke-width "1" :fill "none"} filled?)])))
+
+(defn circles []
+  (let [wh (quot (. js/window -innerHeight) 2.7)
+        ww (. js/window -innerWidth)
+        r (quot wh 6)]
+    [:svg.circles {:style {:height wh :width ww :margin "10rem 0 10rem 0"}}
+     (for [cy (range (inc r) (inc wh) (inc (* r 2)))
+           cx (range 0       (inc ww) (inc (* r 2)))]
+       ^{:key (str cx cy)} [circle r cx cy])]))
+
 (defn landing []
   [:div.intro-wrapper>section.landing
    [:h1 "MULTIVERSE"]
    [:div "Cybertextual generative literature through machine learning"]
-   [:img {:src "/assets/pattern.svg"}]
+   [circles]
    [:div "Start a "
     [:a {:href (routes/url-for :new-story)} "new story"]
     " or keep reading one in the "
