@@ -1,18 +1,32 @@
 # _*_ restclient _*_
 #
+# TODO add valid transit payloads for /generate requests
+
 ## Get home page
 
-GET http://localhost:3333/
+GET http://localhost:8021/
 Accept-Charset: utf-8
 
-## Fetch 10 cocktails from the feed, in transit-json
+## Perform NER on a text
 
-POST http://localhost:3232/bartender/cocktails?start=0&end=10
+POST http://localhost:8021/generate/ner
 Accept-Charset: utf-8
 Accept: application/transit+json
 
-## Get continuaton
+## Generate continuations of a text
 
-GET http://localhost:3333/progress
+POST http://localhost:8021/generate/sentences
+Accept-Charset: utf-8
+Accept: application/transit+json
+
+## Generate a summary of a text
+
+POST http://localhost:8021/generate/summary
+Accept-Charset: utf-8
+Accept: application/transit+json
+
+## Generate a title for a text
+
+POST http://localhost:8021/generate/title
 Accept-Charset: utf-8
 Accept: application/transit+json

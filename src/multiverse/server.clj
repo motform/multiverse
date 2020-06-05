@@ -3,7 +3,6 @@
   (:require [multiverse.ml :as ml]
             [multiverse.util :as util]
             [bidi.ring :as bidi]
-            [clojure.string :as str]
             [muuntaja.core :as muuntaja]
             [org.httpkit.server :refer [run-server]]
             [ring.middleware.cors :refer [wrap-cors]]

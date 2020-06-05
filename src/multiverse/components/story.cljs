@@ -18,15 +18,17 @@
 (defn circle [r cx cy]
   (let [filled? (when (< 2 (rand-int 5)) {:fill "gray" :class "filled"})]
     (when (< 1 (rand-int 5))
-      [:circle.circle (merge {:r r :cx cx :cy cy :stroke "gray" :stroke-width "1" :fill "none"} filled?)])))
+      [:circle.circle
+       (merge {:r r :cx cx :cy cy :stroke "gray" :stroke-width "1" :fill "none"}
+              filled?)])))
 
 (defn circles []
-  (let [wh (quot (. js/window -innerHeight) 2.7)
+  (let [wh (quot (. js/window -innerHeight) 2.7) ; arbitrary
         ww (. js/window -innerWidth)
-        r (quot wh 6)]
-    [:svg.circles {:style {:height wh :width ww :margin "10rem 0 10rem 0"}}
-     (for [cy (range (inc r) (inc wh) (inc (* r 2)))
-           cx (range 0       (inc ww) (inc (* r 2)))]
+        r (dec (quot wh 6))] ; dec to properly fit three circles with gaps
+    [:svg.circles {:style {:height wh :width ww}}
+     (for [cy (range (inc r) (inc wh) (+ 2 (* r 2)))  ; three rows
+           cx (range 0       (inc ww) (+ 2 (* r 2)))] ; fills the rest
        ^{:key (str cx cy)} [circle r cx cy])]))
 
 (defn landing []
