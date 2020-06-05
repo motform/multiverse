@@ -8,9 +8,9 @@ But inceptionism is not just a digital hallucination. It is a document of an era
 
 — Hito Steyerl, /Duty Free Art/
 
-Multiverse is a proof-of-concept prototype of a system for cybertextual generative literature. 
-
 [[./.assets/screenshot.png]]
+
+*Multiverse is a proof-of-concept prototype of a system for cybertextual generative literature.*
 
 ** Overview
    Multiverse affords cybertextual user-readers a dialog with text generating neural networks, together exploring literary space. It is very much influenced by this Jean-Pierre Balpe’s essay [[http://dichtung-digital.de/2005/1/Balpe/][Principles and Processes of Generative Literature]]. This exploration is bidirectional is nature, and is supported by an interactive spatial map, providing direct feedback and scrubbing of the currently explored literary space. 

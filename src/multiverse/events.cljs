@@ -195,9 +195,8 @@
 (reg-event-fx
  :handle-children
  [spec-interceptor local-storage-interceptor]
- (fn [{:keys [db]} [_ parent texts]]
-   (let [story (get-in db [:state :active-story])
-         parent-path (get-in db [:stories story :sentences parent :path])
+ (fn [{:keys [db]} [_ story parent texts]]
+   (let [parent-path (get-in db [:stories story :sentences parent :path])
          child-ids (repeatedly 3 #(nano-id 10))
          children (->children parent-path child-ids texts)]
      {:db (-> db
@@ -217,15 +216,16 @@
 (reg-event-fx
  :request-children
  (fn [{:keys [db]} [_ parent prompt]]
-   {:db (assoc-in db [:state :pending-request?] true)
-    :http-xhrio {:method :post
-                 :uri "http://localhost:3333/generate/sentences"
-                 :timeout 800000
-                 :body (util/->transit+json prompt)
-                 :format (ajax/transit-request-format)
-                 :response-format (ajax/transit-response-format {:keywords? true})
-                 :on-success [:handle-children parent]
-                 :on-failure [:failure-http]}}))
+   (let [story (get-in db [:state :active-story])]
+     {:db (assoc-in db [:state :pending-request?] true)
+      :http-xhrio {:method :post
+                   :uri "http://localhost:3333/generate/sentences"
+                   :timeout 800000
+                   :body (util/->transit+json prompt)
+                   :format (ajax/transit-request-format)
+                   :response-format (ajax/transit-response-format {:keywords? true})
+                   :on-success [:handle-children story parent]
+                   :on-failure [:failure-http]}})))
 
 (reg-event-fx
  :request-title
