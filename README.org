@@ -27,5 +27,16 @@ But inceptionism is not just a digital hallucination. It is a document of an era
 ** Limitations
    Due to licensing, this repo does not include the typefaces used in the original project. If you are so inclined, they might be found via the marvelous Future Fonts: [[https://www.futurefonts.xyz/ohno/obviously][Obviously]] and [[https://www.futurefonts.xyz/rohernandez/pigeonette][Pigeonette]].
 
-** Notes
-   This prototype was part of my master thesis in interaction design at Malmö University.
+** Research
+   This prototype was part of my [[literature/thesis.pdf][master thesis]] in interaction design at Malmö University. To cite it, use the following biblatex entry:
+
+   #+BEGIN_SRC bibtex
+   @masterthesis{lagerkvist2020multiverse,
+     author = {Love Lagerkvist},
+     title  = {Neural Novelty: How Machine Learning Does Interactive Generative Literature},
+     school = {Malmö University},
+     year   = 2020,
+   }
+   #+END_SRC 
+
+   
