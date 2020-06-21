@@ -30,4 +30,5 @@
         re-frame                   {:mvn/version "0.11.0"}}
 
  :aliases {:cli    {:main-opts ["-m" "multiverse.cli"]}
-           :server {:main-opts ["-m" "multiverse.server"]}}}
+           :server {:main-opts ["-m" "multiverse.server"]}
+           :depstar {:extra-deps {seancorfield/depstar {:mvn/version "1.0.94"}}}}}
