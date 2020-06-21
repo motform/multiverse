@@ -27,15 +27,15 @@
 
 (defn title-case
   "A simple title case by short list of common stop words."
-  [s]
+  [title]
   (let [stop-words #{"the" "a" "an" "for" "but" "not" "yet"
                     "so" "at" "around" "by" "of" "from" "on"
                     "with" "to" "without" "after" "and"}]
-    (as-> s title
-      (str/split title #" ")
-      (mapv #(if-not (stop-words %) (str/capitalize %) %) title)
-      (update title 0 str/capitalize) ; always capitalize the leading word
-      (str/join " " title))))
+    (as-> title <>
+      (str/split <> #" ")
+      (mapv #(if-not (stop-words %) (str/capitalize %) %) <>)
+      (update <> 0 str/capitalize) ; always capitalize the leading word
+      (str/join " " <>))))
 
 (defn format-title
   "Applies title-case and removes punctuation in `title`."

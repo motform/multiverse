@@ -7,8 +7,12 @@
             [nano-id.core :refer [nano-id]]
             [re-frame.core :as rf :refer [reg-event-db reg-event-fx reg-fx inject-cofx path after debug]]))
 
-;; TODO replace localhost
 
+;;; Helpers
+
+(defn ->uri [route]
+  (let [host (.. js/window -location -host)]
+    (str "http://" host "/" route)))
 
 ;;; Interceptors
 
@@ -49,6 +53,7 @@
          title (str "Multiverse" separator name)]
      (set! (.-title js/document) title))))
 
+;; TOD remove and 
 (reg-event-fx
  :page-title
  (fn [_ [_ page]]
@@ -219,7 +224,7 @@
    (let [story (get-in db [:state :active-story])]
      {:db (assoc-in db [:state :pending-request?] true)
       :http-xhrio {:method :post
-                   :uri "http://localhost:3333/generate/sentences"
+                   :uri (->uri "generate/sentences")
                    :timeout 800000
                    :body (util/->transit+json prompt)
                    :format (ajax/transit-request-format)
@@ -233,7 +238,7 @@
    (let [story (get-in db [:state :active-story])
          sentences (->> (get-in db [:stories story :sentences]) vals util/format-story)]
      {:http-xhrio {:method :post
-                   :uri "http://localhost:3333/generate/title"
+                   :uri (->uri "generate/title")
                    :timeout 800000
                    :body (util/->transit+json sentences)
                    :format (ajax/transit-request-format)
