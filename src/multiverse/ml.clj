@@ -28,12 +28,12 @@
   (transformers/pipeline "text-generation" :model model :framework "pt"))
 
 (def models
-  {:GPT-2    (->text-generator "gpt2")
-   :XLNet    (->text-generator "xlnet-base-cased") 
-   :Reformer (->text-generator "google/reformer-crime-and-punishment")})
+  {"GPT-2"    (->text-generator "gpt2")
+   "XLNet"    (->text-generator "xlnet-base-cased") 
+   "Reformer" (->text-generator "google/reformer-crime-and-punishment")})
 
 (defn generate-text [prompt model]
-  (let [generator #((model models) % :max_length 300)]
+  (let [generator #((models model) % :max_length 200)]
     (-> prompt generator first (get "generated_text"))))
 
 (defn remove-prompt [new prompt]

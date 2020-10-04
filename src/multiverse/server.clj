@@ -39,9 +39,8 @@
       (transit+json-response)))
 
 (defn- sentences [{:keys [body]}]
-  (-> (muuntaja/decode "application/transit+json" body)
-      (ml/generate-sentences :GPT-2)
-      (transit+json-response)))
+  (let [{:keys [prompt model]} (muuntaja/decode "application/transit+json" body)]
+    (transit+json-response (ml/generate-sentences prompt model))))
 
 (def route-handler
   (bidi/make-handler

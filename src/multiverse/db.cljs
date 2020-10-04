@@ -18,6 +18,8 @@
 ;;  
 ;; — LLA, 200514
 
+;; TODO add timestamp to each sentence
+
 (s/def ::id (s/and string? #(= 10 (count %))))
 
 (s/def ::db (s/keys :req-un [::state ::stories]))
@@ -71,8 +73,7 @@
 (defn collections->local-storage [db]
   (.setItem js/localStorage ls-key (str (:stories db))))
 
-(rf/reg-cofx
- ;; source: re-frame docs
+(rf/reg-cofx ; source: re-frame docs
  :local-store-collections
  (fn [cofx _]
    (assoc cofx :local-store-collections

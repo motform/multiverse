@@ -21,9 +21,9 @@
   [:section.model
    [:label "Select a writing partner"]
    [:ul
-    [li-model "GPT-2" "The OpenAI model (in-)famously proclaimed to be to “dangerous” for public release. A well rounded writer." model]
-    [li-model "BERT"  "The Google model that set of the transformer craze. Living(?) proof that attention is, indeed, all that you need." model]
-    [li-model "XLNet" "Trained on one of the largest data-sets in history, this model always has something unexpected to add." model]]])
+    [li-model "GPT-2"    "The OpenAI model (in-)famously proclaimed to be to “dangerous” for public release. A well rounded writer." model]
+    [li-model "Reformer" "The Google model that set of the transformer craze. Living(?) proof that attention is, indeed, all that you need." model]
+    [li-model "XLNet"    "Trained on one of the largest data-sets in history, this model always has something unexpected to add." model]]])
 
 (defn submit-btn [{:keys [text author]}]
   [:a.submit-btn

@@ -99,7 +99,7 @@
       [:label "Writing partner"]
       [:ul
        [li-model "GPT-2"  model]
-       [li-model "BERT"   model]
+       [li-model "Reformer"   model]
        [li-model "XLNet"  model]]]
      [:section.meta "Last Exploration " (util/format-date updated)]]))
 
