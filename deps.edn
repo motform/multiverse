@@ -1,7 +1,7 @@
 {:paths ["src" "resources"]
 
  :deps {;; ML/NLP
-        clj-python/libpython-clj {:mvn/version "1.38"}
+        clj-python/libpython-clj {:mvn/version "1.46"}
         clojure-opennlp {:mvn/version "0.5.0"}
 
         ;; server
