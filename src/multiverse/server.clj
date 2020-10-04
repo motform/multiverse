@@ -1,10 +1,11 @@
 (ns multiverse.server
   (:gen-class)
-  (:require [multiverse.ml :as ml]
+  (:require [bidi.ring :as bidi]
+            [multiverse.ml :as ml]
             [multiverse.util :as util]
-            [bidi.ring :as bidi]
             [muuntaja.core :as muuntaja]
             [org.httpkit.server :refer [run-server]]
+            [ring.logger :as logger]
             [ring.middleware.cors :refer [wrap-cors]]
             [ring.middleware.flash :refer [wrap-flash]]
             [ring.middleware.not-modified :refer [wrap-not-modified]]
@@ -12,7 +13,6 @@
             [ring.middleware.reload :refer [wrap-reload]]
             [ring.middleware.resource :refer [wrap-resource]]
             [ring.middleware.session :refer [wrap-session]]
-            [ring.logger :as logger]
             [ring.util.response :as response]))
 
 (set! *warn-on-reflection* 1)
@@ -28,41 +28,38 @@
 (defn- home-page [_]
   (response/file-response "index.html" {:root "resources/public"}))
 
-(defn- summary [{:keys [body]}]
-  (let [text (muuntaja/decode "application/transit+json" body)
-        summary (ml/summarize text)]
-    (transit+json-response summary)))
-
 (defn- ner [{:keys [body]}]
-  (let [text (muuntaja/decode "application/transit+json" body)
-        ner (ml/named-entity-recognition text)]
-    (transit+json-response ner)))
-
-(defn- sentences [{:keys [body]}]
-  (let [prompt (muuntaja/decode "application/transit+json" body)
-        sentences (ml/generate-sentences prompt 3)]
-    (transit+json-response sentences)))
+  (-> (muuntaja/decode "application/transit+json" body)
+      (ml/named-entity-recognition)
+      (transit+json-response)))
 
 (defn- title [{:keys [body]}]
-  (let [story (muuntaja/decode "application/transit+json" body)
-        title (ml/generate-title story)]
-    (transit+json-response title)))
+  (-> (muuntaja/decode "application/transit+json" body)
+      (ml/generate-title)
+      (transit+json-response)))
+
+(defn- sentences [{:keys [body]}]
+  (-> (muuntaja/decode "application/transit+json" body)
+      (ml/generate-sentences :GPT-2)
+      (transit+json-response)))
 
 (def route-handler
   (bidi/make-handler
    ["/" {"" home-page
          "generate/" {"ner" ner
                       "sentences" sentences
-                      "summary" summary
                       "title" title}}]))
 
 ;; Ring
 
 (defn- wrap-body-string [handler]
   (fn [request]
-    (handler (if (:body request)
-               (assoc request :body (->> request :body .bytes slurp))
-               request))))
+    (handler
+     (if (:body request)
+       (assoc request :body (->> request :body .bytes slurp))
+       #_(update request :body (comp slurp .bytes)) ;; TODO does this work?
+       request))))
+
 (def app
   (-> #'route-handler
       logger/wrap-log-response
