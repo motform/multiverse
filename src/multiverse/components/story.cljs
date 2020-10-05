@@ -43,12 +43,13 @@
 
 ;;; Story
 
-(defn sentence [text id class]
+(defn sentence [text id model class]
   [:div
    {:id id :class (str class " " (highlight? id))
     :on-click #(rf/dispatch [:active-sentence id])
     :on-mouse-over #(rf/dispatch [:highlight-sentence id])
     :on-mouse-out  #(rf/dispatch [:remove-highlight])}
+   [:span.sentence-model (if (= "Reformer" model) "RFMR" model)] ;; HACK
    (if (str/blank? text) "..." text)])
 
 (defn pending []
@@ -67,13 +68,13 @@
             (rf/dispatch [:request-children parent (util/format-story sentences)]))]
     [:section.story 
      [:section.sentences
-      (for [{:keys [text id]} sentences]
-        ^{:key id} [sentence text id "parent"])]
+      (for [{:keys [text id model]} sentences]
+        ^{:key id} [sentence text id model "parent"])]
      (if request?
        [pending]
        [:section.children
-        (for [{:keys [id text]} children]
-          ^{:key id} [sentence text id "child"])])]))
+        (for [{:keys [id text model]} children]
+          ^{:key id} [sentence text id model "child"])])]))
 
 ;;; Sidebar
 
@@ -96,7 +97,7 @@
      [:section.byline "By " (apply str (util/proper-separation authors))]
      [tree-map]
      [:section.model-sidebar
-      [:label "Model"]
+      ;; [:label "Model"]
       [:ul
        [li-model "GPT-2"  model]
        [li-model "Reformer"   model]
