@@ -27,9 +27,9 @@
      [:nav
       (walk-sentences sentences root)]))
   ([sentences id]
-   (let [node (sentences id)]
-     (concat [^{:key id} [level node]]
-             (for [c (:children node)]
+   (let [sentence (sentences id)]
+     (concat [^{:key id} [level sentence]]
+             (for [c (:children sentence)]
                (walk-sentences sentences c))))))
 
 (defn tree-map []

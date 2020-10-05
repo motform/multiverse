@@ -128,8 +128,8 @@
 
 ;;; Prompt
 
-(defn ->node [id text path children]
-  {:id id :text text :path path :children children})
+(defn ->sentence [id text path children model]
+  {:id id :text text :path path :children children :model model})
 
 (defn ->story [story-id sentence-id {:keys [text author model]}]
   {:meta {:id story-id
@@ -138,7 +138,7 @@
           :title ""
           :model model
           :updated (js/Date.)}
-   :sentences {sentence-id (->node sentence-id text [sentence-id] [])}})
+   :sentences {sentence-id (->sentence sentence-id text [sentence-id] [] model)}})
 
 (reg-event-fx
  :submit-new-story
@@ -189,19 +189,19 @@
 
 (defn ->children
   "Make children map to be merged into sentences."
-  [parent-path child-ids texts]
+  [parent-path child-ids texts model]
   (let [child-pairs (util/pairs child-ids texts)]
     (reduce (fn [children [id text]]
-              (assoc children id (->node id text (conj parent-path id) [])))
+              (assoc children id (->sentence id text (conj parent-path id) [] model)))
             {} child-pairs)))
 
 (reg-event-fx
  :handle-children
  [spec-interceptor local-storage-interceptor]
- (fn [{:keys [db]} [_ story parent texts]]
+ (fn [{:keys [db]} [_ story parent model texts]]
    (let [parent-path (get-in db [:stories story :sentences parent :path])
          child-ids (repeatedly 3 #(nano-id 10))
-         children (->children parent-path child-ids texts)]
+         children (->children parent-path child-ids texts model)]
      {:db (-> db
               (update-in [:stories story :sentences] merge children)
               (assoc-in [:stories story :sentences parent :children] child-ids)
@@ -228,7 +228,7 @@
                    :body (util/->transit+json {:prompt prompt :model model})
                    :format (ajax/transit-request-format)
                    :response-format (ajax/transit-response-format {:keywords? true})
-                   :on-success [:handle-children story parent]
+                   :on-success [:handle-children story parent model]
                    :on-failure [:failure-http]}})))
 
 (reg-event-fx

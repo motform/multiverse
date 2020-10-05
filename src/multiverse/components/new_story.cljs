@@ -19,7 +19,7 @@
 
 (defn select-model [model]
   [:section.model
-   [:label "Select a writing partner"]
+   [:label "Select a model"]
    [:ul
     [li-model "GPT-2"    "The OpenAI model (in-)famously proclaimed to be to “dangerous” for public release. A well rounded writer." model]
     [li-model "Reformer" "The Google model that set of the transformer craze. Living(?) proof that attention is, indeed, all that you need." model]
@@ -35,7 +35,7 @@
 
 (defn prompt [text]
   [:section.prompt
-   [:label "prompt your writing partner, the more detailed the better"]
+   [:label "prompt the model, the more detailed the better"]
    [:textarea 
     {:value text
      :autoFocus true

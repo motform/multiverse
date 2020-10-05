@@ -43,7 +43,7 @@
 
 ;;; Story
 
-(defn node [text id class]
+(defn sentence [text id class]
   [:div
    {:id id :class (str class " " (highlight? id))
     :on-click #(rf/dispatch [:active-sentence id])
@@ -68,12 +68,12 @@
     [:section.story 
      [:section.sentences
       (for [{:keys [text id]} sentences]
-        ^{:key id} [node text id "parent"])]
+        ^{:key id} [sentence text id "parent"])]
      (if request?
        [pending]
        [:section.children
         (for [{:keys [id text]} children]
-          ^{:key id} [node text id "child"])])]))
+          ^{:key id} [sentence text id "child"])])]))
 
 ;;; Sidebar
 
@@ -96,7 +96,7 @@
      [:section.byline "By " (apply str (util/proper-separation authors))]
      [tree-map]
      [:section.model-sidebar
-      [:label "Writing partner"]
+      [:label "Model"]
       [:ul
        [li-model "GPT-2"  model]
        [li-model "Reformer"   model]

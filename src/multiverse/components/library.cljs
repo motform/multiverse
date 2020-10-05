@@ -8,7 +8,7 @@
 (defn stort-library [stories {:keys [order desc?]} ]
   (let [sort-fn (case order
                   :updated #(get-in % [:meta :updated])
-                  :nodes #(count (:sentences %)))]
+                  :sentences #(count (:sentences %)))]
     (cond->> stories
       sort-fn (sort-by sort-fn)
       desc? reverse)))
@@ -23,7 +23,7 @@
      [:h1 (if-not (str/blank? title) (util/title-case title) "Generating title...")]
      [:div.lauthor "By " (apply str (util/proper-separation authors))]
      [:div.linfo
-      [:div (str (count sentences) " nodes")]
+      [:div (str (count sentences) " sentences")]
       [:div "Last explored " (util/format-date updated)]
       ;; TODO Right now, this will obliviously not work as the parent on-click
       ;;      acts before this one, making for all sorts of strange things.
@@ -46,8 +46,8 @@
    [:select {:on-change #(rf/dispatch [:library-sort (-> % .-target .-value reader/read-string)])} ;; HACK
     [:option {:value "{:order :updated :desc? true}"} "Last explored"]
     [:option {:value "{:order :updated :desc? false}"} "Unlast explored"]
-    [:option {:value "{:order :nodes :desc? true}"} "Most nodes"]
-    [:option {:value "{:order :nodes :desc? false}"} "Least nodes"]]
+    [:option {:value "{:order :sentences :desc? true}"} "Most sentences"]
+    [:option {:value "{:order :sentences :desc? false}"} "Least sentences"]]
    [:span {:on-click #(when (.confirm js/window "Do you really want to clear the library? This can not be undone!")
                         (rf/dispatch [:clear-library]))}
     "empty library"]])

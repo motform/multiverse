@@ -33,7 +33,7 @@
    "Reformer" (->text-generator "google/reformer-crime-and-punishment")})
 
 (defn generate-text [prompt model]
-  (let [generator #((models model) % :max_length 200)]
+  (let [generator #((models model) % :max_length 300)]
     (-> prompt generator first (get "generated_text"))))
 
 (defn remove-prompt [new prompt]
