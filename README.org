@@ -39,4 +39,23 @@ But inceptionism is not just a digital hallucination. It is a document of an era
    }
    #+END_SRC 
 
-   
+   That said, you probably don’t have time to read 60 debatable pages. Instead, you can read the paper I wrote about it with Maliheh Ghajargar!
+
+   #+BEGIN_SRC bibtex
+   @inproceedings{10.1145/3423423.3423424,
+     author    = {Lagerkvist, Love and Ghajargar, Maliheh},
+     title     = {Multiverse: Exploring Human Machine Learning Interaction Through Cybertextual Generative Literature},
+     year      = {2020},
+     isbn      = {9781450388207},
+     publisher = {Association for Computing Machinery},
+     address   = {New York, NY, USA},
+     url       = {https://doi-org.proxy.mau.se/10.1145/3423423.3423424},
+     doi       = {10.1145/3423423.3423424},
+     booktitle = {10th International Conference on the Internet of Things Companion},
+     articleno = {1},
+     numpages  = {6},
+     keywords  = {interactive machine learning, interactive literature, machine learning, generative literature, cybertext},
+     location  = {Malm\"{o}, Sweden},
+     series    = {IoT '20 Companion}
+   }  
+   #+END_SRC 
