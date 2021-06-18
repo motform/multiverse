@@ -1,4 +1,1 @@
-{:linters {:unresolved-symbol {:level :off} ; does not work with python interop
-           :unresolved-namespace {:level :off} ; does not work with python interop
-           :single-key-in {:level :warning}
-           :unsorted-required-namespaces {:level :warning}}}
+{:linters {:single-key-in {:level :warning}}}

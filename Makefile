@@ -20,4 +20,7 @@ clean:
 dev:
 	npx shadow-cljs watch $(APP) & clojure -A:server
 
+pydeps:
+	@pip install -r requirements.txt
+
 .PHONY: dev

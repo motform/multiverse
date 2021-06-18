@@ -1,22 +1,20 @@
 {
-    "name": "multiverse",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "shadow-cljs release --verbose app"
-    },
-    "devDependencies": {
-        "shadow-cljs": "^2.8.83"
-    },
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "create-react-class": "^15.6.3",
-        "react": "^16.12.0",
-        "react-dom": "16.9.0",
-        "react-flip-move": "^3.0.4",
-        "react-highlight.js": "^1.0.7"
-    }
+  "name": "multiverse",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "shadow-cljs release --verbose app"
+  },
+  "devDependencies": {
+    "shadow-cljs": "2.14.5"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "highlight.js": "10.7.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
 }

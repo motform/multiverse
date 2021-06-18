@@ -1,10 +1,10 @@
-{:deps true
- :nrepl {:port 9001}
- :builds {:app {:target :browser
+{:deps   true
+ :nrepl  {:port 9001}
+ :builds {:app {:target     :browser
                 :output-dir "resources/public/js/"
                 :asset-path "/js"
-                :modules {:main {:entries [multiverse.main]
-                                 :init-fn multiverse.main/mount}}
+                :modules {:main {:entries [org.motform.multiverse.main]
+                                 :init-fn org.motform.multiverse.main/mount}}
                 :compiler-options {:closure-defines {"re_frame.trace.trace_enabled_QMARK_"  true
                                                      "day8.re-frame.tracing.trace-enabled?" true
                                                      "goog.DEBUG" true}}
