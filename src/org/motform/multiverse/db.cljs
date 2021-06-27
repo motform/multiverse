@@ -28,42 +28,43 @@
 
 (s/def ::active-page #{:about :library :new-story :story})
 (s/def ::active-story (s/nilable ::id))
-(s/def ::highlight (s/nilable ::id))
+(s/def ::highlight    (s/nilable ::id))
+(s/def ::preview      (s/nilable ::id))
 (s/def ::pending-request boolean?)
-(s/def ::preview (s/nilable ::id))
 
 (s/def ::new-story (s/keys :req-un [::text ::author ::model]))
-(s/def ::text (s/nilable string?))
+(s/def ::text   (s/nilable string?))
 (s/def ::author (s/nilable string?))
-(s/def ::model (s/nilable string?))
+(s/def ::model  (s/nilable string?))
 
 (s/def ::stories (s/and (s/map-of ::id ::story)
                         (s/every (fn [[k v]] (= (get-in v [:meta :id]) k)))))
 (s/def ::story (s/keys :req-un [::meta ::sentences]))
 
 (s/def ::meta (s/keys :req-un [::title ::authors ::model ::id ::active-sentence ::updated]))
-(s/def ::title string?)
+(s/def ::title   string?)
 (s/def ::authors set?)
-(s/def ::active-sentence ::id)
 (s/def ::updated inst?)
+(s/def ::active-sentence (s/nilable ::id))
 
 (s/def ::sentences (s/and (s/map-of ::id ::sentence)
                           (s/every (fn [[k v]] (= (:id v) k)))))
 (s/def ::sentence (s/keys :req-un [::text ::id ::path ::children]))
-(s/def ::path (s/coll-of ::id))
+(s/def ::path     (s/coll-of ::id))
 (s/def ::children (s/coll-of ::id))
 
 (def default-db
-  {:state {:active-page :story
-           :active-sentence nil
-           :active-story nil
-           :highlight nil
-           :new-story {:text ""
-                       :author ""
-                       :model "GPT-2"}
-           :preview nil
+  {:state {:active-page      :story
+           :active-sentence  nil
+           :active-story     nil
+           :highlight        nil
+           :preview          nil
            :pending-request? false
-           :sorting {:order :updated :desc? false}}
+           :new-story       {:text "" :author "" :model "GPT-2"}
+           :sorting         {:order :updated :desc? false}
+           :open-ai         {:api-key ""
+                             :valid-format? false
+                             :validated?    false}}
    :stories {}})
 
 ;;; local-storage

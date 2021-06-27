@@ -7,6 +7,6 @@
    [:div "The source is free, open, and available on "
     [:a {:href "https://github.com/motform/multiverse/"} "Github"]
     " under a GPL-3 license."]]
-  [:div {:style {:padding-bottom 0}}
-   "Love Lagerkvist"
-   [:a {:href "https://motform.org"} "motform.org"]])
+  #_[:div {:style {:padding-bottom 0}}
+     "Love Lagerkvist"
+     [:a {:href "https://motform.org"} "motform.org"]])

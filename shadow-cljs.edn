@@ -1,5 +1,6 @@
 {:deps   true
- :nrepl  {:port 9001}
+ :nrepl  {:port 9001
+          :middleware [cider.nrepl/cider-middleware]}
  :builds {:app {:target     :browser
                 :output-dir "resources/public/js/"
                 :asset-path "/js"
@@ -10,5 +11,5 @@
                                                      "goog.DEBUG" true}}
                 :devtools {:http-root "resources/public"
                            :http-port 8022
-                           :preloads [devtools.preload
-                                      day8.re-frame-10x.preload]}}}}
+                           :preloads  [devtools.preload
+                                       day8.re-frame-10x.preload]}}}}

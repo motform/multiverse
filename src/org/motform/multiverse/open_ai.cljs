@@ -18,13 +18,13 @@
 (def param-defaults
   {:max_tokens  64
    :temperature 0.7
-   :top_p       1})
+   :n           3
+   :top_p       1
+   :stop        ["." "!" "?"]})
 
 (defn- request [engine task params]
-  {:url        (str "https://api.openai.com/v1/engines/" engine "/" task)
-   :headers    {"content-type" "application/json"}
-   :basic-auth ["" #_api-key]
-   :body       (merge param-defaults params)})
+  {:uri    (str "https://api.openai.com/v1/engines/" engine "/" task)
+   :params (merge param-defaults params)})
 
 (defn completion-with
   {:style/indent 1}
@@ -33,9 +33,8 @@
          (set/subset? (set (keys params)) valid-params)]}
   (request (name engine) "completions" params))
 
-;; (defn response-body [response]    (-> response  :body parse-json))
-;; (defn response-text [response]    (-> response  :body parse-json :open-ai/choices first :open-ai/text))
-;; (defn response-choices [response] (->> response :body parse-json :open-ai/choices (map :open-ai/text)))
+(completion-with :davinci
+  {:prompt "foo bar baz"})
 
 (defn ->title-template [story]
   (str "Make a title for the following text:\n\"\"\"\n"

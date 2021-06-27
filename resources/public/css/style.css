@@ -11,6 +11,9 @@
     --bg: whitesmoke;
     --fg: black;
     --ia: gray;
+    --ok: green;
+    --err: red;
+    --divider: #dbdbdb;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -18,6 +21,9 @@
 	--bg: #1e1e1e;
 	--fg: whitesmoke;
 	--ia: gray;
+        --ok: green;
+        --err: red;
+        --divider: #323232;
     }
 }
 
@@ -44,6 +50,7 @@ html {
     font-family: "Obviously", sans-serif;
     font-weight: normal;
     color: var(--fg);
+    -webkit-font-smoothing: antialiased;
 }
 
 body {
@@ -191,6 +198,11 @@ label {
     grid-column: span 1;
     display: flex;
     flex-direction: column;
+    margin-top: -2rem;
+}
+
+.submit-btn {
+    margin-top: auto;
 }
 
 .setup-meta>section {
@@ -353,12 +365,31 @@ aside li.active {
 .story {
     font-family: "Pigeonette", "Courier", monospace;
     grid-column: span 2;
-    overflow: auto;
 }
 
 .sentences {
-    display: flex;
-    flex-direction: column;
+    /* white-space: pre; */
+    /* overflow: auto; */
+    overflow: auto;
+    /* word-wrap: break-word; */
+    line-height: 1.5;
+}
+
+.sentences > span {
+    hyphens: auto;
+}
+.sentences > span:hover {
+    cursor: pointer;
+}
+
+.sentences > span:first-of-type::before {
+    content: "";
+}
+
+.sentences > span::before {
+    content: "|";
+    color: var(--divider);
+    font-family: "Obviously Narrow";
 }
 
 .story>section>div {
@@ -402,6 +433,7 @@ aside li.active {
     color: var(--ia);
     cursor: pointer;
     font-style: italic;
+    margin-top: 5rem;
 }
 
 .child:hover {
@@ -462,16 +494,13 @@ aside li.active {
     text-transform: uppercase;
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
 
 .landing>h1 {
     font-family: "Obviously Wide Thin", "Arial Narrow", sans-serif;
     font-size: 10vw;
     padding-bottom: 5rem;
-}
-
-.landing>div {
-    margin: 0 auto;
 }
 
 .landing>div:nth-child(2) {
@@ -499,6 +528,35 @@ aside li.active {
     color: var(--bg);
     background-color: var(--fg);
     cusor: pointer;
+}
+
+.open-ai-key {
+    margin: 0 auto;
+    padding-top: 15rem;
+    display: flex;
+}
+
+.open-ai-key p, div {
+    font-size: 5rem;
+    padding-top: 2rem;
+}
+
+.open-ai-key-input {
+    text-align: center;
+    width: 105rem;
+    height: 10rem;
+    padding: 2rem;
+    margin: 0 5rem;
+}
+
+.open-ai-key-valid {
+    border-color: var(--ok);
+    border-width: 2px;
+}
+
+.open-ai-key-invalid {
+    border-color: var(--err);
+    border-width: 2px;
 }
 
 .circles {

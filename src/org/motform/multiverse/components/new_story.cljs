@@ -44,8 +44,8 @@
 (defn new-story []
   (let [{:keys [text author model] :as input} @(rf/subscribe [:new-story])]
     [:main
+     [prompt text]
      [:div.setup-meta
       [input-name author]
-      [select-model model]
-      [submit-btn input]]
-     [prompt text]]))
+      #_[select-model model]
+      [submit-btn input]]]))

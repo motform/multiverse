@@ -19,6 +19,6 @@
   (render))
 
 (defn ^:export mount []
-  (routes/app-routes)
   (rf/dispatch-sync [:initialize-db db/default-db])
+  (routes/app-routes)
   (render))

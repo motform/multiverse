@@ -36,6 +36,11 @@
  (fn [db _]
    (get-in db [:state :preview])))
 
+(reg-sub
+ :open-ai
+ (fn [db _]
+   (get-in db [:state :open-ai])))
+
 ;;; Library
 
 (reg-sub
