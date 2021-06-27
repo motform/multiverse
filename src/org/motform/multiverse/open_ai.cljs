@@ -23,7 +23,7 @@
 (defn- request [engine task params]
   {:url        (str "https://api.openai.com/v1/engines/" engine "/" task)
    :headers    {"content-type" "application/json"}
-   :basic-auth ["" api-key]
+   :basic-auth ["" #_api-key]
    :body       (merge param-defaults params)})
 
 (defn completion-with
