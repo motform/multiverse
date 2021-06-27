@@ -37,6 +37,7 @@
      [:p "OPEN-AI KEY"]
      [:textarea.open-ai-key-input
       {:value     api-key
+       :spellcheck false
        :class     (when (not (str/blank? api-key))
                     (if (and valid-format? validated?)
                       "open-ai-key-valid"
@@ -82,6 +83,7 @@
         children  @(rf/subscribe [:children parent])
         _ (when (and (not children) (not preview?) (not request?))
             (rf/dispatch [:open-ai/completions parent (util/format-story sentences)]))]
+    (println (not children) (not preview?) (not request?))
     [:section.story 
      [:div.sentences
       (for [{:keys [text id model]} sentences]
@@ -107,11 +109,11 @@
    name])
 
 (defn sidebar []
-  (let [{:keys [title model authors updated]} @(rf/subscribe [:meta])
+  (let [{:keys [title model id authors updated] :as k} @(rf/subscribe [:meta])
         ;; _ (rf/dispatch [:page-title-story title])
         ]
     [:aside
-     [:section.title>h1 (format-title title)]
+     [:section.title>h1 #_(format-title title) id]
      [:section.byline "By " (apply str (util/proper-separation authors))]
      [tree-map]
      #_[:section.model-sidebar

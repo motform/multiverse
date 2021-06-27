@@ -262,7 +262,9 @@
  :open-ai/handle-validate-api-key
  [spec-interceptor local-storage-interceptor]
  (fn [db _]
-   (assoc-in db [:state :open-ai :validated?] true))) ; failed requests go to :failure-http
+   (-> db
+       (assoc-in [:state :open-ai :validated?] true) ; failed requests go to :failure-http
+       (assoc-in [:state :pending-request?] false)))) 
 
 (reg-event-fx
  :open-ai/validate-api-key

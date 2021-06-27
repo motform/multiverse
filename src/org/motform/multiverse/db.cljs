@@ -60,7 +60,7 @@
            :highlight        nil
            :preview          nil
            :pending-request? false
-           :new-story       {:text "" :author "" :model "GPT-2"}
+           :new-story       {:text "" :author "" :model "GPT-3"}
            :sorting         {:order :updated :desc? false}
            :open-ai         {:api-key ""
                              :valid-format? false
