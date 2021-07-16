@@ -24,7 +24,7 @@ But inceptionism is not just a digital hallucination. It is a document of an era
    Due to licensing, this repo does not include the typefaces used in the original project. If you are so inclined, they might be found via the marvelous Future Fonts: [[https://www.futurefonts.xyz/ohno/obviously][Obviously]] and [[https://www.futurefonts.xyz/rohernandez/pigeonette][Pigeonette]].
 
 ** Research
-   This prototype was part of my [[literature/thesis.pdf][master thesis]] in interaction design at Malmö University. To cite it, use the following biblatex entry:
+   This prototype was part of my [[https://www.diva-portal.org/smash/record.jsf?pid=diva2:1481128][master thesis]] in interaction design at Malmö University. To cite it, use the following biblatex entry:
 
    #+BEGIN_SRC bibtex
    @masterthesis{lagerkvist2020multiverse,
@@ -35,7 +35,7 @@ But inceptionism is not just a digital hallucination. It is a document of an era
    }
    #+END_SRC 
 
-   That said, you probably don’t have time to read 60 debatable pages. Instead, you can read the paper I wrote about it with Maliheh Ghajargar!
+   That said, you probably don’t have time to read 60 pages. Instead, you can read the [[IoT '20 paper][https://dl.acm.org/doi/abs/10.1145/3423423.3423424]] I wrote about it with [[https://malihehghajargar.com][Maliheh Ghajargar]]:
 
    #+BEGIN_SRC bibtex
    @inproceedings{10.1145/3423423.3423424,
