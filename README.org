@@ -35,7 +35,7 @@ But inceptionism is not just a digital hallucination. It is a document of an era
    }
    #+END_SRC 
 
-   That said, you probably don’t have time to read 60 pages. Instead, you can read the [[IoT '20 paper][https://dl.acm.org/doi/abs/10.1145/3423423.3423424]] I wrote about it with [[https://malihehghajargar.com][Maliheh Ghajargar]]:
+That said, you probably don’t have time to read 60 pages. Instead, you can read the [[https://dl.acm.org/doi/abs/10.1145/3423423.3423424][IoT '20 paper]] I wrote about it with [[https://malihehghajargar.com][Maliheh Ghajargar]]:
 
    #+BEGIN_SRC bibtex
    @inproceedings{10.1145/3423423.3423424,
