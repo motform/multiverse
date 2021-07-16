@@ -15,14 +15,10 @@ But inceptionism is not just a digital hallucination. It is a document of an era
 ** Overview
    Multiverse affords cybertextual user-readers a dialog with text generating neural networks, together exploring literary space. It is very much influenced by this Jean-Pierre Balpe’s essay [[http://dichtung-digital.de/2005/1/Balpe/][Principles and Processes of Generative Literature]]. This exploration is bidirectional is nature, and is supported by an interactive spatial map, providing direct feedback and scrubbing of the currently explored literary space. 
 
-   It makes more sense when you try it out.
+   The current version uses GPT-3 to provide completions for an SPA front-end. If you don't have an API-key or prefer running the models locally, see commit 32b398118ccd8e0c6807a2723dad7c7b7c44d686 for the older client-server version.
 
 ** Usage
-   Three times the Clojure, three times the fun! 
-
-   Multiverse uses a simple client-server architecture, with a JVM Clojure back-end and a re-frame Clojurescript front-end. The machine learning parts are powered by the [[https://github.com/huggingface/transformers][HugginFace Transformers]], which we access through [[https://github.com/clj-python/libpython-clj][libpython-clj]]. Once the server is running on your localhost, you can set out to explore! 
-
-   ~libpython-clj~ requires you to have a python3 environment available, with the dependencies in ~requirements.txt~ installed (~$ pip install -r requirements.txt~). If you are just running the application, you first need to compile the ClojureScript with ~$ shadow-cljs compile app~, after which you can start the server with the alias ~$ clj -A:server~. If you want to hack away on the front-end, you should probably consult the [[https://shadow-cljs.github.io/docs/UsersGuide.html][shadow-cljs users guide.]]
+   To build the application, run ~$ make release~. The resulting bundle is found in ~resources/public/js/~ for hosting. Alternatively, you can run ~$ make dev~ to get the self-hosted development environment.
 
 ** Limitations
    Due to licensing, this repo does not include the typefaces used in the original project. If you are so inclined, they might be found via the marvelous Future Fonts: [[https://www.futurefonts.xyz/ohno/obviously][Obviously]] and [[https://www.futurefonts.xyz/rohernandez/pigeonette][Pigeonette]].
@@ -49,7 +45,7 @@ But inceptionism is not just a digital hallucination. It is a document of an era
      isbn      = {9781450388207},
      publisher = {Association for Computing Machinery},
      address   = {New York, NY, USA},
-     url       = {https://doi-org.proxy.mau.se/10.1145/3423423.3423424},
+     url       = {https://doi.org/10.1145/3423423.3423424},
      doi       = {10.1145/3423423.3423424},
      booktitle = {10th International Conference on the Internet of Things Companion},
      articleno = {1},
