@@ -432,11 +432,19 @@ aside li.active {
 .children {
     color: var(--ia);
     cursor: pointer;
-    font-style: italic;
     margin-top: 5rem;
 }
 
 .child:hover {
+    color: var(--fg);
+}
+
+.unvisited {
+    font-style: italic;
+}
+
+.visited {
+    font-style: regular;
     color: var(--fg);
 }
 
@@ -543,7 +551,7 @@ aside li.active {
 
 .open-ai-key-input {
     text-align: center;
-    width: 105rem;
+    width: 180rem;
     height: 10rem;
     padding: 2rem;
     margin: 0 5rem;

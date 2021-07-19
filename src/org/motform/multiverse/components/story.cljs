@@ -60,9 +60,12 @@
 
 ;;; Story
 
-(defn sentence [text id model class completion?]
+(defn sentence [text id model class completion? visited?]
   [(if completion? :div :span)
-   {:id id :class (str class " " (highlight? id))
+   {:id id
+    :class (str (when (= class "child") (if visited? "visited" "unvisited")) " "
+                class " "
+                (highlight? id))
     :on-click #(rf/dispatch [:active-sentence id])
     :on-mouse-over #(rf/dispatch [:highlight-sentence id])
     :on-mouse-out  #(rf/dispatch [:remove-highlight])}
@@ -91,8 +94,8 @@
      (if request?
        [:section.children [pending]]
        [:section.children
-        (for [{:keys [id text model]} children]
-          ^{:key id} [sentence text id model "child" true])])]))
+        (for [{:keys [id text model children]} children]
+          ^{:key id} [sentence text id model "child" true (seq children)])])]))
 
 ;;; Sidebar
 

@@ -20,7 +20,7 @@
    :temperature 0.7
    :n           3
    :top_p       1
-   :stop        ["." "!" "?"]})
+   :stop        ["." "!" "?" ".\""]})
 
 (defn- request [engine task params]
   {:uri    (str "https://api.openai.com/v1/engines/" engine "/" task)

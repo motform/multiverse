@@ -132,7 +132,7 @@
  (fn [db [_ api-key]]
    (-> db 
        (assoc-in [:state :open-ai :api-key] api-key)
-       (assoc-in [:state :open-ai :valid-format?] (= 43 (count api-key))))))
+       (assoc-in [:state :open-ai :valid-format?] (< 40 (count api-key))))))
 
 ;;; Prompt
 
