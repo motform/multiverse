@@ -166,8 +166,7 @@
      {:db (-> db
               (assoc-in [:stories story-id] (->story story-id sentence-id input))
               (assoc-in [:state :active-story] story-id))
-      ;; :dispatch [:open-ai/completions sentence-id input] ; TODO request title
-      })))
+      :dispatch [:open-ai/title]})))
 
 (reg-event-db
  :prompt
@@ -218,45 +217,15 @@
               (update-in [:stories story :sentences] merge children)
               (assoc-in  [:stories story :sentences parent :children] child-ids)
               (assoc-in  [:stories story :meta :updated] (js/Date.))
-              (assoc-in  [:state :pending-request?] false))
-      ;; :dispatch [:request-title]
-      })))
+              (assoc-in  [:state :pending-request?] false))})))
 
 (reg-event-db
  :handle-title
  [spec-interceptor local-storage-interceptor]
- (fn [db [_ title]]
-   (let [story (get-in db [:state :active-story])]
-     (assoc-in db [:stories story :meta :title] title))))
+ (fn [db [_ story-id title]]
+   (-> db
+       (assoc-in [:stories story-id :meta :title] (-> title :choices first :text)))))
 
-(reg-event-fx
- :request-children
- (fn [{:keys [db]} [_ parent prompt]]
-   (let [story (get-in db [:state :active-story])
-         model (get-in db [:stories story :meta :model])]
-     {:db (assoc-in db [:state :pending-request?] true)
-      :http-xhrio {:method :post
-                   :uri (->uri "generate/sentences")
-                   :timeout 800000
-                   :body (util/->transit+json {:prompt prompt :model model})
-                   :format (ajax/transit-request-format)
-                   :response-format (ajax/transit-response-format {:keywords? true})
-                   :on-success [:handle-children story parent model]
-                   :on-failure [:failure-http]}})))
-
-(reg-event-fx
- :request-title
- (fn [{:keys [db]} _]
-   (let [story (get-in db [:state :active-story])
-         sentences (->> (get-in db [:stories story :sentences]) vals util/format-story)]
-     {:http-xhrio {:method :post
-                   :uri (->uri "generate/title")
-                   :timeout 800000
-                   :body (util/->transit+json sentences)
-                   :format (ajax/transit-request-format)
-                   :response-format (ajax/transit-response-format {:keywords? true})
-                   :on-success [:handle-title]
-                   :on-failure [:failure-http]}})))
 
 (reg-event-db
  :open-ai/handle-validate-api-key
@@ -271,12 +240,12 @@
  (fn [{:keys [db]} _]
    (let [api-key (get-in db [:state :open-ai :api-key])]
      {:db (assoc-in db [:state :pending-request?] true)
-      :http-xhrio {:method  :get
-                   :uri     "https://api.openai.com/v1/engines"
-                   :headers {"Authorization" (str "Bearer " api-key)}
+      :http-xhrio {:method          :get
+                   :uri             "https://api.openai.com/v1/engines"
+                   :headers         {"Authorization" (str "Bearer " api-key)}
                    :response-format (ajax/json-response-format {:keywords? true})
-                   :on-success [:open-ai/handle-validate-api-key]
-                   :on-failure [:failure-http]}})))
+                   :on-success      [:open-ai/handle-validate-api-key]
+                   :on-failure      [:failure-http]}})))
 
 (reg-event-fx
  :open-ai/completions
@@ -295,6 +264,24 @@
                    :on-success [:handle-children story-id parent-id "GPT-3"] ; TODO
                    :on-failure [:failure-http]}})))
 
+(reg-event-fx
+ :open-ai/title
+ (fn [{:keys [db]} _]
+   (let [api-key  (get-in db [:state :open-ai :api-key])
+         story-id (get-in db [:state :active-story])
+         sentences (->> (get-in db [:stories story-id :sentences]) vals util/format-story)
+         {:keys [uri params]} (open-ai/completion-with :davinci
+                                {:prompt (open-ai/->title-template sentences)
+                                 :n           1
+                                 :max_tokens  6})]
+     {:http-xhrio {:method          :post
+                   :uri             uri 
+                   :headers         {"Authorization" (str "Bearer " api-key)}
+                   :params          params
+                   :format          (ajax/json-request-format)
+                   :response-format (ajax/json-response-format {:keywords? true})
+                   :on-success      [:handle-title story-id]
+                   :on-failure      [:failure-http]}})))
 
 (reg-event-db
  :failure-http
@@ -302,3 +289,4 @@
    (-> db
        (assoc-in [:state :failure-http]     result)
        #_(assoc-in [:state :pending-request?] false))))
+

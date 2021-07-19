@@ -319,6 +319,34 @@ aside li.active {
     background: var(--ia);
 }
 
+.title {
+    display: flex;
+    margin-bottom: 4rem;
+}
+
+.update-title {
+    text-transform: uppercase;
+    padding: 1rem;
+    background: var(--bg);
+    border: 0;
+    color: var(--ia);
+    font-family: "Obviously";
+    font-weight: 600;
+    font-size: 3rem;
+}
+
+.update-title-container {
+    padding-bottom: 5px;
+    margin-left: -25px;
+    margin-top: auto;
+}
+
+.update-title:hover {
+    color: var(--fg);
+    border-color: var(--fg);
+    cursor: pointer;
+}
+
 .byline {
     text-transform: capitalize;
 }
@@ -328,6 +356,7 @@ aside li.active {
 
 .map>nav {
     margin-left: -2rem;
+    margin-bottom: 4rem;
 }
 
 .level {

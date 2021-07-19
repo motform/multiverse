@@ -20,7 +20,7 @@
    :temperature 0.7
    :n           3
    :top_p       1
-   :stop        ["." "!" "?" ".\""]})
+   :stop        [".\"" "." "!" "?"]})
 
 (defn- request [engine task params]
   {:uri    (str "https://api.openai.com/v1/engines/" engine "/" task)
@@ -33,12 +33,5 @@
          (set/subset? (set (keys params)) valid-params)]}
   (request (name engine) "completions" params))
 
-(completion-with :davinci
-  {:prompt "foo bar baz"})
-
 (defn ->title-template [story]
-  (str "Make a title for the following text:\n\"\"\"\n"
-       story
-       "\n\"\"\"\n"
-       "The title of this piece is:"
-       "\"\"\""))
+  (str "Summarize:\n" story "\n"))

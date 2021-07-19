@@ -32,7 +32,7 @@
                      "so" "at" "around" "by" "of" "from" "on"
                      "with" "to" "without" "after" "and" "how"}]
     (as-> title <>
-      (str/replace <> #"\'|\"|“" "")
+      (str/trim <>)
       (str/split <> #" ")
       (mapv #(if-not (stop-words %) (str/capitalize %) %) <>)
       (update <> 0 str/capitalize) ; always capitalize the leading word

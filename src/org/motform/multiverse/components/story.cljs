@@ -86,7 +86,6 @@
         children  @(rf/subscribe [:children parent])
         _ (when (and (not children) (not preview?) (not request?))
             (rf/dispatch [:open-ai/completions parent (util/format-story sentences)]))]
-    (println (not children) (not preview?) (not request?))
     [:section.story 
      [:div.sentences
       (for [{:keys [text id model]} sentences]
@@ -101,9 +100,8 @@
 
 (defn format-title [title]
   (if-not (str/blank? title)
-    (-> title (str/replace #"[',\"\.\!]" "") util/title-case)
-    "TODO"
-    #_[:img.scribble {:src "assets/scribble-title.gif" :alt "Generating title…"}]))
+    (util/title-case title)
+    [:img.scribble {:src "assets/scribble-title.gif" :alt "Generating title…"}]))
 
 (defn li-model [name active-model]
   [:li
@@ -116,8 +114,12 @@
         ;; _ (rf/dispatch [:page-title-story title])
         ]
     [:aside
-     [:section.title>h1 #_(format-title title) id]
-     [:section.byline "By " (apply str (util/proper-separation authors))]
+     [:section.title
+      [:div.update-title-container>button.update-title
+       {:on-click #(rf/dispatch [:open-ai/title nil])}
+       "↻"]
+      [:h1 (format-title title)]]
+     #_[:section.byline "By " (apply str (util/proper-separation authors))]
      [tree-map]
      #_[:section.model-sidebar
         ;; [:label "Model"]
