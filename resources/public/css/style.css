@@ -342,15 +342,20 @@ aside li.active {
 }
 
 .branch-inactive {
-    background-color: var(--ia);
+    border: 1px solid var(--fg);
 }
 
 .leaf-active {
-    border: 2px solid var(--fg);
+    background-color: var(--ia);
+}
+
+.leaf-active:hover {
+    background-color: var(--ia);
 }
 
 .leaf-inactive {
     border: 1px solid var(--ia);
+    display: none;
 }
 
 .meta {
@@ -544,7 +549,7 @@ aside li.active {
     display: flex;
 }
 
-.open-ai-key p, div {
+.open-ai-key p, .open-ai-key div {
     font-size: 5rem;
     padding-top: 2rem;
 }
@@ -600,7 +605,7 @@ aside li.active {
     flex-direction: column;
     align-content: space-between;
     align-items: left;
-    font-size: 3rem;
+    font-size: 2rem;
     padding: 5rem;
     margin-bottom: 5rem;
     max-height: 300px;
