@@ -1,6 +1,5 @@
 (ns org.motform.multiverse.events
   (:require [ajax.core :as ajax]
-            [clojure.spec.alpha :as s]
             [nano-id.core :refer [nano-id]]
             [re-frame.core :as rf :refer [reg-event-db reg-event-fx reg-fx inject-cofx after]]
             [org.motform.multiverse.db :as db]
@@ -118,15 +117,6 @@
          (assoc-in [:state :preview] nil)))))
 
 (reg-event-db
- :change-model
- [spec-interceptor]
- (fn [db [_ model]]
-   (let [story (get-in db [:state :active-story])]
-     (-> db
-         (update-in [:stories story :meta :authors] conj model)
-         (assoc-in [:stories story :meta :model] model)))))
-
-(reg-event-db
  :open-ai/update-api-key
  [spec-interceptor]
  (fn [db [_ api-key]]
@@ -136,17 +126,16 @@
 
 ;;; Prompt
 
-(defn ->sentence [id text path children model]
-  {:id id :text text :path path :children children :model model})
+(defn ->sentence [id text path children]
+  {:id id :text text :path path :children children})
 
-(defn ->story [story-id sentence-id {:keys [text author model]}]
+(defn ->story [story-id sentence-id {:keys [text author]}]
   {:meta {:id      story-id
-          :authors #{author model}
+          :authors author
           :title   ""
-          :model   "GPT-3"
           :updated (js/Date.)
           :active-sentence sentence-id}
-   :sentences {sentence-id (->sentence sentence-id text [sentence-id] [] model)}})
+   :sentences {sentence-id (->sentence sentence-id text [sentence-id] [])}})
 
 (reg-event-fx
  :submit-new-story
@@ -177,7 +166,7 @@
  :dissoc-story
  [spec-interceptor local-storage-interceptor]
  (fn [db [_ id]]
-   (update-in db [:stories] dissoc id)))
+   (update db :stories dissoc id)))
 
 ;;; Library
 
@@ -197,10 +186,10 @@
 
 (defn ->children
   "Make children map to be merged into sentences."
-  [parent-path child-ids texts model]
+  [parent-path child-ids texts]
   (let [child-pairs (util/pairs child-ids texts)]
     (reduce (fn [children [id text]]
-              (assoc children id (->sentence id text (conj parent-path id) [] model)))
+              (assoc children id (->sentence id text (conj parent-path id) [])))
             {} child-pairs)))
 
 (defn- open-ai-texts [completions]
@@ -209,10 +198,10 @@
 (reg-event-fx
  :handle-children
  [spec-interceptor local-storage-interceptor]
- (fn [{:keys [db]} [_ story parent model completions]]
+ (fn [{:keys [db]} [_ story parent completions]]
    (let [parent-path (get-in db [:stories story :sentences parent :path])
          child-ids (repeatedly 3 #(nano-id 10))
-         children (->children parent-path child-ids (open-ai-texts completions) model)]
+         children (->children parent-path child-ids (open-ai-texts completions))]
      {:db (-> db
               (update-in [:stories story :sentences] merge children)
               (assoc-in  [:stories story :sentences parent :children] child-ids)
@@ -261,7 +250,7 @@
                    :params  params
                    :format  (ajax/json-request-format)
                    :response-format (ajax/json-response-format {:keywords? true})
-                   :on-success [:handle-children story-id parent-id "GPT-3"] ; TODO
+                   :on-success [:handle-children story-id parent-id] ; TODO
                    :on-failure [:failure-http]}})))
 
 (reg-event-fx

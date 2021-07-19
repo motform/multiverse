@@ -4,14 +4,15 @@
             [pushy.core :as pushy]))
 
 (def titles
-  {:about "About"
+  {:about     "About"
    :new-story "New story"
-   :library "Library"})
+   :library   "Library"})
 
-(def routes ["/" {"" :story
+(def routes ["/" {""          :story
                   "new-story" :new-story
-                  "library" :library
-                  "about" :about}])
+                  "library"   :library
+                  "about"     :about}])
+
 
 (defn- parse-url [url]
   (bidi/match-route routes url))

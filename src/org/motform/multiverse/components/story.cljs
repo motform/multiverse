@@ -37,7 +37,7 @@
      [:p "OPEN-AI KEY"]
      [:textarea.open-ai-key-input
       {:value     api-key
-       :spellcheck false
+       :spellCheck false
        :class     (when (not (str/blank? api-key))
                     (if (and valid-format? validated?)
                       "open-ai-key-valid"
@@ -60,7 +60,7 @@
 
 ;;; Story
 
-(defn sentence [text id model class completion? visited?]
+(defn sentence [text id class completion? visited?]
   [(if completion? :div :span)
    {:id id
     :class (str (when (= class "child") (if visited? "visited" "unvisited")) " "
@@ -69,7 +69,6 @@
     :on-click #(rf/dispatch [:active-sentence id])
     :on-mouse-over #(rf/dispatch [:highlight-sentence id])
     :on-mouse-out  #(rf/dispatch [:remove-highlight])}
-   #_[:span.sentence-model (if (= "Reformer" model) "RFMR" model)] ;; HACK
    (if (str/blank? text) "..." text)])
 
 (defn pending []
@@ -88,13 +87,13 @@
             (rf/dispatch [:open-ai/completions parent (util/format-story sentences)]))]
     [:section.story 
      [:div.sentences
-      (for [{:keys [text id model]} sentences]
-        ^{:key id} [sentence text id model "parent"])]
+      (for [{:keys [text id]} sentences]
+        ^{:key id} [sentence text id "parent"])]
      (if request?
        [:section.children [pending]]
        [:section.children
-        (for [{:keys [id text model children]} children]
-          ^{:key id} [sentence text id model "child" true (seq children)])])]))
+        (for [{:keys [id text children]} children]
+          ^{:key id} [sentence text id "child" true (seq children)])])]))
 
 ;;; Sidebar
 
@@ -103,30 +102,15 @@
     (util/title-case title)
     [:img.scribble {:src "assets/scribble-title.gif" :alt "Generating title…"}]))
 
-(defn li-model [name active-model]
-  [:li
-   {:class (if (= name active-model) "active" "inactive")
-    :on-click #(rf/dispatch [:change-model name])}
-   name])
-
 (defn sidebar []
-  (let [{:keys [title model id authors updated] :as k} @(rf/subscribe [:meta])
-        ;; _ (rf/dispatch [:page-title-story title])
-        ]
+  (let [{:keys [title updated]} @(rf/subscribe [:meta])]
     [:aside
      [:section.title
       [:div.update-title-container>button.update-title
        {:on-click #(rf/dispatch [:open-ai/title nil])}
        "↻"]
       [:h1 (format-title title)]]
-     #_[:section.byline "By " (apply str (util/proper-separation authors))]
      [tree-map]
-     #_[:section.model-sidebar
-        ;; [:label "Model"]
-        [:ul
-         [li-model "GPT-2"  model]
-         [li-model "Reformer"   model]
-         [li-model "XLNet"  model]]]
      [:section.meta "Last Exploration " (util/format-date updated)]]))
 
 ;;; Main

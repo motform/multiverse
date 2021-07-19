@@ -41,12 +41,18 @@
  (fn [db _]
    (get-in db [:state :open-ai])))
 
+
 ;;; Library
 
 (reg-sub
  :stories
  (fn [db _]
    (vals (:stories db))))
+
+(reg-sub
+ :author
+ (fn [db _]
+   (->> db :stories vals (map (comp :authors :meta)) first)))
 
 ;;; Story
 
