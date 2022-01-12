@@ -1,25 +1,94 @@
-/* The main css file for Multiverse, makes heavy use of css variables
+/* 
    Current a bit of a messy mix between classing and classless. 
    No real utility classes to speak of.
    Could probably do with a bit of a go-over, if you so wish.
 */
 
-
 /* Variables */
 
 :root {
-    --bg: whitesmoke;
+    --bg-base: #fff;
+    --bg0: linear-gradient(
+        180deg,
+        hsl(0deg 0% 100%) 0%,
+        hsl(300deg 100% 100%) 5%,
+        hsl(300deg 100% 100%) 10%,
+        hsl(300deg 100% 100%) 15%,
+        hsl(300deg 100% 100%) 21%,
+        hsl(0deg 0% 100%) 28%,
+        hsl(344deg 0% 99%) 36%,
+        hsl(344deg 0% 98%) 46%,
+        hsl(344deg 0% 97%) 58%,
+        hsl(344deg 0% 96%) 75%,
+        hsl(0deg 0% 95%) 100%
+    );
+    --bg1: linear-gradient(
+        300deg,
+        hsl(0deg 0% 96%) 0%,
+        hsl(344deg 0% 96%) 5%,
+        hsl(344deg 0% 96%) 10%,
+        hsl(344deg 0% 96%) 15%,
+        hsl(344deg 0% 96%) 21%,
+        hsl(0deg 0% 96%) 28%,
+        hsl(344deg 0% 96%) 36%,
+        hsl(344deg 0% 96%) 46%,
+        hsl(344deg 0% 97%) 58%,
+        hsl(344deg 0% 97%) 75%,
+        hsl(0deg 0% 97%) 100%);
+    --bg2: #eee;
+    --bg3: #ccc;
+    --bg4: #bbb;
+    --bg5: #aaa;
+    --bg6: #999;
+    --bg7: #888;
+    --bg9: #777;
+    --bg10: #666;
+    --bg11: #555;
+    --bg12: #444;
+    --bg13: #333;
+    --bg14: #222;
+    --bg14: #111;
     --fg: black;
     --ia: gray;
     --ok: green;
     --err: red;
     --divider: #dbdbdb;
+
+    --space-full: 40px;
+    --space-double: calc(var(--space-full) * 2);
+    --space-half: calc(var(--space-full) / 2);
+    --space-quarter: calc(var(--space-full) / 4);
+    --space-eight: calc(var(--space-full) / 8);
 }
 
 @media (prefers-color-scheme: dark) {
     :root {
-	--bg: #1e1e1e;
-	--fg: whitesmoke;
+        --bg-base: #000;
+	--bg0: linear-gradient(
+            180deg,
+            hsl(0deg 0% 0%) 0%,
+            hsl(344deg 0% 1%) 8%,
+            hsl(344deg 0% 2%) 15%,
+            hsl(344deg 0% 3%) 23%,
+            hsl(344deg 0% 4%) 31%,
+            hsl(344deg 0% 5%) 38%,
+            hsl(344deg 0% 6%) 46%,
+            hsl(344deg 0% 7%) 54%,
+            hsl(344deg 0% 8%) 62%,
+            hsl(344deg 0% 9%) 69%,
+            hsl(344deg 0% 10%) 77%,
+            hsl(344deg 0% 11%) 85%,
+            hsl(344deg 0% 12%) 92%,
+            hsl(0deg 0% 13%) 100%
+        );
+	--bg1: #111;
+	--bg2: #222;
+	--bg3: #333;
+	--bg4: #444;
+	--bg5: #555;
+	--bg6: #666;
+	--fg: #fff;
+	--border: #444;
 	--ia: gray;
         --ok: green;
         --err: red;
@@ -35,42 +104,40 @@
     background: var(--ia);
 }
 
-* {
+*, *::before, *::after  {
     box-sizing: border-box;
+}
+
+input, button, textarea, select {
+    font: inherit;
 }
 
 html,
 body {
-    height: 100%;
+    height: 110%;
     margin: 0;
+    overflow: hidden;
 }
 
 html {
+    background-color: var(--bg-base);
     font-size: 5px;
-    font-family: "Obviously", sans-serif;
-    font-weight: normal;
-    color: var(--fg);
     -webkit-font-smoothing: antialiased;
 }
 
 body {
-    background-color: var(--bg);
-    font-size: 4rem;
-    line-height: 1.2;
-    margin: 0 auto;
-    text-align: left;
+    background: var(--bg0);
+    color: var(--fg);
+    font: 400 15px/1.4 "Recursive", sans-serif;
 }
 
 p {
     white-space: pre;
 }
 
-p a {
+a {
     color: var(--fg);
-}
-
-div a {
-    color: var(--fg);
+    text-decoration: none;
 }
 
 a:hover {
@@ -78,54 +145,115 @@ a:hover {
     color: var(--fg);
 }
 
+p a {
+    color: var(--fg);
+    text-decoration: none;
+    padding-bottom: 1px;
+    border: 1px solid var(--bg5);
+    border-width: 0 0 1px 0;
+}
+
+p a:hover {
+    border-color: var(--fg)
+}
+
 #mount {
     display: flex;
-    flex-flow: column;
-    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 main {
     width: 100%;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: auto;
     padding: 10rem;
-    margin: 0 auto;
-    justify-items: center;
-    display: flex;
-    flex-direction: column;
+
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: auto;
     grid-column-gap: 10rem;
-    justify-items: stretch;
 }
 
+/* input elements */
 
-/* header */
+.offset-label {
+    margin-left: 7px;
+}
 
-header {
-    flex-grow: 0;
-    flex-shrink: 1;
-    flex-basis: auto;
-    font-weight: bold;
-    display: flex;
-    align-content: space-between;
-    align-items: center;
-    padding: 7rem 4rem 5rem 4rem;
-    margin: 0 6rem 0 6rem;
-    border: 1px solid var(--ia);
-    border-width: 0 0 2px 0;
-    font-size: 3rem;
-    color: var(--ia);
+button {
+    font-family: "Obviously", sans-serif;
     text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 3rem;
+    color: var(--fg);
+    background-color: var(--bg2);
+    width: auto;
+    padding: 2rem;
+    border: 1px solid var(--bg3);
+    cursor: pointer;
 }
 
-header>a {
-    color: var(--ia);
-    text-decoration: none;
-    padding-left: 5rem;
+button:hover {
+    background-color: var(--bg3);
 }
+
+button:disabled {
+    color: var(--ia);
+    cursor: not-allowed;
+}
+
+.textarea-small {
+    height: 50px;
+    padding: 3rem;
+    font-size: 16px;
+    background-color: var(--bg2);
+    border: 1px solid var(--bg3);
+}
+
+/* utility classes */
+
+.mono {
+    font-variation-settings: "MONO" 1;
+    font-family: "Recursive", monospace;
+}
+
+.v-stack {
+    display: flex;
+    flex-direction: column;
+}
+
+.h-equal-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.h-stack {
+    display: flex;
+    flex-direction: row;
+}
+
+.gap-eight   { gap: var(--space-eight); }
+.gap-quarter { gap: var(--space-quarter); }
+.gap-half    { gap: var(--space-half); }
+.gap-full    { gap: var(--space-full); }
+.gap-double  { gap: var(--space-double); }
+
+.rounded-large { border-radius: 20px; }
+.rounded       { border-radius: 10px; }
+
+.shadow-large {
+    box-shadow: 1px 1px 1.9px rgba(0, 0, 0, 0.019), 2.6px 2.6px 4.8px rgba(0, 0, 0, 0.027), 5.3px 5.3px 9.7px rgba(0, 0, 0, 0.033), 11px 11px 20.1px rgba(0, 0, 0, 0.041), 30px 30px 55px rgba(0, 0, 0, 0.06);
+}
+
+.shadow-medium {
+    box-shadow: 1.4px 1.4px 3.2px rgba(0, 0, 0, 0.008), 3.3px 3.3px 7.7px rgba(0, 0, 0, 0.012), 6.3px 6.3px 14.1px rgba(0, 0, 0, 0.015), 11.2px 11.2px 23.9px rgba(0, 0, 0, 0.018), 20.9px 20.9px 40px rgba(0, 0, 0, 0.022), 50px 50px 80px rgba(0, 0, 0, 0.03);
+}
+
+.shadow-small {
+    box-shadow: 0.5px 0.5px 4.1px rgba(0, 0, 0, 0.01), 1.3px 1.3px 10.4px rgba(0, 0, 0, 0.015), 3px 3px 25px rgba(0, 0, 0, 0.02), 10px 10px 80px rgba(0, 0, 0, 0.03);
+}
+
+/* sidebar */
 
 header :first-child {
     padding-left: 0rem;
@@ -133,14 +261,12 @@ header :first-child {
     margin-right: auto;
 }
 
-
 /* new-story */
 
 textarea {
     resize: none;
-    background-color: var(--bg);
-    border: 1px solid var(--fg);
-    font-family: "Pigeonette", "Courier", monospace;
+    background-color: var(--bg1);
+    border: 1px solid var(--border);
     font-size: 4rem;
     color: var(--fg);
     padding: 5rem;
@@ -148,7 +274,7 @@ textarea {
 }
 
 .submit-btn {
-    background-color: var(--bg);
+    background-color: var(--bg1);
     border: 1px solid var(--fg);
     padding: 3rem;
     cursor: pointer;
@@ -163,7 +289,7 @@ textarea {
 
 .submit-btn:hover {
     background-color: var(--fg);
-    color: var(--bg);
+    color: var(--bg1);
 }
 
 .btn-inactive {
@@ -174,7 +300,7 @@ textarea {
 .btn-inactive:hover {
     color: var(--ia);
     border-color: var(--ia);
-    background-color: var(--bg);
+    background-color: var(--bg1);
 }
 
 .prompt {
@@ -190,8 +316,8 @@ textarea {
 label {
     text-transform: uppercase;
     color: var(--ia);
-    font-size: 3rem;
-    margin-bottom: 5rem;
+    font: 12px/14px "Obviously", sans-serif;
+    letter-spacing: 0.5px;
 }
 
 .setup-meta {
@@ -232,7 +358,7 @@ label {
 
 .model>ul>li:hover {
     background-color: var(--fg);
-    color: var(--bg);
+    color: var(--bg1);
 }
 
 .model>ul>li:last-child {
@@ -241,7 +367,7 @@ label {
 
 .model-active {
     background-color: var(--fg);
-    color: var(--bg);
+    color: var(--bg1);
 }
 
 .model>ul>li>div {
@@ -310,12 +436,12 @@ aside li:last-child {
 aside li:hover {
     background-color: var(--ia);
     border-color: var(--ia);
-    color: var(--bg);
+    color: var(--bg1);
     cursor: pointer;
 }
 
 aside li.active {
-    color: var(--bg);
+    color: var(--bg1);
     background: var(--ia);
 }
 
@@ -327,7 +453,7 @@ aside li.active {
 .update-title {
     text-transform: uppercase;
     padding: 1rem;
-    background: var(--bg);
+    background: var(--bg1);
     border: 0;
     color: var(--ia);
     font-family: "Obviously";
@@ -498,122 +624,75 @@ aside li.active {
     cursor: pointer;
 }
 
-
-/* about */
-
-.about {
-    grid-column: span 1;
-}
-
-.about>div {
-    margin-bottom: 5rem;
-    font-size: 4rem;
-    line-height: 5rem;
-}
-
-
 /* landing */
 
-.landing-wrapper {
-    width: 100%;
-    flex-grow: 1;
-    flex-shrink: 1;
-    flex-basis: auto;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto;
-    grid-column-gap: 10rem;
-    justify-items: stretch;
-    margin-top: 5rem;
-    background-size: 900px auto;
-}
-
 .landing {
-    grid-column: span 3;
-    font-size: 5rem;
-    text-align: center;
-    text-transform: uppercase;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    align-items: center;
+    z-index: 2;
 }
 
-.landing>h1 {
+
+.landing-nameplate {
     font-family: "Obviously Wide Thin", "Arial Narrow", sans-serif;
     font-size: 10vw;
-    padding-bottom: 5rem;
 }
 
-.landing>div:nth-child(2) {
-    font-size: 2.1vw;
-}
-
-.landing>div:nth-child(3) {
-    font-size: 2.1vw;
-    margin-bottom: auto;
-}
-
-.landing>div:last-child {
-    font-size: 8rem;
-    max-width: 800px;
-    padding-bottom: 10rem;
-}
-
-.landing a {
-    text-decoration: none;
-    border: 1px solid var(--fg);
-    padding: 0 2rem 1rem 2rem;
-}
-
-.landing a:hover {
-    color: var(--bg);
-    background-color: var(--fg);
-    cusor: pointer;
-}
-
-.open-ai-key {
-    margin: 0 auto;
-    padding-top: 15rem;
-    display: flex;
-}
-
-.open-ai-key p, .open-ai-key div {
-    font-size: 5rem;
-    padding-top: 2rem;
-}
-
-.open-ai-key-input {
+.landing-subtitle {
+    text-transform: uppercase;
+    font-size: 2.14vw;
+    font: 500 2.14vw/1 "Obviously", sans-serif;
     text-align: center;
-    width: 180rem;
-    height: 10rem;
-    padding: 2rem;
-    margin: 0 5rem;
 }
 
-.open-ai-key-valid {
+.landing-container {
+    padding: 20px;
+}
+
+.landing-blurb {
+    margin-top: 15px;
+    max-width: 600px;
+    font-size: 20px;
+}
+
+.landing-blurb > p {
+    white-space: normal;
+}
+
+
+/* key input */
+
+.key-input-container {
+    background: var(--bg1);
+    padding: var(--space-full);
+    min-width: 400px;
+    max-width: 600px;
+    border: 1px solid var(--bg2);
+    hyphens: auto;
+}
+
+.key-input {
+}
+
+.key-valid {
     border-color: var(--ok);
-    border-width: 2px;
 }
 
-.open-ai-key-invalid {
+.key-invalid {
     border-color: var(--err);
-    border-width: 2px;
+}
+
+.circles-container {
+    margin-top: 57vh;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    z-index: 1;
 }
 
 .circles {
-    margin: 5rem 0 5rem 0;
+    height: 100%;
+    width: 100%;
 }
-
-.circle {
-    transition: 0.3s;
-}
-
-.circle.filled:hover {
-    fill: var(--fg);
-    stroke: var(--fg);
-}
-
 
 /* library */
 
@@ -650,7 +729,7 @@ aside li.active {
 }
 
 .library-item:hover {
-    color: var(--bg);
+    color: var(--bg1);
     background-color: var(--fg);
     cursor: pointer;
 }
@@ -702,7 +781,7 @@ aside li.active {
     font-family: "Obviously", sans-serif;
     font-size: 3rem;
     text-transform: uppercase;
-    background-color: var(--bg);
+    background-color: var(--bg1);
     color: var(--ia);
     margin: 0 auto 0 2rem;
     border: 0px solid var(--fg);
@@ -730,7 +809,7 @@ aside li.active {
 
 .toggles>span:hover {
     cursor: pointer;
-    color: var(--bg);
+    color: var(--bg1);
     border-color: var(--fg);
     background-color: var(--fg);
 }

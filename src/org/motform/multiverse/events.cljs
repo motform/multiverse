@@ -7,17 +7,11 @@
             [org.motform.multiverse.routes :as routes]
             [org.motform.multiverse.util :as util]))
 
-;;; Helpers
-
-(defn ->uri [route]
-  (let [host (.. js/window -location -host)]
-    (str "http://" host "/" route)))
-
 ;;; Interceptors
+;; TODO add global interceptors
 
 (defn- check-and-throw
   "Throws an exception if `db` doesn't match the Spec `a-spec`.
-
   SOURCE: re-frame docs."
   [a-spec db]
   #_(when-not (s/valid? a-spec db)
@@ -116,13 +110,12 @@
          (assoc-in [:stories story :meta :active-sentence] real-active-sentence)
          (assoc-in [:state :preview] nil)))))
 
+;; TODO add this into localstorage
 (reg-event-db
  :open-ai/update-api-key
  [spec-interceptor]
  (fn [db [_ api-key]]
-   (-> db 
-       (assoc-in [:state :open-ai :api-key] api-key)
-       (assoc-in [:state :open-ai :valid-format?] (< 40 (count api-key))))))
+   (assoc-in db [:state :open-ai :api-key] api-key)))
 
 ;;; Prompt
 
@@ -181,6 +174,14 @@
  [spec-interceptor]
  (fn [db [_ sorting]]
    (assoc-in db [:state :sorting] sorting)))
+
+;;; Landing
+
+(reg-event-db
+ :name
+ [spec-interceptor local-storage-interceptor]
+ (fn [db [_ name]]
+   (assoc-in db [:state :name] name)))
 
 ;;; Story
 

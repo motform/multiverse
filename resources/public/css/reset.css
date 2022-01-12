@@ -35,3 +35,8 @@ q:before, q:after {
 blockquote, q {
     quotes: "" "";
 }
+button {
+    background-color: none;
+    background: none;
+    border: none;
+}

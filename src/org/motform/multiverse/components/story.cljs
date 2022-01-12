@@ -2,7 +2,7 @@
   (:require [clojure.string :as str]
             [re-frame.core :as rf]                       
             [org.motform.multiverse.components.map :refer [tree-map]]
-            [org.motform.multiverse.routes :as routes]
+            [org.motform.multiverse.components.landing :refer [landing]]
             [org.motform.multiverse.util :as util]))
 
 ;;; Util
@@ -14,50 +14,6 @@
         "inactive"))))
 
 ;;; Landing
-
-(defn circle [r cx cy]
-  (let [filled? (when (< 2 (rand-int 5)) {:fill "gray" :class "filled"})]
-    (when (< 1 (rand-int 5))
-      [:circle.circle
-       (merge {:r r :cx cx :cy cy :stroke "gray" :stroke-width "1" :fill "none"}
-              filled?)])))
-
-(defn circles []
-  (let [wh (quot (. js/window -innerHeight) 2.7) ; arbitrary
-        ww (. js/window -innerWidth)
-        r  (dec (quot wh 6))] ; dec to properly fit three circles with gaps
-    [:svg.circles {:style {:height wh :width ww}}
-     (for [cy (range (inc r) (inc wh) (+ 2 (* r 2)))  ; three rows
-           cx (range 0       (inc ww) (+ 2 (* r 2)))] ; fills the rest
-       ^{:key (str cx cy)} [circle r cx cy])]))
-
-(defn open-ai-key-input []
-  (let [{:keys [api-key valid-format? validated?]} @(rf/subscribe [:open-ai])]
-    [:div.open-ai-key
-     [:p "OPEN-AI KEY"]
-     [:textarea.open-ai-key-input
-      {:value     api-key
-       :spellCheck false
-       :class     (when (not (str/blank? api-key))
-                    (if (and valid-format? validated?)
-                      "open-ai-key-valid"
-                      "open-ai-key-invalid"))
-       :on-change #(rf/dispatch [:open-ai/update-api-key (.. % -target -value)])}]
-     [:div {:style {:cursor "pointer"}
-            :on-click #(rf/dispatch [:open-ai/validate-api-key])}
-      "→"]]))
-
-(defn landing []
-  [:div.intro-wrapper>section.landing
-   [:h1 "MULTIVERSE"]
-   [:div "Cybertextual generative literature through machine learning"]
-   [circles]
-   [:div "Start a "
-    [:a {:href (routes/url-for :new-story)} "new story"]
-    " or keep reading one in the "
-    [:a {:href (routes/url-for :library)} "library"]]
-   [open-ai-key-input]])
-
 ;;; Story
 
 (defn sentence [text id class completion? visited?]
@@ -66,7 +22,7 @@
     :class (str (when (= class "child") (if visited? "visited" "unvisited")) " "
                 class " "
                 (highlight? id))
-    :on-click #(rf/dispatch [:active-sentence id])
+    :on-click      #(rf/dispatch [:active-sentence id])
     :on-mouse-over #(rf/dispatch [:highlight-sentence id])
     :on-mouse-out  #(rf/dispatch [:remove-highlight])}
    (if (str/blank? text) "..." text)])
