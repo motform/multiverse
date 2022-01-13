@@ -34,7 +34,7 @@
 (reg-event-fx
  :active-page
  [spec-interceptor]
- (fn [{:keys [db]} [_ page]]
+ (fn [{:keys [db]} [e page]]
    {:db (assoc-in db [:state :active-page] page)
     :dispatch [:page-title page]}))
 
@@ -135,7 +135,7 @@
  (fn [{:keys [db]} _]
    (let [input (get-in db [:state :new-story])]
      {:db (-> db
-              (assoc-in [:state :active-page]     :story)
+              (assoc-in [:state :active-page] :story)
               (assoc-in [:state :new-story :text] ""))
       :dispatch [:story input]})))
 

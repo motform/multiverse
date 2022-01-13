@@ -17,9 +17,9 @@
   (let [{:keys [updated title id]} meta]
     [:a.library-item
      {:href (routes/url-for :story)
-      :on-click #(do (rf/dispatch [:active-story id])
-                     (rf/dispatch [:active-page :story])
-                     true)}
+      :on-pointer-down #(do (rf/dispatch [:active-story id])
+                            (rf/dispatch [:active-page :story])
+                            true)}
      [:h1 (if-not (str/blank? title) (util/title-case title) "Generating title...")]
      [:div.linfo
       [:div (str (count sentences) " sentences")]

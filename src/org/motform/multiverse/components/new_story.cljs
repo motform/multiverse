@@ -1,14 +1,8 @@
 (ns org.motform.multiverse.components.new-story
   (:require [clojure.string :as str]
             [re-frame.core :as rf]
-            [org.motform.multiverse.routes :as routes]))
-
-(defn input-name [author]
-  [:section.author
-   [:label "Enter your name"]
-   [:textarea
-    {:value author
-     :on-change #(rf/dispatch [:prompt :author (-> % .-target .-value)])}]])
+            [org.motform.multiverse.routes             :as routes]
+            [org.motform.multiverse.components.sidebar :refer [sidebar]]))
 
 (defn submit-btn [{:keys [text author]}]
   [:a.submit-btn
@@ -26,10 +20,14 @@
      :autoFocus true
      :on-change #(rf/dispatch [:prompt :text (-> % .-target .-value)])}]])
 
+(defn sidebar-content []
+  [:div])
+
 (defn new-story []
-  (let [{:keys [text author] :as input} @(rf/subscribe [:new-story])]
-    [:main
-     [prompt text]
-     [:div.setup-meta
-      [input-name author]
-      [submit-btn input]]]))
+  (let [{:keys [text] :as input} @(rf/subscribe [:new-story])]
+    [:div.app-container.h-stack
+     [sidebar sidebar-content]
+     [:main 
+      [prompt text]
+      [:div.setup-meta
+       [submit-btn input]]]]))

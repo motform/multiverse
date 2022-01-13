@@ -2,7 +2,6 @@
   (:require [clojure.string :as str]
             [re-frame.core :as rf]                       
             [org.motform.multiverse.components.map :refer [tree-map]]
-            [org.motform.multiverse.components.landing :refer [landing]]
             [org.motform.multiverse.util :as util]))
 
 ;;; Util
@@ -72,9 +71,6 @@
 ;;; Main
 
 (defn multiverse []
-  (let [story? @(rf/subscribe [:active-story])]
-    (if-not story?
-      [landing]
-      [:main.multiverse
-       [sidebar]
-       [story]])))
+  [:main.multiverse
+   [sidebar]
+   [story]])

@@ -1,6 +1,7 @@
 (ns org.motform.multiverse.components.landing
   (:require [clojure.string :as str]
-            [re-frame.core :as rf]))
+            [re-frame.core :as rf]
+            [reagent.core :as r]))
 
 (defn circle [r cx cy]
   (let [filled? (when (< 2 (rand-int 5)) {:fill "var(--bg2)" :class "filled"})]
@@ -25,8 +26,9 @@
   [:textarea.key-input.shadow-medium.textarea-small.rounded.mono
    {:value        (if (< 10 (count api-key)) (elide api-key 3 20) api-key)
     :spell-check  false
-    :class        (when (not (str/blank? api-key))
-                    (str "key-" (when-not validated? "in") "valid"))
+    :class        (when validated? "key-valid")
+    #_(when (not (str/blank? api-key))
+        (str "key-" (when-not validated? "in") "valid"))
     :on-change    #(rf/dispatch [:open-ai/update-api-key (.. % -target -value)])
     :on-key-down  #(when (= (.-key %) "Enter")
                      (.preventDefault %)
@@ -51,9 +53,9 @@
        [key-input-textarea api-key validated?]]] 
      [:button.open-ai-key-dispatch.rounded
       {:disabled disabled?
-       :on-pointer-down (if (not validated?)
-                          #(rf/dispatch [:open-ai/validate-api-key])
-                          #(rf/dispatch [:active-page :new-story]))}
+       :on-pointer-down #(if (not validated?)
+                           (rf/dispatch [:open-ai/validate-api-key])
+                           (rf/dispatch [:active-page :new-story]))}
       (if validated?
         "start"
         "validate key")]]))

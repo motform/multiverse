@@ -166,12 +166,8 @@ p a:hover {
 
 main {
     width: 100%;
-    padding: 10rem;
-
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto;
-    grid-column-gap: 10rem;
+    padding: var(--space-full);
 }
 
 /* input elements */
@@ -197,6 +193,10 @@ button:hover {
     background-color: var(--bg3);
 }
 
+button:disabled:hover {
+    background-color: var(--bg2);
+}
+
 button:disabled {
     color: var(--ia);
     cursor: not-allowed;
@@ -210,6 +210,10 @@ button:disabled {
     border: 1px solid var(--bg3);
 }
 
+.textarea-small:focus {
+    background-color: var(--bg3);
+}
+
 /* utility classes */
 
 .mono {
@@ -220,6 +224,10 @@ button:disabled {
 .v-stack {
     display: flex;
     flex-direction: column;
+}
+
+.spaced {
+    justify-content: space-between;
 }
 
 .h-equal-2 {
@@ -241,6 +249,12 @@ button:disabled {
 .rounded-large { border-radius: 20px; }
 .rounded       { border-radius: 10px; }
 
+.opaque {
+    opacity: 0.5;
+    filter: blur(20px);
+}
+.opaque > * { opacity: 1; }
+
 .shadow-large {
     box-shadow: 1px 1px 1.9px rgba(0, 0, 0, 0.019), 2.6px 2.6px 4.8px rgba(0, 0, 0, 0.027), 5.3px 5.3px 9.7px rgba(0, 0, 0, 0.033), 11px 11px 20.1px rgba(0, 0, 0, 0.041), 30px 30px 55px rgba(0, 0, 0, 0.06);
 }
@@ -253,12 +267,60 @@ button:disabled {
     box-shadow: 0.5px 0.5px 4.1px rgba(0, 0, 0, 0.01), 1.3px 1.3px 10.4px rgba(0, 0, 0, 0.015), 3px 3px 25px rgba(0, 0, 0, 0.02), 10px 10px 80px rgba(0, 0, 0, 0.03);
 }
 
+/* app-layout */
+
+.app-container {
+    width: 100%; 
+    height: 100vh;
+}
+
+/* tooltips */
+
+.tooltip {
+    font: 500 12px/1 "Obviously", sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    visibility: hidden;
+    background-color: var(--bg2);
+    color: white;
+    text-align: center;
+    padding: 10px 15px;
+    position: absolute;
+    z-index: 1;
+    top: 125%;
+    left: 50%;
+    width: 120px;
+    margin-left: -60px;
+    border: 1px solid var(--bg3);
+}
+
+.tooltip-container {
+    position: relative;
+}
+.tooltip-container:hover .tooltip {
+    visibility: visible;
+}
+
 /* sidebar */
 
-header :first-child {
+.sidebar {
+    width: 400px;
+    height: 100%;
+    background-color: var(--bg1);
+    padding: var(--space-half);
+    border: 1px solid var(--bg2);
+    border-width: 0 1px 0 0;
+}
+
+.sidebar-wordmark  {
     padding-left: 0rem;
     font-family: "Obviously Wide", "Verdana", sans-serif;
-    margin-right: auto;
+    text-transform: uppercase;
+}
+
+.icon:hover {
+    fill: var(--ok);
+    stroke: var(--ok);
 }
 
 /* new-story */
@@ -662,7 +724,7 @@ aside li.active {
 /* key input */
 
 .key-input-container {
-    background: var(--bg1);
+    background-color: var(--bg1);
     padding: var(--space-full);
     min-width: 400px;
     max-width: 600px;

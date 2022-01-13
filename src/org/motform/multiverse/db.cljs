@@ -1,6 +1,5 @@
 (ns org.motform.multiverse.db
   (:require [cljs.reader :as reader]
-            [cljs.spec.alpha :as s]
             [re-frame.core :as rf]))
 
 ;; We store sentences as tree implemented by as an indexed map.
@@ -20,41 +19,8 @@
 
 ;; TODO add timestamp to each sentence
 
-(s/def ::id (s/and string? #(= 10 (count %))))
-
-(s/def ::db (s/keys :req-un [::state ::stories]))
-
-(s/def ::state (s/keys :req-un [::active-page ::active-story ::highlight ::new-story ::pending-request? ::preview]))
-
-(s/def ::active-page #{:about :library :new-story :story})
-(s/def ::active-story (s/nilable ::id))
-(s/def ::highlight    (s/nilable ::id))
-(s/def ::preview      (s/nilable ::id))
-(s/def ::pending-request boolean?)
-
-(s/def ::new-story (s/keys :req-un [::text ::author ::model]))
-(s/def ::text   (s/nilable string?))
-(s/def ::author (s/nilable string?))
-(s/def ::model  (s/nilable string?))
-
-(s/def ::stories (s/and (s/map-of ::id ::story)
-                        (s/every (fn [[k v]] (= (get-in v [:meta :id]) k)))))
-(s/def ::story (s/keys :req-un [::meta ::sentences]))
-
-(s/def ::meta (s/keys :req-un [::title ::authors ::model ::id ::active-sentence ::updated]))
-(s/def ::title   string?)
-(s/def ::authors set?)
-(s/def ::updated inst?)
-(s/def ::active-sentence (s/nilable ::id))
-
-(s/def ::sentences (s/and (s/map-of ::id ::sentence)
-                          (s/every (fn [[k v]] (= (:id v) k)))))
-(s/def ::sentence (s/keys :req-un [::text ::id ::path ::children]))
-(s/def ::path     (s/coll-of ::id))
-(s/def ::children (s/coll-of ::id))
-
 (def default-db
-  {:state {:active-page      :story
+  {:state {:active-page      :landing
            :active-sentence  nil
            :active-story     nil
            :highlight        nil
