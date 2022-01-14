@@ -31,9 +31,9 @@
   [:div.pending
    [:img.scribble {:src "assets/scribble-story.gif" :alt "Generating text…"}]])
 
-;; NOTE this implementation means there can only be a single request out per parent,
-;;      in theory, it is possible/preferable to have multiple ones
 (defn story []
+  ;; NOTE this implementation means there can only be a single request out per parent,
+  ;;      in theory, it is possible/preferable to have multiple ones
   (let [parent    @(rf/subscribe [:active-sentence])
         request?  @(rf/subscribe [:pending-request?])
         preview?  @(rf/subscribe [:preview?])
@@ -41,7 +41,7 @@
         children  @(rf/subscribe [:children parent])
         _ (when (and (not children) (not preview?) (not request?))
             (rf/dispatch [:open-ai/completions parent (util/format-story sentences)]))]
-    [:section.story 
+    [:main.story.v-stack.pad-full
      [:div.sentences
       (for [{:keys [text id]} sentences]
         ^{:key id} [sentence text id "parent"])]
@@ -58,20 +58,19 @@
     (util/title-case title)
     [:img.scribble {:src "assets/scribble-title.gif" :alt "Generating title…"}]))
 
-(defn old-sidebar []
+(defn sidebar-content []
   (let [{:keys [title updated]} @(rf/subscribe [:meta])]
-    [:aside
-     [:section.title
-      [:div.update-title-container>button.update-title
-       {:on-click #(rf/dispatch [:open-ai/title nil])}
-       "↻"]
-      [:h1 (format-title title)]]
+    [:section.sidebar-story.v-stack.sidebar-story.gap-full
+     [:h2.title.tooltip-container
+      {:on-pointer-down #(rf/dispatch [:open-ai/title nil])}
+      (format-title title)
+      [:span.tooltip.rounded "Generate new title"]]
      [tree-map]
-     [:section.meta "Last Exploration " (util/format-date updated)]]))
+     [:label "Last Exploration " (util/format-date updated)]]))
 
 ;;; Main
 
 (defn multiverse []
-  [:main.multiverse
-   [sidebar]
+  [:div.app-container.h-stack.overlay
+   [sidebar [sidebar-content]]
    [story]])

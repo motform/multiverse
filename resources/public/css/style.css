@@ -12,7 +12,7 @@
 
     --err: red;
     --ok: #48D597;
-    --divider: #323232;
+    --highlight: #016555;
 
     --bg-overlay: linear-gradient(180deg, #0a0d0c, #0a0d0c66, #0a0d0c00, #0a0d0c00, #0a0d0c00);
     --bg-0: linear-gradient(-46deg, #000000, #020303, #050606, #070909, #0a0d0c);
@@ -289,7 +289,7 @@ textarea:focus {
 /* tooltips */
 
 .tooltip {
-    font: 500 12px/1 "Obviously", sans-serif;
+    font: 500 12px/1.4 "Obviously", sans-serif;
     letter-spacing: 1px;
     text-transform: uppercase;
     visibility: hidden;
@@ -321,21 +321,48 @@ textarea:focus {
     width: 500px;
     height: 100%;
     padding: var(--space-half);
-    border: 1px solid var(--bg2);
+    border: 1px solid var(--accent-7);
     border-width: 0 1px 0 0;
-    border-color: #00000000;
+    color: var(--accent-15);
+}
+
+.sidebar-header {
+    color: var(--highlight);
+    margin-bottom: var(--space-double);
+}
+
+.sidebar-content {
+    height: 100%;
 }
 
 .sidebar-story {
-    background-color: var(--bg1);
+    height: 100%;
 }
 
 .sidebar-wordmark  {
-    padding-left: 0rem;
     font-family: "Obviously Wide", "Verdana", sans-serif;
     text-transform: uppercase;
+    color: var(--accent-16);
 }
 
+.title {
+    font-family: "Obviously Narrow", "Arial Narrow", sans-serif;
+    color: var(--fg);
+    margin-top: -2rem;
+    font-size: 13rem;
+    line-height: 12rem;
+    margin-bottom: 3rem;
+}
+
+.title:hover {
+    color: var(--highlight);
+    cursor: pointer;
+}
+
+
+.icon {
+    color: var(--highlight);
+}
 .icon:hover {
     fill: var(--ok);
     stroke: var(--ok);
@@ -352,108 +379,10 @@ textarea:focus {
     margin: 0 -20px;
 }
 
-h2 {
+.prompt h2 {
     font: 24px/24px "Obviously Wide", "Arial Narrow", sans-serif;
     text-transform: uppercase;
 }
-
-/* sidebar */
-
-aside {
-    grid-column: span 1;
-    display: flex;
-    flex-direction: column;
-    align-content: space-between;
-    align-items: left;
-    font-size: 3rem;
-}
-
-aside h1 {
-    font-family: "Obviously Narrow", "Arial Narrow", sans-serif;
-    color: var(--fg);
-    margin-top: -2rem;
-    font-size: 13rem;
-    line-height: 12rem;
-    margin-bottom: 3rem;
-}
-
-aside>section:nth-child(2) {
-    color: var(--ia);
-    margin-bottom: 5rem;
-}
-
-aside>section:nth-child(4) {
-    margin-top: auto;
-}
-
-aside ul {
-    margin: 5rem 0 5rem 0;
-    display: flex;
-    align-content: space-between;
-    align-items: center;
-}
-
-aside li {
-    padding: 3rem;
-    flex-basis: 0;
-    flex-grow: 1;
-    color: var(--ia);
-    border: 2px solid var(--ia);
-    text-align: center;
-}
-
-aside li:first-child {
-    border-width: 2px 0 2px 2px;
-}
-
-aside li:last-child {
-    border-width: 2px 2px 2px 0;
-}
-
-aside li:hover {
-    background-color: var(--ia);
-    border-color: var(--ia);
-    color: var(--bg1);
-    cursor: pointer;
-}
-
-aside li.active {
-    color: var(--bg1);
-    background: var(--ia);
-}
-
-.title {
-    display: flex;
-    margin-bottom: 4rem;
-}
-
-.update-title {
-    text-transform: uppercase;
-    padding: 1rem;
-    background: var(--bg1);
-    border: 0;
-    color: var(--ia);
-    font-family: "Obviously";
-    font-weight: 600;
-    font-size: 3rem;
-}
-
-.update-title-container {
-    padding-bottom: 5px;
-    margin-left: -25px;
-    margin-top: auto;
-}
-
-.update-title:hover {
-    color: var(--fg);
-    border-color: var(--fg);
-    cursor: pointer;
-}
-
-.byline {
-    text-transform: capitalize;
-}
-
 
 /* map */
 
@@ -500,21 +429,21 @@ aside li.active {
 /* story view */
 
 .story {
-    font-family: "Pigeonette", "Courier", monospace;
-    grid-column: span 2;
+    margin: var(--space-half) var(--space-full);
+    max-width: 900px;
+    font-size: 20px;
+    line-height: 24px;
 }
 
 .sentences {
-    /* white-space: pre; */
-    /* overflow: auto; */
     overflow: auto;
-    /* word-wrap: break-word; */
-    line-height: 1.5;
+    line-height: 1.7;
 }
 
 .sentences > span {
     hyphens: auto;
 }
+
 .sentences > span:hover {
     cursor: pointer;
 }
@@ -523,10 +452,11 @@ aside li.active {
     content: "";
 }
 
-.sentences > span::before {
-    content: "|";
-    color: var(--divider);
-    font-family: "Obviously Narrow";
+.sentences > span:not(:first-of-type)::before {
+    border: 1px solid var(--highlight);
+    border-width: 0 0 0 1px;
+    content: "";
+    margin-left: 5px;
 }
 
 .story>section>div {
@@ -559,11 +489,11 @@ aside li.active {
 }
 
 .highlight {
-    color: var(--fg);
+    color: var(--highlight);
 }
 
 .inactive {
-    color: var(--ia);
+    color: var(--accent-10);
 }
 
 .children {
@@ -572,12 +502,14 @@ aside li.active {
     margin-top: 5rem;
 }
 
-.child:hover {
-    color: var(--fg);
+.unvisited {
+    font-variation-settings: "CASL" 1, "CRSV" 0, "slnt" -15;
+
 }
 
-.unvisited {
-    font-style: italic;
+.child:hover {
+    color: var(--fg);
+    font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
 }
 
 .visited {

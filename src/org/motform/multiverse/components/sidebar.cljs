@@ -39,10 +39,10 @@
 ;; TODO Add icons for new story and for lib
 (defn sidebar [content]
   (let [active-page @(rf/subscribe [:active-page])]
-    [:aside.sidebar
+    [:aside.sidebar.blurred
      [:header.sidebar-header.h-stack.spaced
-      [item "Multiverse" :story active-page "To Story" "sidebar-wordmark"] ; TODO disable story link until there is a story!
-      [:section.h-stack.gap-half
+      [item "Multiverse" :story active-page "To Story" "sidebar-wordmark"] ; TODO should be the H1
+      [:nav.h-stack.gap-half
        [item icon-library :library active-page "Library"]
        [item icon-plus :new-story active-page "New story"]]]
      [:section.sidebar-content
