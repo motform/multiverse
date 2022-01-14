@@ -26,11 +26,9 @@
            :highlight        nil
            :preview          nil
            :pending-request? false
-           :new-story       {:text "" :author "" :model "GPT-3"}
+           :new-story        ""
            :sorting         {:order :updated :desc? false}
-           :open-ai         {:api-key ""
-                             :valid-format? false
-                             :validated?    false}}
+           :open-ai         {:api-key "" :validated? false}}
    :stories {}})
 
 ;;; local-storage
@@ -38,7 +36,7 @@
 (def ls-key "multiverse.stories")
 
 (defn collections->local-storage [db]
-  (.setItem js/localStorage ls-key (str (:stories db))))
+  (.setItem js/localStorage ls-key (str db)))
 
 (rf/reg-cofx ; source: re-frame docs
  :local-store-collections

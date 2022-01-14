@@ -29,12 +29,12 @@
  :initialize-db
  [(inject-cofx :local-store-collections) spec-interceptor]
  (fn [{:keys [local-store-collections]} [_ default-db]]
-   {:db (util/?assoc default-db :stories local-store-collections)}))
+   {:db (merge default-db (if local-store-collections local-store-collections {}))}))
 
 (reg-event-fx
  :active-page
  [spec-interceptor]
- (fn [{:keys [db]} [e page]]
+ (fn [{:keys [db]} [_ page]]
    {:db (assoc-in db [:state :active-page] page)
     :dispatch [:page-title page]}))
 
@@ -122,13 +122,12 @@
 (defn ->sentence [id text path children]
   {:id id :text text :path path :children children})
 
-(defn ->story [story-id sentence-id {:keys [text author]}]
+(defn ->story [story-id sentence-id prompt]
   {:meta {:id      story-id
-          :authors author
           :title   ""
           :updated (js/Date.)
           :active-sentence sentence-id}
-   :sentences {sentence-id (->sentence sentence-id text [sentence-id] [])}})
+   :sentences {sentence-id (->sentence sentence-id prompt [sentence-id] [])}})
 
 (reg-event-fx
  :submit-new-story
@@ -152,8 +151,8 @@
 
 (reg-event-db
  :prompt
- (fn [db [_ k v]]
-   (assoc-in db [:state :new-story k] v)))
+ (fn [db [_ prompt]]
+   (assoc-in db [:state :new-story] prompt)))
 
 (reg-event-db
  :dissoc-story
