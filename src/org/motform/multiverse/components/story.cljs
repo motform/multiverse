@@ -2,7 +2,8 @@
   (:require [clojure.string :as str]
             [re-frame.core :as rf]                       
             [org.motform.multiverse.components.map :refer [tree-map]]
-            [org.motform.multiverse.util :as util]))
+            [org.motform.multiverse.util :as util]
+            [org.motform.multiverse.components.sidebar :refer [sidebar]]))
 
 ;;; Util
 
@@ -57,7 +58,7 @@
     (util/title-case title)
     [:img.scribble {:src "assets/scribble-title.gif" :alt "Generating title…"}]))
 
-(defn sidebar []
+(defn old-sidebar []
   (let [{:keys [title updated]} @(rf/subscribe [:meta])]
     [:aside
      [:section.title

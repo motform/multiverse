@@ -41,9 +41,9 @@
   (let [active-page @(rf/subscribe [:active-page])]
     [:aside.sidebar
      [:header.sidebar-header.h-stack.spaced
-      [item "multiverse" :story active-page "Back to story" "sidebar-wordmark"]
+      [item "Multiverse" :story active-page "To Story" "sidebar-wordmark"] ; TODO disable story link until there is a story!
       [:section.h-stack.gap-half
        [item icon-library :library active-page "Library"]
        [item icon-plus :new-story active-page "New story"]]]
      [:section.sidebar-content
-      [content]]]))
+      (or content [:div])]]))

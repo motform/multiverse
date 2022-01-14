@@ -42,7 +42,7 @@
  :title
  (fn [name]
    (let [separator (when name " | ")
-         title (str "Multiverse" separator name)]
+         title (str "Everett" separator name)]
      (set! (.-title js/document) title))))
 
 (reg-event-fx
@@ -132,126 +132,128 @@
 (reg-event-fx
  :submit-new-story
  (fn [{:keys [db]} _]
-   (let [input (get-in db [:state :new-story])]
-     {:db (-> db
-              (assoc-in [:state :active-page] :story)
-              (assoc-in [:state :new-story :text] ""))
-      :dispatch [:story input]})))
+   (let [prompt (get-in db [:state :new-story])]
+     (println "prompt:" prompt)
+    {:db (assoc-in db [:state :new-story] "")
+    :dispatch [:story prompt]})))
 
 (reg-event-fx
- :story
- [spec-interceptor local-storage-interceptor]
- (fn [{:keys [db]} [_ input]]
-   (let [story-id    (nano-id 10)
-         sentence-id (nano-id 10)]
-     {:db (-> db
-              (assoc-in [:stories story-id] (->story story-id sentence-id input))
-              (assoc-in [:state :active-story] story-id))
-      :dispatch [:open-ai/title]})))
+:story
+[spec-interceptor local-storage-interceptor]
+(fn [{:keys [db]} [_ prompt]]
+(println "prompt 2:" prompt)
+(let [story-id    (nano-id 10)
+        sentence-id (nano-id 10)]
+    (println "story-id" story-id)
+    (println "sentece-id" sentence-id)
+    {:db (-> db
+            (assoc-in [:stories story-id] (->story story-id sentence-id prompt))
+            (assoc-in [:state :active-story] story-id))
+    :dispatch [:open-ai/title]})))
 
 (reg-event-db
- :prompt
- (fn [db [_ prompt]]
-   (assoc-in db [:state :new-story] prompt)))
+:prompt
+(fn [db [_ prompt]]
+(assoc-in db [:state :new-story] prompt)))
 
 (reg-event-db
- :dissoc-story
- [spec-interceptor local-storage-interceptor]
- (fn [db [_ id]]
-   (update db :stories dissoc id)))
+:dissoc-story
+[spec-interceptor local-storage-interceptor]
+(fn [db [_ id]]
+(update db :stories dissoc id)))
 
 ;;; Library
 
 (reg-event-db
- :clear-library
- [spec-interceptor local-storage-interceptor]
- (fn [db _]
-   (assoc db :stories {})))
+:clear-library
+[spec-interceptor local-storage-interceptor]
+(fn [db _]
+(assoc db :stories {})))
 
 (reg-event-db
- :library-sort
- [spec-interceptor]
- (fn [db [_ sorting]]
-   (assoc-in db [:state :sorting] sorting)))
+:library-sort
+[spec-interceptor]
+(fn [db [_ sorting]]
+(assoc-in db [:state :sorting] sorting)))
 
 ;;; Landing
 
 (reg-event-db
- :name
- [spec-interceptor local-storage-interceptor]
- (fn [db [_ name]]
-   (assoc-in db [:state :name] name)))
+:name
+[spec-interceptor local-storage-interceptor]
+(fn [db [_ name]]
+(assoc-in db [:state :name] name)))
 
 ;;; Story
 
 (defn ->children
-  "Make children map to be merged into sentences."
-  [parent-path child-ids texts]
-  (let [child-pairs (util/pairs child-ids texts)]
-    (reduce (fn [children [id text]]
-              (assoc children id (->sentence id text (conj parent-path id) [])))
-            {} child-pairs)))
+"Make children map to be merged into sentences."
+[parent-path child-ids texts]
+(let [child-pairs (util/pairs child-ids texts)]
+(reduce (fn [children [id text]]
+            (assoc children id (->sentence id text (conj parent-path id) [])))
+        {} child-pairs)))
 
 (defn- open-ai-texts [completions]
-  (map (comp #(str % \.) :text) (:choices completions)))
+(map (comp #(str % \.) :text) (:choices completions)))
 
 (reg-event-fx
- :handle-children
- [spec-interceptor local-storage-interceptor]
- (fn [{:keys [db]} [_ story parent completions]]
-   (let [parent-path (get-in db [:stories story :sentences parent :path])
-         child-ids (repeatedly 3 #(nano-id 10))
-         children (->children parent-path child-ids (open-ai-texts completions))]
-     {:db (-> db
-              (update-in [:stories story :sentences] merge children)
-              (assoc-in  [:stories story :sentences parent :children] child-ids)
-              (assoc-in  [:stories story :meta :updated] (js/Date.))
-              (assoc-in  [:state :pending-request?] false))})))
+:handle-children
+[spec-interceptor local-storage-interceptor]
+(fn [{:keys [db]} [_ story parent completions]]
+(let [parent-path (get-in db [:stories story :sentences parent :path])
+        child-ids (repeatedly 3 #(nano-id 10))
+        children (->children parent-path child-ids (open-ai-texts completions))]
+    {:db (-> db
+            (update-in [:stories story :sentences] merge children)
+            (assoc-in  [:stories story :sentences parent :children] child-ids)
+            (assoc-in  [:stories story :meta :updated] (js/Date.))
+            (assoc-in  [:state :pending-request?] false))})))
 
 (reg-event-db
- :handle-title
- [spec-interceptor local-storage-interceptor]
- (fn [db [_ story-id title]]
-   (-> db
-       (assoc-in [:stories story-id :meta :title] (-> title :choices first :text)))))
+:handle-title
+[spec-interceptor local-storage-interceptor]
+(fn [db [_ story-id title]]
+(-> db
+    (assoc-in [:stories story-id :meta :title] (-> title :choices first :text)))))
 
 
 (reg-event-db
- :open-ai/handle-validate-api-key
- [spec-interceptor local-storage-interceptor]
- (fn [db _]
-   (-> db
-       (assoc-in [:state :open-ai :validated?] true) ; failed requests go to :failure-http
-       (assoc-in [:state :pending-request?] false)))) 
+:open-ai/handle-validate-api-key
+[spec-interceptor local-storage-interceptor]
+(fn [db _]
+(-> db
+    (assoc-in [:state :open-ai :validated?] true) ; failed requests go to :failure-http
+    (assoc-in [:state :pending-request?] false)))) 
 
 (reg-event-fx
- :open-ai/validate-api-key
- (fn [{:keys [db]} _]
-   (let [api-key (get-in db [:state :open-ai :api-key])]
-     {:db (assoc-in db [:state :pending-request?] true)
-      :http-xhrio {:method          :get
-                   :uri             "https://api.openai.com/v1/engines"
-                   :headers         {"Authorization" (str "Bearer " api-key)}
-                   :response-format (ajax/json-response-format {:keywords? true})
-                   :on-success      [:open-ai/handle-validate-api-key]
-                   :on-failure      [:failure-http]}})))
+:open-ai/validate-api-key
+(fn [{:keys [db]} _]
+(let [api-key (get-in db [:state :open-ai :api-key])]
+    {:db (assoc-in db [:state :pending-request?] true)
+    :http-xhrio {:method          :get
+                :uri             "https://api.openai.com/v1/engines"
+                :headers         {"Authorization" (str "Bearer " api-key)}
+                :response-format (ajax/json-response-format {:keywords? true})
+                :on-success      [:open-ai/handle-validate-api-key]
+                :on-failure      [:failure-http]}})))
 
 (reg-event-fx
- :open-ai/completions
- (fn [{:keys [db]} [_ parent-id prompt]]
-   (let [story-id  (get-in db [:state :active-story])
-         api-key   (get-in db [:state :open-ai :api-key])
-         {:keys [uri params]} (open-ai/completion-with :davinci
-                                {:prompt prompt})]
-     {:db (assoc-in db [:state :pending-request?] true)
-      :http-xhrio {:method  :post
-                   :uri     uri 
-                   :headers {"Authorization" (str "Bearer " api-key)}
-                   :params  params
-                   :format  (ajax/json-request-format)
-                   :response-format (ajax/json-response-format {:keywords? true})
-                   :on-success [:handle-children story-id parent-id] ; TODO
-                   :on-failure [:failure-http]}})))
+:open-ai/completions
+(fn [{:keys [db]} [_ parent-id prompt]]
+(let [story-id  (get-in db [:state :active-story])
+        api-key   (get-in db [:state :open-ai :api-key])
+        {:keys [uri params]} (open-ai/completion-with :davinci
+                            {:prompt prompt})]
+    {:db (assoc-in db [:state :pending-request?] true)
+    :http-xhrio {:method  :post
+                :uri     uri 
+                :headers {"Authorization" (str "Bearer " api-key)}
+                :params  params
+                :format  (ajax/json-request-format)
+                :response-format (ajax/json-response-format {:keywords? true})
+                :on-success [:handle-children story-id parent-id] ; TODO
+                :on-failure [:failure-http]}})))
 
 (reg-event-fx
  :open-ai/title
