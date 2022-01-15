@@ -1,47 +1,4 @@
-/* 
-   Current a bit of a messy mix between classing and classless. 
-   No real utility classes to speak of.
-   Could probably do with a bit of a go-over, if you so wish.
-*/
-
-/* Variables */
-
 :root {
-    --fg: #fff;
-    --bg-base: #0A0D0C;
-
-    --err: red;
-    --ok: #48D597;
-    --highlight: #016555;
-
-    --bg-overlay: linear-gradient(180deg, #0a0d0c, #0a0d0c66, #0a0d0c00, #0a0d0c00, #0a0d0c00);
-    --bg-0: linear-gradient(-46deg, #000000, #020303, #050606, #070909, #0a0d0c);
-
-    --bg-transparent-1: #090e0d85;
-    --bg-transparent-2: #12161685;
-
-    --circle-fill: #141a1933;
-    --circle-stroke: #19201f33;
-
-    --accent-0: #030303;
-    --accent-1: #050606;
-    --accent-2: #080a09;
-    --accent-3: #0a0d0c;
-    --accent-4: #0d1010;
-    --accent-5: #0f1313;
-    --accent-6: #121616;
-    --accent-7: #141a19;
-    --accent-8: #171d1c;
-    --accent-9: #19201f;
-    --accent-10: #303635;
-    --accent-11: #474d4c;
-    --accent-12: #5e6362;
-    --accent-13: #757979;
-    --accent-14: #8c908f;
-    --accent-15: #a3a6a5;
-    --accent-16: #babcbc;
-    --accent-17: #d1d2d2;
-
     --space-full: 40px;
     --space-double: calc(var(--space-full) * 2);
     --space-half: calc(var(--space-full) / 2);
@@ -90,15 +47,9 @@ body {
 }
 
 @keyframes gradient {
-    0% {
-	background-position: 0% 50%;
-    }
-    50% {
-	background-position: 100% 50%;
-    }
-    100% {
-	background-position: 0% 50%;
-    }
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 a {
@@ -154,7 +105,7 @@ button {
     letter-spacing: 1px;
     font-size: 3rem;
     color: var(--fg);
-    background-color: var(--accent-5);
+    background-color: var(--accent-6);
     width: auto;
     padding: 2rem 4rem;
     border: 1px solid var(--accent-7);
@@ -162,15 +113,15 @@ button {
 }
 
 button:hover {
-    background-color: var(--accent-7);
+    background-color: var(--accent-10);
 }
 
 button:disabled:hover {
-    background-color: var(--accent-2);
+    background-color: var(--accent-4);
 }
 
 button:disabled {
-    background-color: var(--accent-2);
+    background-color: var(--accent-4);
     border-color: var(--accent-5);
     color: var(--accent-10);
     cursor: not-allowed;
@@ -185,18 +136,20 @@ textarea {
     resize: none;
     overflow: hidden;
     color: var(--fg);
-    background-color: var(--accent-5);
+    background-color: var(--accent-6);
     border: 1px solid var(--accent-7);
     padding: 3rem;
     font-size: 16px;
 }
 
 textarea:hover {
-    background-color: var(--accent-6);
+    background-color: var(--accent-10);
+    border: 1px solid var(--accent-10);
 }
 
 textarea:focus {
-    background-color: var(--accent-7);
+    background-color: var(--accent-10);
+    border: 1px solid var(--accent-10);
 }
 
 .textarea-small {
@@ -206,6 +159,7 @@ textarea:focus {
 .textarea-large {
     height: 125px;
     width: 100%;
+    overflow: scroll;
 }
 
 /* utility classes */
@@ -229,6 +183,11 @@ textarea:focus {
     grid-template-columns: 1fr 1fr;
 }
 
+.h-equal-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
 .h-stack {
     display: flex;
     flex-direction: row;
@@ -250,12 +209,12 @@ textarea:focus {
 .rounded       { border-radius: 10px; }
 
 .border {
-    border: 1px solid var(--accent-5);
+    border: 1px solid var(--accent-4);
 }
 
 .blurred {
     background-color: var(--bg-transparent-1);
-    backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
 }
 
 .blurred-medium {
@@ -289,22 +248,28 @@ textarea:focus {
 /* tooltips */
 
 .tooltip {
-    font: 500 12px/1.4 "Obviously", sans-serif;
+    color: var(--fg);
+    font: 500 10px/1.4 "Obviously", sans-serif;
     letter-spacing: 1px;
     text-transform: uppercase;
     visibility: hidden;
     background-color: var(--bg-transparent-2);
     backdrop-filter: blur(5px);
-    color: var(--fg);
     text-align: center;
-    padding: 10px 15px;
+    padding: 8px 12px;
     position: absolute;
     z-index: 1;
-    top: 125%;
+    top: 90%;
     left: 50%;
-    width: 120px;
-    margin-left: -60px;
-    border: 1px solid var(--bg3);
+    width: 80px;
+    margin-left: -40px;
+    border: 1px solid var(--accent-4);
+}
+
+.tooltip-large {
+    top: 125%;
+    width: 100px;
+    margin-left: -50px;
 }
 
 .tooltip-container {
@@ -318,40 +283,29 @@ textarea:focus {
 /* sidebar */
 
 .sidebar {
-    width: 500px;
-    height: 100%;
-    padding: var(--space-half);
-    border: 1px solid var(--accent-7);
-    border-width: 0 1px 0 0;
-    color: var(--accent-15);
+    width: 100%;
+    height: auto;
+    padding: var(--space-half) var(--space-full);
+    color: var(--accent-20);
 }
 
 .sidebar-header {
     color: var(--highlight);
-    margin-bottom: var(--space-double);
-}
-
-.sidebar-content {
-    height: 100%;
-}
-
-.sidebar-story {
-    height: 100%;
 }
 
 .sidebar-wordmark  {
     font-family: "Obviously Wide", "Verdana", sans-serif;
     text-transform: uppercase;
-    color: var(--accent-16);
 }
 
 .title {
-    font-family: "Obviously Narrow", "Arial Narrow", sans-serif;
+    font-family: "Obviously Wide", "Verdana", sans-serif;
+    text-transform: uppercase;
     color: var(--fg);
-    margin-top: -2rem;
-    font-size: 13rem;
-    line-height: 12rem;
-    margin-bottom: 3rem;
+    font-size: 16px;
+    border: 1px solid var(--accent-20);
+    border-width: 0 0 2px 0;
+    padding-bottom: var(--space-quarter);
 }
 
 .title:hover {
@@ -359,13 +313,22 @@ textarea:focus {
     cursor: pointer;
 }
 
+.spinner-1 { animation: fade 1.5s ease infinite alternate; }
+.spinner-2 { animation: fade 1.5s ease infinite alternate; animation-delay: 0.5s;}
+.spinner-3 { animation: fade 1.5s ease infinite alternate; animation-delay: 1s;}
+
+@keyframes fade {
+    0%   { opacity: 100; }
+    100%  { opacity: 0; }
+}
 
 .icon {
     color: var(--highlight);
 }
+
 .icon:hover {
-    fill: var(--ok);
-    stroke: var(--ok);
+    fill: var(--accent-20);
+    stroke: var(--accent-20);
 }
 
 /* new-story */
@@ -375,11 +338,15 @@ textarea:focus {
     margin-top: 150px;
 }
 
+.new-story-container {
+    padding: var(--space-full) var(--space-double);
+}
+
 .prompt {
     margin: 0 -20px;
 }
 
-.prompt h2 {
+.prompt-title {
     font: 24px/24px "Obviously Wide", "Arial Narrow", sans-serif;
     text-transform: uppercase;
 }
@@ -419,10 +386,8 @@ textarea:focus {
     display: none;
 }
 
-.meta {
-    color: var(--ia);
-    text-transform: uppercase;
-    font-size: 2rem;
+.level {
+    cursor: pointer;
 }
 
 
@@ -430,14 +395,15 @@ textarea:focus {
 
 .story {
     margin: var(--space-half) var(--space-full);
-    max-width: 900px;
     font-size: 20px;
-    line-height: 24px;
+    line-height: 1.6;
+    align-items: center;
+    width: 100%;
+    overflow: scroll;
 }
 
 .sentences {
-    overflow: auto;
-    line-height: 1.7;
+    max-width: 800px;
 }
 
 .sentences > span {
@@ -449,43 +415,20 @@ textarea:focus {
 }
 
 .sentences > span:first-of-type::before {
-    content: "";
 }
 
 .sentences > span:not(:first-of-type)::before {
-    border: 1px solid var(--highlight);
-    border-width: 0 0 0 1px;
+    border: 1px solid var(--accent-20);
+    border-width: 0 0 0 2px;
     content: "";
-    margin-left: 5px;
-}
-
-.story>section>div {
-    padding-bottom: 5rem;
-    line-height: 1.5;
-    cursor: pointer;
-    display: flex;
+    margin: 0 4px 0 10px;
 }
 
 .sentence {
-    padding-bottom: 5rem;
     cursor: pointer;
 }
 
-.sentence-model {
-    text-transform: uppercase;
-    font-family: "Obviously", sans-serif;
-    color: var(--ia);
-    font-size: 2rem;
-    min-width: 10rem;
-    padding-top: 1rem;
-    margin-right: 3rem;
-    font-style: normal;
-}
-
 .pending {
-    grid-area: c;
-    color: var(--ia);
-    font-style: italic;
 }
 
 .highlight {
@@ -493,18 +436,21 @@ textarea:focus {
 }
 
 .inactive {
-    color: var(--accent-10);
+    color: var(--accent-15);
 }
 
 .children {
-    color: var(--ia);
     cursor: pointer;
-    margin-top: 5rem;
+    max-width: 1200px;
+}
+
+.child {
+    text-align: left;
 }
 
 .unvisited {
     font-variation-settings: "CASL" 1, "CRSV" 0, "slnt" -15;
-
+    color: var(--accent-25);
 }
 
 .child:hover {
@@ -513,8 +459,6 @@ textarea:focus {
 }
 
 .visited {
-    font-style: regular;
-    color: var(--fg);
 }
 
 .scribble {
@@ -522,16 +466,6 @@ textarea:focus {
     margin-left: 15rem;
 }
 
-
-/* story map */
-
-.map {
-    margin-bottom: 5rem;
-}
-
-.level {
-    cursor: pointer;
-}
 
 /* landing */
 
@@ -547,7 +481,7 @@ textarea:focus {
 }
 
 h1 {
-    font: 54px/54px "Obviously Wide Thin", "Arial Narrow", sans-serif;
+    font: 54px/54px "Obviously Wide Light", "Arial Narrow", sans-serif;
     text-transform: uppercase;
 }
 

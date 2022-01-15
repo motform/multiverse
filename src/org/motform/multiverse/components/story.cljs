@@ -21,15 +21,11 @@
    {:id id
     :class (str (when (= class "child") (if visited? "visited" "unvisited")) " "
                 class " "
-                (highlight? id))
+                (highlight? id) " ")
     :on-click      #(rf/dispatch [:active-sentence id])
     :on-mouse-over #(rf/dispatch [:highlight-sentence id])
     :on-mouse-out  #(rf/dispatch [:remove-highlight])}
    (if (str/blank? text) "..." text)])
-
-(defn pending []
-  [:div.pending
-   [:img.scribble {:src "assets/scribble-story.gif" :alt "Generating text…"}]])
 
 (defn story []
   ;; NOTE this implementation means there can only be a single request out per parent,
@@ -41,36 +37,30 @@
         children  @(rf/subscribe [:children parent])
         _ (when (and (not children) (not preview?) (not request?))
             (rf/dispatch [:open-ai/completions parent (util/format-story sentences)]))]
-    [:main.story.v-stack.pad-full
+    [:main.story.v-stack.pad-full.gap-half
      [:div.sentences
       (for [{:keys [text id]} sentences]
         ^{:key id} [sentence text id "parent"])]
      (if request?
-       [:section.children [pending]]
-       [:section.children
+       [:section.children.pad-half [util/spinner]]
+       [:section.children.h-equal-3.pad-double.gap-double
         (for [{:keys [id text children]} children]
           ^{:key id} [sentence text id "child" true (seq children)])])]))
 
-;;; Sidebar
+;;; Header
 
-(defn format-title [title]
-  (if-not (str/blank? title)
-    (util/title-case title)
-    [:img.scribble {:src "assets/scribble-title.gif" :alt "Generating title…"}]))
-
-(defn sidebar-content []
-  (let [{:keys [title updated]} @(rf/subscribe [:meta])]
-    [:section.sidebar-story.v-stack.sidebar-story.gap-full
-     [:h2.title.tooltip-container
-      {:on-pointer-down #(rf/dispatch [:open-ai/title nil])}
-      (format-title title)
-      [:span.tooltip.rounded "Generate new title"]]
-     [tree-map]
-     [:label "Last Exploration " (util/format-date updated)]]))
+(defn title []
+  (let [{:keys [title]} @(rf/subscribe [:meta])]
+    (if-not (str/blank? title)
+      [:h2.title.tooltip-container
+       {:on-pointer-down #(rf/dispatch [:open-ai/title nil])}
+       title
+       [:span.tooltip.tooltip-large.rounded "Generate new title"]]
+      [util/spinner])))
 
 ;;; Main
 
 (defn multiverse []
-  [:div.app-container.h-stack.overlay
-   [sidebar [sidebar-content]]
+  [:div.app-container.v-stack.overlay
+   [sidebar [title]]
    [story]])

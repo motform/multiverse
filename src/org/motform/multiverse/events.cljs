@@ -13,7 +13,7 @@
 (defn- check-and-throw
   "Throws an exception if `db` doesn't match the Spec `a-spec`.
   SOURCE: re-frame docs."
-  [a-spec db]
+  [_ _]
   #_(when-not (s/valid? a-spec db)
       (throw (ex-info (str "spec check failed: " (s/explain-str a-spec db)) {}))))
 
@@ -239,21 +239,21 @@
                 :on-failure      [:failure-http]}})))
 
 (reg-event-fx
-:open-ai/completions
-(fn [{:keys [db]} [_ parent-id prompt]]
-(let [story-id  (get-in db [:state :active-story])
-        api-key   (get-in db [:state :open-ai :api-key])
-        {:keys [uri params]} (open-ai/completion-with :davinci
-                            {:prompt prompt})]
-    {:db (assoc-in db [:state :pending-request?] true)
-    :http-xhrio {:method  :post
-                :uri     uri 
-                :headers {"Authorization" (str "Bearer " api-key)}
-                :params  params
-                :format  (ajax/json-request-format)
-                :response-format (ajax/json-response-format {:keywords? true})
-                :on-success [:handle-children story-id parent-id] ; TODO
-                :on-failure [:failure-http]}})))
+ :open-ai/completions
+ (fn [{:keys [db]} [_ parent-id prompt]]
+   (let [story-id  (get-in db [:state :active-story])
+         api-key   (get-in db [:state :open-ai :api-key])
+         {:keys [uri params]} (open-ai/completion-with :curie
+                                {:prompt prompt})]
+     {:db (assoc-in db [:state :pending-request?] true)
+      :http-xhrio {:method  :post
+                   :uri     uri 
+                   :headers {"Authorization" (str "Bearer " api-key)}
+                   :params  params
+                   :format  (ajax/json-request-format)
+                   :response-format (ajax/json-response-format {:keywords? true})
+                   :on-success [:handle-children story-id parent-id] ; TODO
+                   :on-failure [:failure-http]}})))
 
 (reg-event-fx
  :open-ai/title
@@ -261,7 +261,7 @@
    (let [api-key  (get-in db [:state :open-ai :api-key])
          story-id (get-in db [:state :active-story])
          sentences (->> (get-in db [:stories story-id :sentences]) vals util/format-story)
-         {:keys [uri params]} (open-ai/completion-with :davinci
+         {:keys [uri params]} (open-ai/completion-with :curie
                                 {:prompt (open-ai/->title-template sentences)
                                  :n           1
                                  :max_tokens  6})]

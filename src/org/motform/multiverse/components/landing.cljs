@@ -6,11 +6,15 @@
 (defn circle [r cx cy]
   (let [refresh (r/atom 5)
         filled? (when (< 2 (rand-int @refresh))
-                  {:fill "var(--circle-fill)" :stroke "var(--circle-fill)" })]
-    (js/setInterval #(swap! refresh inc) 10000)
+                  {:fill "var(--circle-fill)"
+                   :stroke "var(--circle-fill)"})]
+    (js/setInterval #(swap! refresh inc) 2000)
     (when (< 1 (rand-int @refresh))
       [:circle.circle
-       (merge {:r r :cx cx :cy cy :stroke "var(--circle-stroke)" :stroke-width "1" :fill "none"}
+       (merge {:r r :cx cx :cy cy
+               :stroke "var(--circle-stroke)"
+               :stroke-width "1"
+               :fill "none"}
               filled?)])))
 
 (defn circles []
@@ -69,7 +73,6 @@
    [:p "The system is requires an " [:a {:href "https://openai.com/api/" :target "_blank"} "OpenAI API key"] " to run. You will have to provide your own unless otherwise specified. All data is stored locally."]])
 
 (defn landing []
-  ;; (set! (.. js/document -body -style -background) "var(--bg-0)")
   [:<>
    [circles]
    [:section.landing.v-stack.overlay
