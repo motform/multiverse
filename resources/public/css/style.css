@@ -280,20 +280,20 @@ textarea:focus {
     visibility: visible;
 }
 
-/* sidebar */
+/* header */
 
-.sidebar {
+.header {
     width: 100%;
     height: auto;
     padding: var(--space-half) var(--space-full);
     color: var(--accent-20);
 }
 
-.sidebar-header {
+.header-header {
     color: var(--highlight);
 }
 
-.sidebar-wordmark  {
+.header-wordmark  {
     font-family: "Obviously Wide", "Verdana", sans-serif;
     text-transform: uppercase;
 }

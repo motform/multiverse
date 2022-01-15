@@ -3,7 +3,7 @@
             [re-frame.core :as rf]                       
             [org.motform.multiverse.components.map :refer [tree-map]]
             [org.motform.multiverse.util :as util]
-            [org.motform.multiverse.components.sidebar :refer [sidebar]]))
+            [org.motform.multiverse.components.header :refer [header]]))
 
 ;;; Util
 
@@ -62,5 +62,5 @@
 
 (defn multiverse []
   [:div.app-container.v-stack.overlay
-   [sidebar [title]]
+   [header [title]]
    [story]])

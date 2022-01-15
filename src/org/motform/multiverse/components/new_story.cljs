@@ -1,7 +1,7 @@
 (ns org.motform.multiverse.components.new-story
   (:require [clojure.string :as str]
             [re-frame.core :as rf]
-            [org.motform.multiverse.components.sidebar :refer [sidebar]]))
+            [org.motform.multiverse.components.header :refer [header]]))
 
 (defn prompt []
   (let [prompt @(rf/subscribe [:new-story])
