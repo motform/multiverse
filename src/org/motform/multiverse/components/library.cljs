@@ -1,6 +1,7 @@
 (ns org.motform.multiverse.components.library
   (:require [clojure.string :as str]
             [re-frame.core :as rf]
+            [nano-id.core :refer [nano-id]]
             [org.motform.multiverse.routes :as routes]
             [org.motform.multiverse.components.header :refer [header]]
             [org.motform.multiverse.util :as util]))
@@ -28,7 +29,7 @@
   "SOURCE: https://gist.github.com/zoren/cc74758198b503b1755b75d1a6b376e7"
   []
   (let [library   (js/Blob. #js [(prn-str @(rf/subscribe [:stories]))] #js {:type "application/edn"})
-        file-name (str @(rf/subscribe [:author]) ".edn")
+        file-name (nano-id)
         edn-url   (js/URL.createObjectURL library)
         anchor    (doto (js/document.createElement "a")
                     (-> .-href (set! edn-url))

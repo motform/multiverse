@@ -62,13 +62,6 @@
  (fn [db _]
    (->> db :stories vals (map (comp :authors :meta)) first)))
 
-;;; Landing 
-
-(reg-sub
- :name
- (fn [db _]
-   (get-in db [:state :name])))
-
 ;;; Story
 
 (reg-sub

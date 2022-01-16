@@ -146,14 +146,6 @@
  (fn [db _]
    (assoc db :stories {})))
 
-;;; Landing
-
-(reg-event-db
- :name
- [local-storage-interceptor]
- (fn [db [_ name]]
-   (assoc-in db [:state :name] name)))
-
 ;;; Story
 
 (defn ->children

@@ -63,7 +63,6 @@
     :component-did-update
     (fn [this]
       (let [[_ sentences potential-path] (r/argv this)]
-        (println "update!")
         (when-not (or (contains? (set sentences) potential-path)
                       (not potential-path))
           (let [node (rdom/dom-node this)]
@@ -90,7 +89,7 @@
       (rf/dispatch [:open-ai/completions parent (util/format-story sentences)]))
 
     [:<>
-     [parent-sentences sentences potential-path]
+     (when sentences [parent-sentences sentences potential-path])
      (if request?
        [:section.children.pad-half [util/spinner]]
        [:section.children.h-equal-3.gap-double
