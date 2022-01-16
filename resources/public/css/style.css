@@ -397,8 +397,10 @@ textarea:focus {
     width: 100%;
     height: 85vh;
 
+    padding-top: 0;
+
     display: grid;
-    grid-template-rows: 50% 50%;
+    grid-template-rows: 60% 40%;
     align-items: start;
     justify-items: center;
     grid-gap: var(--space-full);
@@ -408,6 +410,8 @@ textarea:focus {
     max-width: 800px;
     overflow: scroll;
     max-height: 100%;
+    border: 2px solid var(--highlight);
+    border-width: 0;
 }
 
 .sentences > span {

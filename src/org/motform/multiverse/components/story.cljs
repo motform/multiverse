@@ -48,6 +48,12 @@
      (typewrite text)
      text)])
 
+(defn scroll-indicators [event]
+  (let [node (.-target event)]
+    (if (< 20  (.-scrollTop node))
+      (set! (.. node -style -borderTopWidth) "2px")
+      (set! (.. node -style -borderTopWidth) "0px"))))
+
 (defn parent-sentences [sentences potential-path]
   (r/create-class
    {:display-name "stories"
@@ -66,6 +72,7 @@
     :reagent-render 
     (fn [sentences potential-path]
       [:section.sentences
+       {:on-scroll scroll-indicators}
        (for [{:keys [id] :as sentence} (distinct (util/conj? sentences potential-path))]
          ^{:key id} [parent-sentence sentence sentences potential-path])])}))
 
