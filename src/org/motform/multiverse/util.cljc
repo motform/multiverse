@@ -69,7 +69,12 @@
   @x)
 
 (defn spinner []
-  [:svg {:height 20 :width 80}
+  [:svg {:height 40 :width 80}
    [:circle.spinner-1 {:cx 10 :cy 10 :r 8 :fill "var(--spinner-fill)"}]
    [:circle.spinner-2 {:cx 40 :cy 10 :r 8 :fill "var(--spinner-fill)"}]
    [:circle.spinner-3 {:cx 70 :cy 10 :r 8 :fill "var(--spinner-fill)"}]])
+
+(defn conj?
+  "`conj` `x` to `xs` if non-nil, otherwise return `xs`"
+  [xs x]
+  (if x (conj xs x) xs))

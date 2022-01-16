@@ -8,17 +8,6 @@
             [org.motform.multiverse.util :as util]))
 
 ;;; Interceptors
-;; TODO add global interceptors
-
-(defn- check-and-throw
-  "Throws an exception if `db` doesn't match the Spec `a-spec`.
-  SOURCE: re-frame docs."
-  [_ _]
-  #_(when-not (s/valid? a-spec db)
-      (throw (ex-info (str "spec check failed: " (s/explain-str a-spec db)) {}))))
-
-(def check-spec-interceptor (after (partial check-and-throw :multiverse.db/db)))
-(def spec-interceptor [check-spec-interceptor])
 
 (def ->local-storage (after db/collections->local-storage))
 (def local-storage-interceptor [->local-storage])
@@ -27,13 +16,12 @@
 
 (reg-event-fx
  :initialize-db
- [(inject-cofx :local-store-collections) spec-interceptor]
+ [(inject-cofx :local-store-collections)]
  (fn [{:keys [local-store-collections]} [_ default-db]]
    {:db (merge default-db (if local-store-collections local-store-collections {}))}))
 
 (reg-event-fx
  :active-page
- [spec-interceptor]
  (fn [{:keys [db]} [_ page]]
    {:db (assoc-in db [:state :active-page] page)
     :dispatch [:page-title page]}))
@@ -42,7 +30,7 @@
  :title
  (fn [name]
    (let [separator (when name " | ")
-         title (str "Everett" separator name)]
+         title (str "Multiverse" separator name)]
      (set! (.-title js/document) title))))
 
 (reg-event-fx
@@ -58,32 +46,27 @@
 
 (reg-event-db
  :active-story
- [spec-interceptor]
  (fn [db [_ story]]
    (assoc-in db [:state :active-story] story)))
 
 (reg-event-db
  :active-sentence
- [spec-interceptor]
  (fn [db [_ id]]
    (let [story (get-in db [:state :active-story])]
      (assoc-in db [:stories story :meta :active-sentence] id))))
 
 (reg-event-db
  :highlight-sentence
- [spec-interceptor]
  (fn [db [_ sentence]]
    (assoc-in db [:state :highlight] sentence)))
 
 (reg-event-db
  :remove-highlight
- [spec-interceptor]
  (fn [db _]
    (assoc-in db [:state :highlight] nil)))
 
 (reg-event-db
  :select-sentence
- [spec-interceptor]
  (fn [db [_ sentence]]
    (let [story (get-in db [:state :active-story])]
      (-> db
@@ -92,7 +75,6 @@
 
 (reg-event-db
  :preview-sentence
- [spec-interceptor]
  (fn [db [_ sentence]]
    (let [story (get-in db [:state :active-story])
          active-sentence (get-in db [:stories story :meta :active-sentence])]
@@ -102,7 +84,6 @@
 
 (reg-event-db
  :remove-preview
- [spec-interceptor]
  (fn [db _]
    (let [real-active-sentence (get-in db [:state :preview])
          story (get-in db [:state :active-story])]
@@ -113,7 +94,6 @@
 ;; TODO add this into localstorage
 (reg-event-db
  :open-ai/update-api-key
- [spec-interceptor]
  (fn [db [_ api-key]]
    (assoc-in db [:state :open-ai :api-key] api-key)))
 
@@ -133,110 +113,100 @@
  :submit-new-story
  (fn [{:keys [db]} _]
    (let [prompt (get-in db [:state :new-story])]
-     (println "prompt:" prompt)
-    {:db (assoc-in db [:state :new-story] "")
-    :dispatch [:story prompt]})))
+     {:db (assoc-in db [:state :new-story] "")
+      :dispatch [:story prompt]})))
 
 (reg-event-fx
-:story
-[spec-interceptor local-storage-interceptor]
-(fn [{:keys [db]} [_ prompt]]
-(println "prompt 2:" prompt)
-(let [story-id    (nano-id 10)
-        sentence-id (nano-id 10)]
-    (println "story-id" story-id)
-    (println "sentece-id" sentence-id)
-    {:db (-> db
-            (assoc-in [:stories story-id] (->story story-id sentence-id prompt))
-            (assoc-in [:state :active-story] story-id))
-    :dispatch [:open-ai/title]})))
+ :story
+ [local-storage-interceptor]
+ (fn [{:keys [db]} [_ prompt]]
+   (let [story-id    (nano-id 10)
+         sentence-id (nano-id 10)]
+     {:db (-> db
+              (assoc-in [:stories story-id] (->story story-id sentence-id prompt))
+              (assoc-in [:state :active-story] story-id))
+      :dispatch [:open-ai/title]})))
 
 (reg-event-db
-:prompt
-(fn [db [_ prompt]]
-(assoc-in db [:state :new-story] prompt)))
+ :prompt
+ (fn [db [_ prompt]]
+   (assoc-in db [:state :new-story] prompt)))
 
 (reg-event-db
-:dissoc-story
-[spec-interceptor local-storage-interceptor]
-(fn [db [_ id]]
-(update db :stories dissoc id)))
+ :dissoc-story
+ [local-storage-interceptor]
+ (fn [db [_ id]]
+   (update db :stories dissoc id)))
 
 ;;; Library
 
 (reg-event-db
-:clear-library
-[spec-interceptor local-storage-interceptor]
-(fn [db _]
-(assoc db :stories {})))
-
-(reg-event-db
-:library-sort
-[spec-interceptor]
-(fn [db [_ sorting]]
-(assoc-in db [:state :sorting] sorting)))
+ :clear-library
+ [local-storage-interceptor]
+ (fn [db _]
+   (assoc db :stories {})))
 
 ;;; Landing
 
 (reg-event-db
-:name
-[spec-interceptor local-storage-interceptor]
-(fn [db [_ name]]
-(assoc-in db [:state :name] name)))
+ :name
+ [local-storage-interceptor]
+ (fn [db [_ name]]
+   (assoc-in db [:state :name] name)))
 
 ;;; Story
 
 (defn ->children
-"Make children map to be merged into sentences."
-[parent-path child-ids texts]
-(let [child-pairs (util/pairs child-ids texts)]
-(reduce (fn [children [id text]]
-            (assoc children id (->sentence id text (conj parent-path id) [])))
-        {} child-pairs)))
+  "Make children map to be merged into sentences."
+  [parent-path child-ids texts]
+  (let [child-pairs (util/pairs child-ids texts)]
+    (reduce (fn [children [id text]]
+              (assoc children id (->sentence id text (conj parent-path id) [])))
+            {} child-pairs)))
 
 (defn- open-ai-texts [completions]
-(map (comp #(str % \.) :text) (:choices completions)))
+  (map (comp #(str % \.) :text) (:choices completions)))
 
 (reg-event-fx
-:handle-children
-[spec-interceptor local-storage-interceptor]
-(fn [{:keys [db]} [_ story parent completions]]
-(let [parent-path (get-in db [:stories story :sentences parent :path])
-        child-ids (repeatedly 3 #(nano-id 10))
-        children (->children parent-path child-ids (open-ai-texts completions))]
-    {:db (-> db
-            (update-in [:stories story :sentences] merge children)
-            (assoc-in  [:stories story :sentences parent :children] child-ids)
-            (assoc-in  [:stories story :meta :updated] (js/Date.))
-            (assoc-in  [:state :pending-request?] false))})))
+ :handle-children
+ [local-storage-interceptor]
+ (fn [{:keys [db]} [_ story parent completions]]
+   (let [parent-path (get-in db [:stories story :sentences parent :path])
+         child-ids (repeatedly 3 #(nano-id 10))
+         children (->children parent-path child-ids (open-ai-texts completions))]
+     {:db (-> db
+              (update-in [:stories story :sentences] merge children)
+              (assoc-in  [:stories story :sentences parent :children] child-ids)
+              (assoc-in  [:stories story :meta :updated] (js/Date.))
+              (assoc-in  [:state :pending-request?] false))})))
 
 (reg-event-db
-:handle-title
-[spec-interceptor local-storage-interceptor]
-(fn [db [_ story-id title]]
-(-> db
-    (assoc-in [:stories story-id :meta :title] (-> title :choices first :text)))))
+ :handle-title
+ [local-storage-interceptor]
+ (fn [db [_ story-id title]]
+   (-> db
+       (assoc-in [:stories story-id :meta :title] (-> title :choices first :text)))))
 
 
 (reg-event-db
-:open-ai/handle-validate-api-key
-[spec-interceptor local-storage-interceptor]
-(fn [db _]
-(-> db
-    (assoc-in [:state :open-ai :validated?] true) ; failed requests go to :failure-http
-    (assoc-in [:state :pending-request?] false)))) 
+ :open-ai/handle-validate-api-key
+ [local-storage-interceptor]
+ (fn [db _]
+   (-> db
+       (assoc-in [:state :open-ai :validated?] true) ; failed requests go to :failure-http
+       (assoc-in [:state :pending-request?] false)))) 
 
 (reg-event-fx
-:open-ai/validate-api-key
-(fn [{:keys [db]} _]
-(let [api-key (get-in db [:state :open-ai :api-key])]
-    {:db (assoc-in db [:state :pending-request?] true)
-    :http-xhrio {:method          :get
-                :uri             "https://api.openai.com/v1/engines"
-                :headers         {"Authorization" (str "Bearer " api-key)}
-                :response-format (ajax/json-response-format {:keywords? true})
-                :on-success      [:open-ai/handle-validate-api-key]
-                :on-failure      [:failure-http]}})))
+ :open-ai/validate-api-key
+ (fn [{:keys [db]} _]
+   (let [api-key (get-in db [:state :open-ai :api-key])]
+     {:db (assoc-in db [:state :pending-request?] true)
+      :http-xhrio {:method          :get
+                   :uri             "https://api.openai.com/v1/engines"
+                   :headers         {"Authorization" (str "Bearer " api-key)}
+                   :response-format (ajax/json-response-format {:keywords? true})
+                   :on-success      [:open-ai/handle-validate-api-key]
+                   :on-failure      [:failure-http]}})))
 
 (reg-event-fx
  :open-ai/completions
@@ -277,7 +247,5 @@
 (reg-event-db
  :failure-http
  (fn [db [_ result]]
-   (-> db
-       (assoc-in [:state :failure-http]     result)
-       #_(assoc-in [:state :pending-request?] false))))
+   (assoc-in db [:state :failure-http] result)))
 

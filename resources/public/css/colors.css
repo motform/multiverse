@@ -48,13 +48,10 @@
     --bg-base: #000a08;
     --bg-overlay: linear-gradient(180deg, #000a08, #000a0866, #000a0800, #000a0800, #000a0800, #000a0800);
 
-    --bg-0: linear-gradient(-46deg,
-                            #000000,
-                            #000f0d,
-                            #001915,
-                            #00231e,
-                            #002822,
-                            #002d26);
+    --bg-0: linear-gradient(-46deg, #000000, #000f0d, #001915, #00231e, #002822, #002d26);
+
+    --bg-0-calm: linear-gradient(-46deg, #000000, #000f0d, #001915, #00231e);
+
 
     --bg-transparent-1: #090e0d85;
     --bg-transparent-2: #013d3333;

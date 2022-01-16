@@ -1,5 +1,5 @@
 (ns org.motform.multiverse.subs
-  (:require [re-frame.core :refer [reg-sub subscribe]]))
+  (:require [re-frame.core :refer [reg-sub]]))
 
 ;;; Prompt
 
@@ -32,6 +32,15 @@
    (get-in db [:state :highlight])))
 
 (reg-sub
+ :potential-path
+ (fn [db _]
+   (let [potential-sentence-id (get-in db [:state :highlight])
+         story (get-in db [:state :active-story])
+         sentences (get-in db [:stories story :sentences])
+         potential-sentence (sentences potential-sentence-id)]
+     potential-sentence)))
+
+(reg-sub
  :preview?
  (fn [db _]
    (get-in db [:state :preview])))
@@ -60,7 +69,6 @@
  (fn [db _]
    (get-in db [:state :name])))
 
-
 ;;; Story
 
 (reg-sub
@@ -68,11 +76,6 @@
  (fn [db _]
    (let [story (get-in db [:state :active-story])]
      (get-in db [:stories story :meta]))))
-
-(reg-sub
- :sorting
- (fn [db _]
-   (get-in db [:state :sorting])))
 
 (reg-sub
  :path
