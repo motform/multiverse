@@ -5,18 +5,27 @@
             [org.motform.multiverse.routes :as routes]))
 
 (defn circle [r cx cy]
-  (let [refresh (r/atom 5)
-        filled? (when (< 2 (rand-int @refresh))
-                  {:fill "var(--circle-fill)"
-                   :stroke "var(--circle-fill)"})]
-    (js/setInterval #(swap! refresh inc) 3000)
-    (when (< 1 (rand-int @refresh))
-      [:circle.circle
-       (merge {:r r :cx cx :cy cy
-               :stroke "var(--circle-stroke)"
-               :stroke-width "1"
-               :fill "none"}
-              filled?)])))
+  (let [*state    (r/atom 5)
+        *interval (r/atom nil)]
+    (r/create-class
+     {:component-did-mount
+      (fn [_] (reset! *interval (js/setInterval (reset! *state (rand-int 5)) 3)))
+
+      :component-will-unmount
+      (fn [_] (js/clearInterval @*interval))
+
+      :reagent-render
+      (fn [r cx cy]
+        (let [filled? (when (< 2 (rand-int @*state))
+                        {:fill "var(--circle-fill)"
+                         :stroke "var(--circle-fill)"})]
+          (when (< 1 (rand-int @*state))
+            [:circle.circle
+             (merge {:r r :cx cx :cy cy
+                     :stroke "var(--circle-stroke)"
+                     :stroke-width "1"
+                     :fill "none"}
+                    filled?)])))})))
 
 (defn circles []
   (let [wh (quot (. js/window -innerHeight) 2.7) ; arbitrary
@@ -76,7 +85,7 @@
 
 (defn landing []
   [:<>
-   [circles]
+   #_[circles]
    [:section.landing.v-stack.overlay
     [:div.landing-container.v-stack.gap-half
      [:h1 "Multiverse"]

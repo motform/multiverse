@@ -50,7 +50,9 @@
 
 (defn scroll-indicators [event]
   (let [node (.-target event)]
-    (if (< 20  (.-scrollTop node))
+    ;; (println "top" (.-scrollTop node))
+    ;; (println "hi" (.-scrollHeight node))
+    (if (< 20 (.-scrollTop node))
       (set! (.. node -style -borderTopWidth) "2px")
       (set! (.. node -style -borderTopWidth) "0px"))))
 
@@ -58,14 +60,12 @@
   (r/create-class
    {:display-name "stories"
 
-    :component-did-mount
-    (fn [this]
-      (println "mount!"))
-
     :component-did-update
     (fn [this]
       (let [[_ sentences potential-path] (r/argv this)]
-        (when-not (contains? (set sentences) potential-path)
+        (println "update!")
+        (when-not (or (contains? (set sentences) potential-path)
+                      (not potential-path))
           (let [node (rdom/dom-node this)]
             (set! (.-scrollTop node) (.-scrollHeight node))))))
 
@@ -91,7 +91,6 @@
 
     [:<>
      [parent-sentences sentences potential-path]
-     
      (if request?
        [:section.children.pad-half [util/spinner]]
        [:section.children.h-equal-3.gap-double
