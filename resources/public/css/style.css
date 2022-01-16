@@ -549,20 +549,6 @@ h1 {
     border-color: var(--err);
 }
 
-.circles-container {
-    margin-top: 57vh;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    z-index: 1;
-    transition: none;
-}
-
-.circles {
-    height: 100%;
-    width: 100%;
-}
-
 /* library */
 
 .library {

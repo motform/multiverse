@@ -4,37 +4,6 @@
             [re-frame.core :as rf]
             [org.motform.multiverse.routes :as routes]))
 
-(defn circle [r cx cy]
-  (let [*state    (r/atom 5)
-        *interval (r/atom nil)]
-    (r/create-class
-     {:component-did-mount
-      (fn [_] (reset! *interval (js/setInterval (reset! *state (rand-int 5)) 3)))
-
-      :component-will-unmount
-      (fn [_] (js/clearInterval @*interval))
-
-      :reagent-render
-      (fn [r cx cy]
-        (let [filled? (when (< 2 (rand-int @*state))
-                        {:fill "var(--circle-fill)"
-                         :stroke "var(--circle-fill)"})]
-          (when (< 1 (rand-int @*state))
-            [:circle.circle
-             (merge {:r r :cx cx :cy cy
-                     :stroke "var(--circle-stroke)"
-                     :stroke-width "1"
-                     :fill "none"}
-                    filled?)])))})))
-
-(defn circles []
-  (let [wh (quot (. js/window -innerHeight) 2.7) ; arbitrary
-        ww (. js/window -innerWidth)
-        r  (dec (quot wh 6))] ; dec to properly fit three circles with gaps
-    [:div.circles-container>svg.circles
-     (for [cy (range (inc r) (+ 200 wh) (+ 2 (* r 2)))  ; three rows
-           cx (range 0       (inc ww) (+ 2 (* r 2)))] ; fills the rest
-       ^{:key (str cx cy)} [circle r cx cy])]))
 
 (defn elide [s n dots]
   (apply str (concat (take n s) (repeat dots ".") (drop (- (count s) n) s))))
@@ -84,11 +53,9 @@
    [:p "The system is requires an " [:a {:href "https://openai.com/api/" :target "_blank"} "OpenAI API key"] " to run. You will have to provide your own unless otherwise specified. All data is stored locally."]])
 
 (defn landing []
-  [:<>
-   #_[circles]
-   [:section.landing.v-stack.overlay
-    [:div.landing-container.v-stack.gap-half
-     [:h1 "Multiverse"]
-     [:div.h-stack.gap-double
-      [landing-blurb]
-      [key-input]]]]])
+  [:section.landing.v-stack.overlay
+   [:div.landing-container.v-stack.gap-half
+    [:h1 "Multiverse"]
+    [:div.h-stack.gap-double
+     [landing-blurb]
+     [key-input]]]])
