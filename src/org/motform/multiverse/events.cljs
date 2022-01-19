@@ -226,7 +226,7 @@
          {:keys [uri params]} (open-ai/completion-with :curie
                                 {:prompt (open-ai/->title-template sentences)
                                  :n           1
-                                 :max_tokens  6})]
+                                 :max_tokens  15})]
      {:http-xhrio {:method          :post
                    :uri             uri 
                    :headers         {"Authorization" (str "Bearer " api-key)}

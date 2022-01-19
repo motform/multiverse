@@ -34,4 +34,4 @@
   (request (name engine) "completions" params))
 
 (defn ->title-template [story]
-  (str "Summarize:\n" story "\n"))
+  (str "I was asked to give a title to this story:\n\"\"\"\n\n" story "\n\"\"\"\nThe title i came up with was:\n\"\"\""))

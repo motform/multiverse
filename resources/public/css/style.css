@@ -186,9 +186,9 @@ textarea:focus {
     grid-template-columns: 1fr 1fr;
 }
 
-.h-equal-3 {
+.v-equal-3 {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
 }
 
 .h-stack {
@@ -246,6 +246,7 @@ textarea:focus {
 .app-container {
     width: 100%; 
     height: 100%;
+    align-items: center;
 }
 
 /* tooltips */
@@ -394,22 +395,23 @@ textarea:focus {
 .story {
     font-size: 20px;
     line-height: 1.6;
-    align-items: center;
     width: 100%;
     height: 85vh;
 
-    padding-top: 0;
+    padding-top: var(--space-half);
+    padding-right: 100px;
 
     display: grid;
-    grid-template-rows: 60% 40%;
+    grid-template-columns: 60% 40%;
     align-items: start;
     justify-items: center;
-    grid-gap: var(--space-full);
+    grid-gap: var(--space-double);
+    max-width: 1300px;
 }
 
 .sentences {
-    max-width: 800px;
     overflow: scroll;
+    height: 100%;
     max-height: 100%;
     border: 2px solid var(--highlight);
     border-width: 0;
@@ -423,18 +425,34 @@ textarea:focus {
     cursor: pointer;
 }
 
-.sentences > span:first-of-type::before {
+.sentences > span:last-of-type::after {
 }
 
-.sentences > span:not(:first-of-type)::before {
-    border: 1px solid var(--accent-20);
-    border-width: 0 0 0 2px;
-    content: "";
-    margin: 0 4px 0 10px;
+.branch-marks {
+    margin-left: 8px;
 }
+
+.branch-mark {
+    border: 1px solid var(--accent-20);
+    border-width: 0 2px 0 0;
+    content: "";
+    margin: 0 2px;
+}
+
+.weak-branch-mark {
+    border: 1px solid var(--accent-10);
+    border-width: 0 2px 0 0;
+    content: "";
+    margin: 0 2px;
+}
+
 
 .sentence {
     cursor: pointer;
+}
+
+.parent {
+    margin-right: 4px;
 }
 
 .pending {
@@ -446,9 +464,9 @@ textarea:focus {
 
 .children {
     cursor: pointer;
-    max-width: 1300px;
     overflow: auto;
     max-height: 100%;
+    padding-top: var(--space-full);
 }
 
 .parent {
@@ -461,6 +479,7 @@ textarea:focus {
     border: 1px solid transparent;
     padding: var(--space-half);
     border-radius: 20px;
+    max-width: 100%;
 }
 
 .child:hover {

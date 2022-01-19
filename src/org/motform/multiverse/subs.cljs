@@ -1,5 +1,5 @@
 (ns org.motform.multiverse.subs
-  (:require [re-frame.core :refer [reg-sub]]))
+  (:require [re-frame.core :as rf :refer [reg-sub]]))
 
 ;;; Prompt
 
@@ -99,11 +99,25 @@
 
 (reg-sub
  :children
- (fn [db [_ parent]]
-   (let [story (get-in db [:state :active-story])
-         sentences (get-in db [:stories story :sentences])
-         children (get-in db [:stories story :sentences parent :children])]
-     (vals (select-keys sentences children)))))
+ (fn [db [_ parent-id]]
+   (let [story-id (get-in db [:state :active-story])
+         sentences (get-in db [:stories story-id :sentences])
+         child-ids (get-in db [:stories story-id :sentences parent-id :children])]
+     (vals (select-keys sentences child-ids)))))
+
+(reg-sub
+ :realized-children
+ (fn [_ [_ parent-id]]
+   (->> @(rf/subscribe [:children parent-id])
+        (remove #(empty? (:children %)))
+        count)))
+
+(reg-sub
+ :potential-path-in-parents?
+ (fn [_ _]
+   (let [parent @(rf/subscribe [:active-sentence])
+         sentences @(rf/subscribe [:sentences parent])]
+     (contains? (set sentences) @(rf/subscribe [:potential-path])))))
 
 ;;; Ajax
 
