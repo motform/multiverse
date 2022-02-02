@@ -20,7 +20,6 @@
 
 (defn key-input []
   (let [{:keys [api-key validated?]} @(rf/subscribe [:open-ai])]
-    (println (if (empty? @(rf/subscribe [:stories])) :new-story :library))
     [:article.key-input-container.v-stack.gap-half.rounded-large.shadow-large.blurred.pad-full.border
      [:div.v-stack.gap-quarter
       [:label.offset-label "OpenAI API key"]

@@ -99,7 +99,7 @@
 ;;; Prompt
 
 (defn ->sentence [id text path children]
-  {:id id :text text :path path :children children})
+  {:id id :text text :path path :children children :personality :personality/neutral})
 
 (defn ->story [story-id sentence-id prompt]
   {:meta {:id      story-id

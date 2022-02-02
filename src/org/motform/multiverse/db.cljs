@@ -18,16 +18,27 @@
 ;; — LLA, 200514
 
 (def default-db
-  {:state {:active-page      :landing
-           :active-sentence  nil
-           :active-story     nil
-           :highlight        nil
-           :preview          nil
-           :pending-request? false
-           :new-story        ""
-           :sorting         {:order :updated :desc? false}
-           :open-ai         {:api-key "" :validated? false}}
-   :stories {}})
+  {:state
+   {:active-page        :landing
+    :active-sentence    nil
+    :active-story       nil
+    :active-personality :personality/neutral
+    :highlight          nil
+    :preview            nil
+    :pending-request?   false
+    :new-story          ""
+    :sorting           {:order :updated :desc? false}
+    :open-ai           {:api-key "" :validated? false}}
+
+   :personalities #:personality
+   {:neutral  {:prompt "." :color ""}
+    :sf       {:prompt "in the style of science fiction." :color ""}
+    :poetic   {:prompt "as a stanza of a poem." :color ""}
+    :unhinged {:prompt "where only the most strange, random and unexpected things happen." :color ""}
+    :user     {:prompt nil :color ""}}
+
+   :stories
+   {}})
 
 ;;; local-storage
 

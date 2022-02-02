@@ -352,47 +352,65 @@ textarea:focus {
 
 /* map */
 
-.map>nav {
-    margin-left: -2rem;
-    margin-bottom: 4rem;
+.map {
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+    border: 1px solid var(--accent-8);
 }
 
 .level {
-    width: 40px;
-    height: 20px;
-    margin-bottom: 1.5rem;
+    height: 13px;
+    padding: 5px;
+}
+
+.node {
+    width: 20px;
+    height: 10px;
     border-radius: 9999px;
 }
 
-.branch-active {
-    border: 2px solid var(--spinner-fill);
+.branch-active > .node {
+    border: 1px solid var(--spinner-fill);
     background-color: var(--spinner-fill);
 }
 
-.branch-active:hover {
+.branch-active:hover > .node {
     background-color: var(--accent-30);
 }
 
-.branch-inactive {
+.branch-inactive > .node {
     border: 2px solid var(--accent-10);
 }
 
-.leaf-active {
+.leaf-active > .node {
     background-color: var(--accent-30);
 }
 
-.leaf-active:hover {
+.leaf-active:hover > .node {
     background-color: var(--accent-30);
-}
-
-.leaf-inactive {
-    display: none;
 }
 
 .level {
     cursor: pointer;
 }
 
+/* personalities */
+
+.personalities {
+    grid-row: span 2;
+    width: 100%;
+    height: 100%;
+}
+
+.personality {
+    height: 80px;
+    width: 80px;
+    background-color: var(--overlay);
+    border: 1px solid var(--accent-11);
+    border-radius: 9999px;
+    background: var(--accent-10);
+}
 
 /* story view */
 
@@ -407,11 +425,11 @@ textarea:focus {
 
     display: grid;
     grid-template-rows: 60% 40%;
-    grid-template-columns: 50% 50%;
+    grid-template-columns: 10% 45% 45%;
     align-items: start;
     justify-items: center;
     grid-gap: var(--space-double);
-    max-width: 1400px;
+    max-width: 1600px;
 }
 
 .sentences {

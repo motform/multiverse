@@ -27,7 +27,7 @@
 
 (defn header [content]
   (let [active-page @(rf/subscribe [:active-page])]
-    [:aside.header.h-stack.spaced
+    [:header.header.h-stack.spaced
      [item "Multiverse" :story active-page "Story" "header-wordmark"] ; TODO should be the H1
      [:section.header-content (or content [:div])]
      [:nav.h-stack.gap-half

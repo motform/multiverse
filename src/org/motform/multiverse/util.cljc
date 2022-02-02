@@ -68,11 +68,14 @@
   (while (not (realized? x)))
   @x)
 
-(defn spinner []
-  [:svg {:height 40 :width 80}
-   [:circle.spinner-1 {:cx 10 :cy 10 :r 8 :fill "var(--spinner-fill)"}]
-   [:circle.spinner-2 {:cx 40 :cy 10 :r 8 :fill "var(--spinner-fill)"}]
-   [:circle.spinner-3 {:cx 70 :cy 10 :r 8 :fill "var(--spinner-fill)"}]])
+#?(:cljs
+   (defn spinner []
+     (set! (.. js/document -body -style -animation) "gradient 1s ease infinate")
+     (println "@obar")
+     [:svg {:height 40 :width 80}
+      [:circle.spinner-1 {:cx 10 :cy 10 :r 8 :fill "var(--spinner-fill)"}]
+      [:circle.spinner-2 {:cx 40 :cy 10 :r 8 :fill "var(--spinner-fill)"}]
+      [:circle.spinner-3 {:cx 70 :cy 10 :r 8 :fill "var(--spinner-fill)"}]]))
 
 (defn conj?
   "`conj` `x` to `xs` if non-nil, otherwise return `xs`"

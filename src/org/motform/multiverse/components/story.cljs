@@ -6,6 +6,7 @@
             [reagent.core :as r]
             [reagent.dom :as rdom]
             [org.motform.multiverse.components.map :refer [tree-map]]
+            [org.motform.multiverse.components.personalities :refer [personalities]]
             [org.motform.multiverse.util :as util]
             [org.motform.multiverse.components.header :refer [header]]))
 
@@ -95,6 +96,7 @@
       (rf/dispatch [:open-ai/completions parent (util/format-story sentences)]))
 
     [:<>
+     [personalities]
      (when sentences
        [:<> 
         [parent-sentences sentences potential-path]

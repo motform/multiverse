@@ -119,6 +119,13 @@
          sentences @(rf/subscribe [:sentences parent])]
      (contains? (set sentences) @(rf/subscribe [:potential-path])))))
 
+;;; Personalites 
+
+(reg-sub
+ :personalities
+ (fn [db _]
+   (-> db :personalities vals)))
+
 ;;; Ajax
 
 (reg-sub

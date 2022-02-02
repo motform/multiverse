@@ -14,12 +14,16 @@
     "leaf"))
 
 (defn level [{:keys [id path children]}]
-  [:div.level
-   {:id id :class (str (leaf? children) "-" (highlight? id))
-    :style {:margin-left (str (* 3 (count path)) "rem")}
-    :on-click #(rf/dispatch [:select-sentence id])
-    :on-mouse-over #(rf/dispatch [:preview-sentence id])
-    :on-mouse-out  #(rf/dispatch [:remove-preview])}])
+  (let [class (str (leaf? children) "-" (highlight? id))]
+    (when-not (= class "leaf-inactive")
+      [:div.level
+       {:class (str (leaf? children) "-" (highlight? id))
+        :style {:margin-left (str (* 2 (count path)) "rem")}
+        :on-pointer-down #(rf/dispatch [:select-sentence id])
+        :on-pointer-over #(rf/dispatch [:preview-sentence id])
+        :on-pointer-out  #(rf/dispatch [:remove-preview])
+        :id id}
+       [:div.node]])))
 
 (defn walk-sentences
   ([sentences]
@@ -34,5 +38,5 @@
 
 (defn tree-map []
   (let [sentences @(rf/subscribe [:sentence-tree])]
-    [:section.map
+    [:section.map.blurred.rounded-large.pad-half.shadow-medium
      [walk-sentences sentences]]))
