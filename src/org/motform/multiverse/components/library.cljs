@@ -6,7 +6,6 @@
             [org.motform.multiverse.components.header :refer [header]]
             [org.motform.multiverse.util :as util]))
 
-;; TODO Fix rounting
 (defn library-item [{:keys [meta sentences]}]
   (let [{:keys [updated title id]} meta]
     [:a.library-item.v-stack.spaced.gap-full.blurred.rounded.shadow-large.pad-half.border

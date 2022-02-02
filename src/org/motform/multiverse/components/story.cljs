@@ -52,11 +52,11 @@
             :on-pointer-over #(rf/dispatch [:highlight-sentence id])
             :on-pointer-out  #(rf/dispatch [:remove-highlight])}
      [:<> (if sentence-not-in-story?
-            [typewrite text] ; TODO add indication 
+            [typewrite text]
             text)
       (when-not sentence-not-in-story? [branch-marks id])]]))
 
-(defn scroll-indicators [event] ; TODO move this into a lifecycle method?
+(defn scroll-indicators [event]
   (let [node (.-target event)]
     (if (< 20 (.-scrollTop node))
       (set! (.. node -style -borderTopWidth) "4px")
@@ -96,10 +96,12 @@
 
     [:<>
      (when sentences
-       [parent-sentences sentences potential-path])
+       [:<> 
+        [parent-sentences sentences potential-path]
+        [tree-map]])
      (if request?
        [:section.children.pad-half [util/spinner]]
-       [:section.children.v-equal-3.gap-double
+       [:section.children.h-equal-3.gap-double
         (for [{:keys [id text children]} children]
           ^{:key id} [child-sentence text id (seq children)])])]))
 

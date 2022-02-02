@@ -8,11 +8,6 @@
 
 /* Global */
 
-::selection {
-    color: var(--fg);
-    background: var(--ia);
-}
-
 *, *::before, *::after  {
     box-sizing: border-box;
     transition: all 0.20s;
@@ -191,6 +186,11 @@ textarea:focus {
     grid-template-rows: 1fr 1fr 1fr;
 }
 
+.h-equal-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
 .h-stack {
     display: flex;
     flex-direction: row;
@@ -358,30 +358,34 @@ textarea:focus {
 }
 
 .level {
-    width: 15px;
-    height: 15px;
-    margin-bottom: 1rem;
+    width: 40px;
+    height: 20px;
+    margin-bottom: 1.5rem;
     border-radius: 9999px;
 }
 
 .branch-active {
-    background-color: var(--fg);
+    border: 2px solid var(--spinner-fill);
+    background-color: var(--spinner-fill);
+}
+
+.branch-active:hover {
+    background-color: var(--accent-30);
 }
 
 .branch-inactive {
-    border: 1px solid var(--fg);
+    border: 2px solid var(--accent-10);
 }
 
 .leaf-active {
-    background-color: var(--ia);
+    background-color: var(--accent-30);
 }
 
 .leaf-active:hover {
-    background-color: var(--ia);
+    background-color: var(--accent-30);
 }
 
 .leaf-inactive {
-    border: 1px solid var(--ia);
     display: none;
 }
 
@@ -402,19 +406,23 @@ textarea:focus {
     padding-right: 100px;
 
     display: grid;
-    grid-template-columns: 60% 40%;
+    grid-template-rows: 60% 40%;
+    grid-template-columns: 50% 50%;
     align-items: start;
     justify-items: center;
     grid-gap: var(--space-double);
-    max-width: 1300px;
+    max-width: 1400px;
 }
 
 .sentences {
     overflow: scroll;
     height: 100%;
+    width: 100%;
+    max-width: 900px;
     max-height: 100%;
     border: 2px solid var(--highlight);
     border-width: 0;
+    font-size: 16px;
 }
 
 .sentences > span {
@@ -463,6 +471,7 @@ textarea:focus {
 }
 
 .children {
+    grid-column: span 2;
     cursor: pointer;
     overflow: auto;
     max-height: 100%;
@@ -582,7 +591,7 @@ h1 {
 .library-title {
     font-family: "Obviously Wide", "Verdana", sans-serif;
     text-transform: uppercase;
-    color: var(--highlight);
+    color: var(--fg);
     font-size: 16px;
 }
 

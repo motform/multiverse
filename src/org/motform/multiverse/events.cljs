@@ -91,7 +91,6 @@
          (assoc-in [:stories story :meta :active-sentence] real-active-sentence)
          (assoc-in [:state :preview] nil)))))
 
-;; TODO add this into localstorage
 (reg-event-db
  :open-ai/update-api-key
  (fn [db [_ api-key]]

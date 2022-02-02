@@ -17,8 +17,6 @@
 ;;  
 ;; — LLA, 200514
 
-;; TODO add timestamp to each sentence
-
 (def default-db
   {:state {:active-page      :landing
            :active-sentence  nil

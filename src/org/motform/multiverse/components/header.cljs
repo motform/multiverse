@@ -20,12 +20,11 @@
 
 (defn item [label key active-page tooltip class]
   [:a.hitem.tooltip-container.shadow-small
-   {:class (str class " " (when (= key active-page) "highlight")) ; TODO update highlight
+   {:class (str class " " (when (= key active-page) "highlight"))
     :href (routes/url-for key)}
    label
    [:span.tooltip.rounded tooltip]])
 
-;; TODO Add icons for new story and for lib
 (defn header [content]
   (let [active-page @(rf/subscribe [:active-page])]
     [:aside.header.h-stack.spaced
