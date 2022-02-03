@@ -38,5 +38,5 @@
 
 (defn tree-map []
   (let [sentences @(rf/subscribe [:sentence-tree])]
-    [:section.map.blurred.rounded-large.pad-half.shadow-medium
+    [:section.map
      [walk-sentences sentences]]))

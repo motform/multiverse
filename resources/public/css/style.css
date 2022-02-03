@@ -256,7 +256,7 @@ textarea:focus {
     font: 500 10px/1.4 "Obviously", sans-serif;
     letter-spacing: 1px;
     text-transform: uppercase;
-    visibility: hidden;
+    opacity: 0%;
     background-color: var(--bg-transparent-2);
     backdrop-filter: blur(5px);
     text-align: center;
@@ -281,7 +281,7 @@ textarea:focus {
 }
 
 .tooltip-container:hover .tooltip {
-    visibility: visible;
+    opacity: 100%;
 }
 
 /* header */
@@ -355,8 +355,6 @@ textarea:focus {
 .map {
     width: 100%;
     height: 100%;
-    overflow: scroll;
-    border: 1px solid var(--accent-8);
 }
 
 .level {
@@ -399,37 +397,42 @@ textarea:focus {
 
 .personalities {
     grid-row: span 2;
-    width: 100%;
-    height: 100%;
 }
 
 .personality {
     height: 80px;
     width: 80px;
-    background-color: var(--overlay);
-    border: 1px solid var(--accent-11);
+    border: 1px solid var(--accent-10);
     border-radius: 9999px;
-    background: var(--accent-10);
+    background: var(--accent-8);
+    cursor: pointer;
 }
+
+.personality:hover {
+    background: var(--accent-20);
+}
+
+.personality-active {
+    background: var(--accent-20);
+}
+
 
 /* story view */
 
 .story {
     font-size: 20px;
     line-height: 1.6;
-    width: 100%;
-    height: 85vh;
-
-    padding-top: var(--space-half);
-    padding-right: 100px;
+    height: 80vh;
+    margin: var(--space-full);
+    border: 2px solid var(--accent-6);
+    max-width: 95%;
 
     display: grid;
     grid-template-rows: 60% 40%;
-    grid-template-columns: 10% 45% 45%;
+    grid-template-columns: 5% 45% 40%;
     align-items: start;
     justify-items: center;
     grid-gap: var(--space-double);
-    max-width: 1600px;
 }
 
 .sentences {
@@ -491,9 +494,6 @@ textarea:focus {
 .children {
     grid-column: span 2;
     cursor: pointer;
-    overflow: auto;
-    max-height: 100%;
-    padding-top: var(--space-full);
 }
 
 .parent {

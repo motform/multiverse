@@ -122,6 +122,11 @@
 ;;; Personalites 
 
 (reg-sub
+ :active-personality
+ (fn [db _]
+   (get-in db [:state :active-personality])))
+
+(reg-sub
  :personalities
  (fn [db _]
    (-> db :personalities vals)))

@@ -31,11 +31,11 @@
     :open-ai           {:api-key "" :validated? false}}
 
    :personalities #:personality
-   {:neutral  {:prompt "." :color ""}
-    :sf       {:prompt "in the style of science fiction." :color ""}
-    :poetic   {:prompt "as a stanza of a poem." :color ""}
-    :unhinged {:prompt "where only the most strange, random and unexpected things happen." :color ""}
-    :user     {:prompt nil :color ""}}
+   {:neutral  {:id :personality/neutral  :prompt "." :color ""}
+    :sf       {:id :personality/sf       :prompt "in the style of science fiction." :color ""}
+    :poetic   {:id :personality/poetic   :prompt "as a stanza of a poem." :color ""}
+    :unhinged {:id :personality/unhinged :prompt "where only the most strange, random and unexpected things happen." :color ""}
+    :user     {:id :personality/user     :prompt nil :color ""}}
 
    :stories
    {}})

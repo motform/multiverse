@@ -4,11 +4,11 @@
             [clojure.core.async :refer [<! timeout]]
             [re-frame.core :as rf]                       
             [reagent.core :as r]
-            [reagent.dom :as rdom]
+            [org.motform.multiverse.components.header :refer [header]]           [reagent.dom :as rdom]
             [org.motform.multiverse.components.map :refer [tree-map]]
             [org.motform.multiverse.components.personalities :refer [personalities]]
-            [org.motform.multiverse.util :as util]
-            [org.motform.multiverse.components.header :refer [header]]))
+            [org.motform.multiverse.open-ai :as open-ai]
+            [org.motform.multiverse.util :as util]))
 
 ;;; Util
 
@@ -93,7 +93,7 @@
 
     ;; First, see if we have to request any new completions
     (when (not-any? identity [children request? @(rf/subscribe [:preview?])])
-      (rf/dispatch [:open-ai/completions parent (util/format-story sentences)]))
+      (rf/dispatch [:open-ai/completions parent (open-ai/format-prompt sentences)]))
 
     [:<>
      [personalities]
@@ -123,5 +123,5 @@
 (defn multiverse []
   [:div.app-container.v-stack.overlay
    [header [title]]
-   [:main.story.pad-full
+   [:main.story.pad-full.rounded-large.blurred
     [story]]])

@@ -204,8 +204,8 @@
  (fn [{:keys [db]} [_ parent-id prompt]]
    (let [story-id  (get-in db [:state :active-story])
          api-key   (get-in db [:state :open-ai :api-key])
-         {:keys [uri params]} (open-ai/completion-with :curie
-                                {:prompt prompt})]
+         {:keys [uri params]} (open-ai/completion-with :davinci #_:text-davinci-001
+                                                       {:prompt prompt})]
      {:db (assoc-in db [:state :pending-request?] true)
       :http-xhrio {:method  :post
                    :uri     uri 
@@ -221,11 +221,11 @@
  (fn [{:keys [db]} _]
    (let [api-key  (get-in db [:state :open-ai :api-key])
          story-id (get-in db [:state :active-story])
-         sentences (->> (get-in db [:stories story-id :sentences]) vals util/format-story)
-         {:keys [uri params]} (open-ai/completion-with :curie
-                                {:prompt (open-ai/->title-template sentences)
-                                 :n           1
-                                 :max_tokens  15})]
+         sentences (->> (get-in db [:stories story-id :sentences]) vals open-ai/format-prompt)
+         {:keys [uri params]} (open-ai/completion-with :text-davinci-001
+                                                       {:prompt (open-ai/format-title sentences)
+                                                        :n           1
+                                                        :max_tokens  15})]
      {:http-xhrio {:method          :post
                    :uri             uri 
                    :headers         {"Authorization" (str "Bearer " api-key)}
