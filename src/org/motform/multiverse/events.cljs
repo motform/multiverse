@@ -219,8 +219,8 @@
 (reg-event-fx
  :open-ai/title
  (fn [{:keys [db]} _]
-   (let [api-key  (get-in db [:state :open-ai :api-key])
-         story-id (get-in db [:state :active-story])
+   (let [api-key   (get-in db [:state :open-ai :api-key])
+         story-id  (get-in db [:state :active-story])
          sentences (->> (get-in db [:stories story-id :sentences]) vals open-ai/format-prompt)
          {:keys [uri params]} (open-ai/completion-with :text-davinci-001
                                                        {:prompt (open-ai/format-title sentences)

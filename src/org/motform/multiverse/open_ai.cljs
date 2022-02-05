@@ -34,7 +34,7 @@
          (set/subset? (set (keys params)) valid-params)]}
   (request (name engine) "completions" params))
 
-(defn ->title-template [story]
+(defn format-title [story]
   (str "I was asked to give a title to this story:\n\"\"\"\n\n" story "\n\"\"\"\nThe title i came up with was:\n\"\"\""))
 
 (defn format-prompt

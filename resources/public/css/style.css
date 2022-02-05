@@ -640,3 +640,24 @@ h1 {
     border-color: var(--accent-7);
     cursor: pointer;
 }
+
+.library-item-new-story-card {
+    align-items: center;
+    justify-content: center;
+}
+
+.library-item-new-story {
+    padding: 30px 48px;
+    border: 1px solid var(--accent-12);
+    border-radius: 99999px;
+    font-size: 40px;
+    font-weight: 100;
+    color: var(--accent-30);
+}
+
+.library-item-new-story:hover {
+    background-color: var(--accent-12);
+    border-color: var(--accent-12);
+    color: var(--fg);
+    cursor: pointer;
+}
