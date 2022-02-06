@@ -77,6 +77,14 @@
      (get-in db [:stories story :sentences id :path]))))
 
 (reg-sub
+ :active-path
+ (fn [db _]
+   (let [story           (get-in db [:state :active-story])
+         active-sentence @(rf/subscribe [:active-sentence])
+         highlight       @(rf/subscribe [:highlight])]
+     (set (get-in db [:stories story :sentences (or highlight active-sentence) :path])))))
+
+(reg-sub
  :sentences
  (fn [db [_ id]]
    (let [story (get-in db [:state :active-story])
@@ -86,19 +94,20 @@
              [] path))))
 
 
-(defn sentence-tree-level [sentences sentence-id]
+(defn sentence-tree-level [sentences sentence-id active-sentence-id]
   (let [{:keys [children]} (sentences sentence-id)]
-    (when (seq children)
-      {:name sentence-id
-       :children (for [child-id children
-                       :when (-> (sentences child-id) :children seq)]
-                   (sentence-tree-level sentences child-id))})))
+    {:name sentence-id
+     :children (for [child-id children
+                     :when (-> (sentences child-id) :children seq)]
+                 (sentence-tree-level sentences child-id active-sentence-id))}))
 
 (reg-sub
  :sentence-tree
  (fn [db _]
+   (println "\n\n")
    (sentence-tree-level (get-in db [:stories @(rf/subscribe [:active-story]) :sentences])
-                        @(rf/subscribe [:root-sentence]))))
+                        @(rf/subscribe [:root-sentence])
+                        @(rf/subscribe [:active-sentence]))))
 
 (reg-sub
  :root-sentence

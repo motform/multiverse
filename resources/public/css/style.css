@@ -703,14 +703,30 @@ h1 {
 
 .tree-map-node-root {
     fill: var(--accent-20);
-    stroke: var(--accent-10);
-    transform: translate(0, 8px);
+    stroke: var(--accent-20);
     stroke-width: 3px;
 }
 
 .tree-map-node-current {
     fill: var(--accent-30);
     stroke: var(--accent-20);
+    stroke-width: 3px;
+}
+
+.tree-map-node-current-dim {
+    fill: var(--accent-10);
+    stroke: var(--accent-10);
+    stroke-width: 3px;
+}
+
+.tree-map-node-current-superseded {
+    fill: var(--accent-20);
+    stroke: var(--accent-20);
+}
+
+.tree-map-node-highlight {
+    fill: var(--accent-30);
+    stroke: var(--accent-30);
     stroke-width: 3px;
 }
 

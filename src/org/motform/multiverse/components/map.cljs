@@ -6,7 +6,7 @@
 
 (defn redraw-radial-map
   "Based on:  https://medium.com/analytics-vidhya/creating-a-radial-tree-using-d3-js-for-javascript-be943e23b74e"
-  [node {:keys [active-path sentence-tree active-sentence root-sentence]}]
+  [node {:keys [active-path sentence-tree active-sentence root-sentence highlight]}]
   (.. js/d3 (select "g") remove) ; clear old image arst
   (let [w (.-clientWidth node)
         h (.-clientHeight node)
@@ -43,19 +43,24 @@
                   (join "g")
                   (attr "class" "tree-map-node")
                   (attr "class" #(let [id (.. %  -data -name)]
-                                   (cond (= root-sentence id)       "tree-map-node-root"
-                                         (= active-sentence id)     "tree-map-node-current"
+                                   (cond (= active-sentence id) (if-not highlight "tree-map-node-current"
+                                                                        (cond ; the highlight state machine extavaganza!
+                                                                          (= highlight active-sentence) "tree-map-node-current"
+                                                                          (contains? active-path id) "tree-map-node-current-superseded"
+                                                                          :else "tree-map-node-current-dim"))
+                                         (= highlight id)           "tree-map-node-highlight"
+                                         (= root-sentence id)       "tree-map-node-root"
                                          (contains? active-path id) "tree-map-node-active"
                                          :else                      "tree-map-node-inactive")))
                   (attr "transform" #(str "rotate(" (- (/ (* (.-x %) 180) Math/PI) 90) ") " "translate(" (.-y %) ", 0)"))
                   (on "pointerdown" #(println "hello sailor")) ; TODO use to shift focus
                   (append "circle")
                   (attr "r" #(condp = (.. %  -data -name)
-                               root-sentence 12
                                active-sentence 10
+                               root-sentence 10
                                5)))]))
 
-(defn redraw [this]
+(defn redraw [this old-argv]
   (redraw-radial-map (rdom/dom-node this) (r/props this)))
 
 (defn radial-map-d3 []
@@ -63,13 +68,16 @@
    {:display-name         "radial-tree-map"
     :component-did-mount  redraw
     :component-did-update redraw
-    :reagent-render       (fn [] [:section#radial-map [:svg#radial-map-tree]])}))
+    :reagent-render       (fn []
+                            [:section#radial-map [:svg#radial-map-tree]])}))
 
+(defn test- [props]
+  [:div (:active-sentence props)])
 
 (defn radial-map []
-  (let [sentence (or @(rf/subscribe [:highlight]) @(rf/subscribe [:active-sentence]))]
-    (fn []
-      [radial-map-d3 {:sentence-tree   @(rf/subscribe [:sentence-tree])
-                      :active-path     (set @(rf/subscribe [:path sentence]))
-                      :active-sentence sentence
-                      :root-sentence   @(rf/subscribe [:root-sentence])}])))
+  (fn []
+    [radial-map-d3 {:sentence-tree   @(rf/subscribe [:sentence-tree])
+                    :active-path     @(rf/subscribe [:active-path])
+                    :active-sentence @(rf/subscribe [:active-sentence])
+                    :highlight       @(rf/subscribe [:highlight])
+                    :root-sentence   @(rf/subscribe [:root-sentence])}]))
