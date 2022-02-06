@@ -53,14 +53,22 @@
                                          (contains? active-path id) "tree-map-node-active"
                                          :else                      "tree-map-node-inactive")))
                   (attr "transform" #(str "rotate(" (- (/ (* (.-x %) 180) Math/PI) 90) ") " "translate(" (.-y %) ", 0)"))
-                  (on "pointerdown" #(println "hello sailor")) ; TODO use to shift focus
+                  (on "pointerover" #(rf/dispatch [:highlight-sentence (.. %2 -data -name)]))
+                  (on "pointerout"  #(rf/dispatch [:remove-highlight]))
+                  (on "pointerdown" #(rf/dispatch [:active-sentence (.. %2 -data -name)]))
                   (append "circle")
                   (attr "r" #(condp = (.. %  -data -name)
                                active-sentence 10
                                root-sentence 10
                                5)))]))
 
-(defn redraw [this old-argv]
+(comment
+  :on-pointer-down #(rf/dispatch [:active-sentence    id])
+  :on-pointer-over #(rf/dispatch [:highlight-sentence id])
+  :on-pointer-out  #(rf/dispatch [:remove-highlight]))
+
+
+(defn redraw [this]
   (redraw-radial-map (rdom/dom-node this) (r/props this)))
 
 (defn radial-map-d3 []

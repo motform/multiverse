@@ -705,9 +705,11 @@ h1 {
     fill: var(--accent-20);
     stroke: var(--accent-20);
     stroke-width: 3px;
+    cursor: pointer;
 }
 
 .tree-map-node-current {
+    cursor: pointer;
     fill: var(--accent-30);
     stroke: var(--accent-20);
     stroke-width: 3px;
@@ -717,14 +719,17 @@ h1 {
     fill: var(--accent-10);
     stroke: var(--accent-10);
     stroke-width: 3px;
+    cursor: pointer;
 }
 
 .tree-map-node-current-superseded {
     fill: var(--accent-20);
     stroke: var(--accent-20);
+    cursor: pointer;
 }
 
 .tree-map-node-highlight {
+    cursor: pointer;
     fill: var(--accent-30);
     stroke: var(--accent-30);
     stroke-width: 3px;
@@ -732,10 +737,12 @@ h1 {
 
 .tree-map-node-active {
     fill: var(--highlight);
+    cursor: pointer;
 }
 
 .tree-map-node-inactive {
     fill: var(--accent-10);
+    cursor: pointer;
 }
 
 .tree-map-node-active:hover, .tree-map-node-root:hover, .tree-map-node-current:hover, .tree-map-node-inactive:hover  {
