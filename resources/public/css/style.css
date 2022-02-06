@@ -701,6 +701,13 @@ h1 {
     stroke-width: 2px;
 }
 
+.radial-map-link-prospective {
+    fill: none;
+    stroke: var(--accent-10);
+    stroke-width: 0.5px;
+    stroke-dasharray: 4;
+}
+
 .tree-map-node-root {
     fill: var(--accent-20);
     stroke: var(--accent-20);
@@ -745,7 +752,18 @@ h1 {
     cursor: pointer;
 }
 
+.tree-map-node-prospective {
+    fill: var(--bg);
+    stroke: var(--accent-10);
+    stroke-dasharray: 4;
+    cursor: pointer;
+}
+
 .tree-map-node-active:hover, .tree-map-node-root:hover, .tree-map-node-current:hover, .tree-map-node-inactive:hover  {
     fill: var(--fg);
     cursor: pointer;
+}
+
+.hidden {
+    display: none;
 }

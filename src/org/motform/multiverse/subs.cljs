@@ -96,15 +96,19 @@
 
 (defn sentence-tree-level [sentences sentence-id active-sentence-id]
   (let [{:keys [children]} (sentences sentence-id)]
-    {:name sentence-id
+    {:name     sentence-id
      :children (for [child-id children
-                     :when (-> (sentences child-id) :children seq)]
+                     :when
+                     true
+                     #_(or (= active-sentence-id sentence-id)
+                           (-> (sentences child-id) :children seq))
+                     #_(-> (sentences child-id) :children seq)]
                  (sentence-tree-level sentences child-id active-sentence-id))}))
+
 
 (reg-sub
  :sentence-tree
  (fn [db _]
-   (println "\n\n")
    (sentence-tree-level (get-in db [:stories @(rf/subscribe [:active-story]) :sentences])
                         @(rf/subscribe [:root-sentence])
                         @(rf/subscribe [:active-sentence]))))
@@ -130,7 +134,7 @@
      (vals (select-keys sentences child-ids)))))
 
 (reg-sub
- :realized-children
+ :count-realized-children
  (fn [_ [_ parent-id]]
    (->> @(rf/subscribe [:children parent-id])
         (remove #(empty? (:children %)))

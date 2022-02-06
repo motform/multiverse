@@ -4,9 +4,9 @@
             [reagent.core :as r]
             [reagent.dom :as rdom]))
 
-(defn redraw-radial-map
+(defn draw-radial-map
   "Based on:  https://medium.com/analytics-vidhya/creating-a-radial-tree-using-d3-js-for-javascript-be943e23b74e"
-  [node {:keys [active-path sentence-tree active-sentence root-sentence highlight]}]
+  [node {:keys [active-path sentence-tree active-sentence root-sentence highlight prospective-child?]}]
   (.. js/d3 (select "g") remove) ; clear old image arst
   (let [w (.-clientWidth node)
         h (.-clientHeight node)
@@ -34,24 +34,29 @@
         links (.. graph-group (selectAll ".link")
                   (data links)
                   (join "path")
-                  (attr "class" #(if (active-path (.. % -target -data -name))
-                                   "radial-map-link-active" "radial-map-link"))
+                  (attr "class" #(cond (active-path (.. % -target -data -name))        "radial-map-link-active"
+                                       (seq (.. %  -target -data -children))           "radial-map-link"
+                                       (prospective-child? (.. % -target -data -name)) "radial-map-link-prospective"
+                                       (= active-sentence (.. % -source -data -name))  "radial-map-link"
+                                       :else "hidden"))
                   (attr "d" radial-link))
 
         nodes (.. graph-group (selectAll ".node")
                   (data nodes)
                   (join "g")
                   (attr "class" "tree-map-node")
-                  (attr "class" #(let [id (.. %  -data -name)]
+                  (attr "class" #(let [id (.. %  -data -name)] ; the highlight state machine extavaganza!
                                    (cond (= active-sentence id) (if-not highlight "tree-map-node-current"
-                                                                        (cond ; the highlight state machine extavaganza!
+                                                                        (cond 
                                                                           (= highlight active-sentence) "tree-map-node-current"
                                                                           (contains? active-path id) "tree-map-node-current-superseded"
                                                                           :else "tree-map-node-current-dim"))
-                                         (= highlight id)           "tree-map-node-highlight"
-                                         (= root-sentence id)       "tree-map-node-root"
-                                         (contains? active-path id) "tree-map-node-active"
-                                         :else                      "tree-map-node-inactive")))
+                                         (= highlight id)               "tree-map-node-highlight"
+                                         (= root-sentence id)           "tree-map-node-root"
+                                         (contains? active-path id)     "tree-map-node-active"
+                                         (seq (.. %  -data -children))  "tree-map-node-inactive"
+                                         (prospective-child? id)        "tree-map-node-prospective"
+                                         :else                          "hidden")))
                   (attr "transform" #(str "rotate(" (- (/ (* (.-x %) 180) Math/PI) 90) ") " "translate(" (.-y %) ", 0)"))
                   (on "pointerover" #(rf/dispatch [:highlight-sentence (.. %2 -data -name)]))
                   (on "pointerout"  #(rf/dispatch [:remove-highlight]))
@@ -62,14 +67,8 @@
                                root-sentence 10
                                5)))]))
 
-(comment
-  :on-pointer-down #(rf/dispatch [:active-sentence    id])
-  :on-pointer-over #(rf/dispatch [:highlight-sentence id])
-  :on-pointer-out  #(rf/dispatch [:remove-highlight]))
-
-
 (defn redraw [this]
-  (redraw-radial-map (rdom/dom-node this) (r/props this)))
+  (draw-radial-map (rdom/dom-node this) (r/props this)))
 
 (defn radial-map-d3 []
   (r/create-class
@@ -79,13 +78,11 @@
     :reagent-render       (fn []
                             [:section#radial-map [:svg#radial-map-tree]])}))
 
-(defn test- [props]
-  [:div (:active-sentence props)])
-
 (defn radial-map []
   (fn []
     [radial-map-d3 {:sentence-tree   @(rf/subscribe [:sentence-tree])
                     :active-path     @(rf/subscribe [:active-path])
                     :active-sentence @(rf/subscribe [:active-sentence])
                     :highlight       @(rf/subscribe [:highlight])
+                    :prospective-child?  (->> @(rf/subscribe [:children @(rf/subscribe [:active-sentence])]) (map :id) set)
                     :root-sentence   @(rf/subscribe [:root-sentence])}]))

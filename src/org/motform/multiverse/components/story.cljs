@@ -37,7 +37,7 @@
       [:span (subs text 0 @*i)])))
 
 (defn branch-marks [id first-sentence?]  
-  (let [count-branches @(rf/subscribe [:realized-children id])]
+  (let [count-branches @(rf/subscribe [:count-realized-children id])]
     [:span.branch-marks
      (if (zero? count-branches)
        [:span.weak-branch-mark]
