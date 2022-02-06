@@ -94,16 +94,17 @@
              [] path))))
 
 
-(defn sentence-tree-level [sentences sentence-id active-sentence-id]
+(defn sentence-tree-level [sentences sentence-id active-sentence-id parent-id]
   (let [{:keys [children]} (sentences sentence-id)]
     {:name     sentence-id
+     :info     parent-id  ; XXX confusing key
      :children (for [child-id children
                      :when
                      true
                      #_(or (= active-sentence-id sentence-id)
                            (-> (sentences child-id) :children seq))
                      #_(-> (sentences child-id) :children seq)]
-                 (sentence-tree-level sentences child-id active-sentence-id))}))
+                 (sentence-tree-level sentences child-id active-sentence-id sentence-id))}))
 
 
 (reg-sub
@@ -111,7 +112,8 @@
  (fn [db _]
    (sentence-tree-level (get-in db [:stories @(rf/subscribe [:active-story]) :sentences])
                         @(rf/subscribe [:root-sentence])
-                        @(rf/subscribe [:active-sentence]))))
+                        @(rf/subscribe [:active-sentence])
+                        nil)))
 
 (reg-sub
  :root-sentence
