@@ -12,7 +12,8 @@
         re-frame/re-frame          {:mvn/version "1.2.0"}
         reagent/reagent            {:mvn/version "1.1.0"}
         thheller/shadow-cljs       {:mvn/version "2.16.12"}
-        thheller/shadow-cljsjs     {:mvn/version "0.0.22"}}
+        thheller/shadow-cljsjs     {:mvn/version "0.0.22"}
+        cljsjs/d3                  {:mvn/version "6.2.0-0"}}
 
  :aliases {:cli    {:main-opts ["-m" "multiverse.cli"]}
            :server {:main-opts ["-m" "multiverse.server"]}}}

@@ -8,7 +8,7 @@
 
 (defn personalities []
   (let [active-personality @(rf/subscribe [:active-personality])]
-    [:aside.personalities.v-stack.gap-full.centered
+    [:aside.personalities.v-stack.gap-half.centered.shadow-large.rounded-large.pad-half
      (for [personality @(rf/subscribe [:personalities])]
        ^{:key (:id personality)}
        [personality-toggle personality active-personality])]))

@@ -58,7 +58,7 @@ a:hover {
 p a {
     color: var(--fg);
     text-decoration: none;
-    padding-bottom: 1px;
+    padding-bottom: 2px;
     border: 1px solid var(--accent-12);
     border-width: 0 0 1px 0;
 }
@@ -85,7 +85,7 @@ main {
 label {
     font: 12px/1 "Obviously", sans-serif;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 3px;
 }
 
 .offset-label {
@@ -95,7 +95,7 @@ label {
 button {
     font-family: "Obviously", sans-serif;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
     font-size: 3rem;
     color: var(--fg);
     background-color: var(--accent-6);
@@ -226,7 +226,7 @@ textarea:focus {
 }
 
 .overlay {
-    background: var(--bg-overlay);
+    /* background: var(--bg-overlay); */
 }
 
 .shadow-large {
@@ -289,7 +289,7 @@ textarea:focus {
 .header {
     width: 100%;
     height: auto;
-    padding:  var(--space-full);
+    padding: var(--space-half) var(--space-full);
     color: var(--accent-20);
 }
 
@@ -299,19 +299,23 @@ textarea:focus {
 }
 
 .title {
-    font-family: "Obviously Wide", "Verdana", sans-serif;
-    text-transform: uppercase;
+    font-family: "Obviously", "Verdana", sans-serif;
+    font-weight: 600;
+    text-transform: capitalize;
     color: var(--fg);
-    font-size: 16px;
-    border: 1px solid var(--accent-20);
-    border-width: 0 0 2px 0;
-    padding-bottom: var(--space-quarter);
+    font-size: 13px;
 }
 
 .title:hover {
     color: var(--highlight);
     cursor: pointer;
 }
+
+.title-library {
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
 
 .spinner-1 { animation: fade 1.5s ease infinite alternate; }
 .spinner-2 { animation: fade 1.5s ease infinite alternate; animation-delay: 0.5s;}
@@ -397,11 +401,15 @@ textarea:focus {
 
 .personalities {
     grid-row: span 2;
+    border: 1px solid var(--accent-5);
+    margin: var(--space-half);
+    margin-left: var(--space-double);
+    background-color: #111f25;
 }
 
 .personality {
-    height: 80px;
-    width: 80px;
+    height: 45px;
+    width: 45px;
     border: 1px solid var(--accent-10);
     border-radius: 9999px;
     background: var(--accent-8);
@@ -416,23 +424,34 @@ textarea:focus {
     background: var(--accent-20);
 }
 
+.personality:first-of-type {
+    background: var(--personality-1);
+    border-color: var(--accent-4);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+}
+
+@keyframes gradient {
+    0%   { background-position: 0% 50%; }
+    50%  { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
 
 /* story view */
 
 .story {
     font-size: 20px;
     line-height: 1.6;
-    height: 80vh;
-    margin: var(--space-full);
-    border: 2px solid var(--accent-6);
-    max-width: 95%;
+    height: 94vh;
+    border: 1px solid var(--accent-5);
+    border-width: 1px 0 0 0;
 
     display: grid;
     grid-template-rows: 60% 40%;
-    grid-template-columns: 5% 45% 40%;
+    grid-template-columns: 8% 40% 52%;
     align-items: start;
     justify-items: center;
-    grid-gap: var(--space-double);
 }
 
 .sentences {
@@ -441,9 +460,9 @@ textarea:focus {
     width: 100%;
     max-width: 900px;
     max-height: 100%;
-    border: 2px solid var(--highlight);
-    border-width: 0;
     font-size: 16px;
+
+    padding-left: var(--space-double);
 }
 
 .sentences > span {
@@ -494,6 +513,9 @@ textarea:focus {
 .children {
     grid-column: span 2;
     cursor: pointer;
+    border: 1px solid var(--accent-5);
+    border-width: 1px 0 0 0;
+    width: 100%;
 }
 
 .parent {
@@ -517,7 +539,7 @@ textarea:focus {
     backdrop-filter: blur(10px);
     border-color: var(--accent-4);
 
-    box-shadow: 1.4px 1.4px 3.2px rgba(0, 0, 0, 0.008), 3.3px 3.3px 7.7px rgba(0, 0, 0, 0.012), 6.3px 6.3px 14.1px rgba(0, 0, 0, 0.015), 11.2px 11.2px 23.9px rgba(0, 0, 0, 0.018), 20.9px 20.9px 40px rgba(0, 0, 0, 0.022), 50px 50px 80px rgba(0, 0, 0, 0.03);
+    box-shadow: 1.4px 1.4px 3.1px rgba(0, 0, 0, 0.008), 3.3px 3.3px 7.7px rgba(0, 0, 0, 0.012), 6.3px 6.3px 14.1px rgba(0, 0, 0, 0.015), 11.1px 11.1px 23.9px rgba(0, 0, 0, 0.018), 20.9px 20.9px 40px rgba(0, 0, 0, 0.022), 50px 50px 80px rgba(0, 0, 0, 0.03);
 }
 
 .visited {
@@ -606,13 +628,6 @@ h1 {
     height: 85vh;
 }
 
-.library-title {
-    font-family: "Obviously Wide", "Verdana", sans-serif;
-    text-transform: uppercase;
-    color: var(--fg);
-    font-size: 16px;
-}
-
 .library-button {
     font-size: 12px;
 }
@@ -659,5 +674,55 @@ h1 {
     background-color: var(--accent-12);
     border-color: var(--accent-12);
     color: var(--fg);
+    cursor: pointer;
+}
+
+/* radial map */
+
+#radial-map {
+    height: 100%;
+    width: 100%;
+    border: 1px solid var(--accent-5);
+    border-width: 0 0 0 1px;
+}
+
+#radial-map-tree {
+}
+
+.radial-map-link {
+    fill: none;
+    stroke: var(--accent-10);
+    stroke-width: 1px;
+}
+
+.radial-map-link-active {
+    fill: none;
+    stroke: var(--highlight);
+    stroke-width: 2px;
+}
+
+.tree-map-node-root {
+    fill: var(--accent-20);
+    stroke: var(--accent-10);
+    transform: translate(0, 8px);
+    stroke-width: 3px;
+}
+
+.tree-map-node-current {
+    fill: var(--accent-30);
+    stroke: var(--accent-20);
+    stroke-width: 3px;
+}
+
+.tree-map-node-active {
+    fill: var(--highlight);
+}
+
+.tree-map-node-inactive {
+    fill: var(--accent-10);
+}
+
+.tree-map-node-active:hover, .tree-map-node-root:hover, .tree-map-node-current:hover, .tree-map-node-inactive:hover  {
+    fill: var(--fg);
     cursor: pointer;
 }

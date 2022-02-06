@@ -45,14 +45,22 @@
     --ok: var(--accent-20);
     --highlight: var(--accent-20);
 
-    --bg-base: #000a08;
-    --bg-overlay: linear-gradient(180deg, #000a08, #000a0866, #000a0800, #000a0800, #000a0800, #000a0800);
-    --bg-0: linear-gradient(-46deg, #000000, #000f0d, #001915, #00231e, #002822, #002d26);
-    --bg-0-calm: linear-gradient(-46deg, #000000, #000f0d, #001915, #00231e);
+    /* --bg-base: #000a08; */
+    /* --bg-overlay: linear-gradient(180deg, #000a08, #000a0866, #000a0800, #000a0800, #000a0800, #000a0800); */
+    /* --bg-0: linear-gradient(-46deg, #000000, #000f0d, #001915, #00231e, #002822, #002d26); */
+    /* --bg-0-calm: linear-gradient(-46deg, #000000, #000f0d, #001915, #00231e); */
+    /* --bg-0: linear-gradient(-46deg, #002822, #002d26); */
+    /* --bg-0: #070c0e; */
+    --bg-0: #070c0e;
 
-    --bg-transparent-1: #090e0d85;
+    /* --bg-transparent-1: #070c0e85; */
+    /* --bg-transparent-1: #090e0d85; */
+
+    --bg-transparent-1: #0B1418;
     --bg-transparent-2: #013d3333;
 
     --spinner-fill: #0e6d5e88;
 
+    --personality-1: linear-gradient(-46deg, #002d26, #014237, #013d33, #01382f, #01332b);
+    --personality-1: linear-gradient(-46deg, green, yellow);
 }

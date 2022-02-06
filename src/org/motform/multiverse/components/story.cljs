@@ -5,7 +5,7 @@
             [re-frame.core :as rf]                       
             [reagent.core :as r]
             [org.motform.multiverse.components.header :refer [header]]           [reagent.dom :as rdom]
-            [org.motform.multiverse.components.map :refer [tree-map]]
+            [org.motform.multiverse.components.map :as map]
             [org.motform.multiverse.components.personalities :refer [personalities]]
             [org.motform.multiverse.open-ai :as open-ai]
             [org.motform.multiverse.util :as util]))
@@ -76,7 +76,7 @@
 
     :reagent-render 
     (fn [sentences potential-path potential-path-in-parents?]
-      [:section.sentences
+      [:section.sentences.pad-full
        {:on-scroll scroll-indicators}
        (for [{:keys [id] :as sentence} (distinct (util/conj? sentences potential-path))]
          ^{:key id} [parent-sentence sentence sentences potential-path])])}))
@@ -96,14 +96,13 @@
       (rf/dispatch [:open-ai/completions parent (open-ai/format-prompt sentences)]))
 
     [:<>
-     [personalities]
      (when sentences
        [:<> 
         [parent-sentences sentences potential-path]
-        [tree-map]])
+        [map/radial-map]])
      (if request?
-       [:section.children.pad-half [util/spinner]]
-       [:section.children.h-equal-3.gap-double
+       [:section.children.pad-full [util/spinner]]
+       [:section.children.h-equal-3.gap-double.pad-full
         (for [{:keys [id text children]} children]
           ^{:key id} [child-sentence text id (seq children)])])]))
 
@@ -123,5 +122,6 @@
 (defn multiverse []
   [:div.app-container.v-stack.overlay
    [header [title]]
-   [:main.story.pad-full.rounded-large.blurred
+   [:main.story.blurred.shadow-large.h-stack
+    [personalities]
     [story]]])

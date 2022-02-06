@@ -85,11 +85,26 @@
                (conj sentences (get-in db [:stories story :sentences id])))
              [] path))))
 
+
+(defn sentence-tree-level [sentences sentence-id]
+  (let [{:keys [children]} (sentences sentence-id)]
+    (when (seq children)
+      {:name sentence-id
+       :children (for [child-id children
+                       :when (-> (sentences child-id) :children seq)]
+                   (sentence-tree-level sentences child-id))})))
+
 (reg-sub
  :sentence-tree
  (fn [db _]
-   (let [story (get-in db [:state :active-story])]
-     (get-in db [:stories story :sentences]))))
+   (sentence-tree-level (get-in db [:stories @(rf/subscribe [:active-story]) :sentences])
+                        @(rf/subscribe [:root-sentence]))))
+
+(reg-sub
+ :root-sentence
+ (fn [db _]
+   (let [sentences (get-in db [:stories @(rf/subscribe [:active-story]) :sentences])]
+     (-> sentences keys first sentences :path first))))
 
 (reg-sub
  :visited?
