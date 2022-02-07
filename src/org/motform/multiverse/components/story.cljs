@@ -12,7 +12,7 @@
             [org.motform.multiverse.util :as util]))
 
 (defn highlight? [id]
-  (when-let [highlight @(rf/subscribe [:highlight])]
+  (when-let [{highlight :id} @(rf/subscribe [:highlight])]
     (let [path (set @(rf/subscribe [:path highlight]))]
       (when-not (contains? path id)
         "inactive"))))
@@ -21,7 +21,7 @@
   [:div>div {:id id
              :class (str (when-not visited?  "un") "visited child " #_(highlight? id)) ; NOTE
              :on-pointer-down #(rf/dispatch [:active-sentence    id])
-             :on-pointer-over #(rf/dispatch [:highlight-sentence id])
+             :on-pointer-over #(rf/dispatch [:highlight-sentence id :source/children])
              :on-pointer-out  #(rf/dispatch [:remove-highlight])}
    (if (str/blank? text) "..." text)])
 
@@ -45,8 +45,8 @@
                                     (= id (get prospect-path :id nil)))]
     [:span {:id id
             :class (str "parent " (highlight? id))
-            :on-pointer-down #(rf/dispatch [:active-sentence    id])
-            :on-pointer-over #(rf/dispatch [:highlight-sentence id])
+            :on-pointer-down #(rf/dispatch [:active-sentence id])
+            :on-pointer-over #(rf/dispatch [:highlight-sentence id :source/sentences])
             :on-pointer-out  #(rf/dispatch [:remove-highlight])}
      [:<> (if sentence-not-in-story?
             [typewrite text]
@@ -86,12 +86,11 @@
         children            (if @(rf/subscribe [:prospect-path-has-children?])
                               @(rf/subscribe [:children (:id prospect-path)])
                               @(rf/subscribe [:children active-sentence]))
-        child-is-highlight? (contains? (set (map :id children)) highlight)
-        sentences           (if (and highlight (not child-is-highlight?))
-                              @(rf/subscribe [:sentences highlight])
-                              @(rf/subscribe [:sentences active-sentence]))]
+        child-is-highlit? (contains? (set (map :id children)) (:id highlight))
+        sentences           (cond
+                              ;; (and highlight (not child-is-highlight?)) @(rf/subscribe [:sentences highlight]) ; TODO this should only fire when we are previewing an unexplored child
+                              :else @(rf/subscribe [:sentences active-sentence]))]
 
-    (println )
     ;; First, see if we have to request any new completions
     (when (not-any? identity [children request? @(rf/subscribe [:preview?])])
       (rf/dispatch [:open-ai/completions active-sentence (open-ai/format-prompt sentences)]))

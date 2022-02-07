@@ -57,8 +57,8 @@
 
 (reg-event-db
  :highlight-sentence
- (fn [db [_ sentence]]
-   (assoc-in db [:state :highlight] sentence)))
+ (fn [db [_ sentence source]]
+   (assoc-in db [:state :highlight] {:id sentence :source source})))
 
 (reg-event-db
  :remove-highlight
@@ -204,7 +204,7 @@
  (fn [{:keys [db]} [_ parent-id prompt]]
    (let [story-id  (get-in db [:state :active-story])
          api-key   (get-in db [:state :open-ai :api-key])
-         {:keys [uri params]} (open-ai/completion-with :davinci #_:text-davinci-001
+         {:keys [uri params]} (open-ai/completion-with :ada #_:text-davinci-001 
                                                        {:prompt prompt})]
      {:db (assoc-in db [:state :pending-request?] true)
       :http-xhrio {:method  :post

@@ -8,7 +8,8 @@
   "Based on:  https://medium.com/analytics-vidhya/creating-a-radial-tree-using-d3-js-for-javascript-be943e23b74e"
   [node {:keys [active-path sentence-tree active-sentence root-sentence highlight prospective-child?]}]
   (.. js/d3 (select "g") remove) ; clear old image arst
-  (let [w (.-clientWidth node)
+  (let [{highlight :id highlight-source :source} highlight
+        w (.-clientWidth node)
         h (.-clientHeight node)
 
         svg (.. js/d3 (select "#radial-map-tree")
@@ -34,12 +35,29 @@
         links (.. graph-group (selectAll ".link")
                   (data links)
                   (join "path")
-                  (attr "class" #(cond (active-path (.. % -target -data -name))        "radial-map-link-active"
-                                       (seq (.. %  -target -data -children))           "radial-map-link"
-                                       (= highlight (.. % -source -data -name))        "radial-map-link-prospective"
-                                       (and highlight (prospective-child? (.. % -target -data -name))) "hidden"
-                                       (prospective-child? (.. % -target -data -name)) "radial-map-link-prospective"
-                                       (= active-sentence (.. % -source -data -name))  "radial-map-link"
+                  (attr "class" #(cond (active-path (.. % -target -data -name))
+                                       "radial-map-link-active"
+
+                                       (seq (.. %  -target -data -children))
+                                       "radial-map-link"
+
+                                       (= highlight (.. % -source -data -name))
+                                       "radial-map-link-prospective"
+
+                                       ;; should show if: there is an highlight, the highlight is either the parent or the child
+                                       (and (= active-sentence (.. % -source -data -name))
+                                            (prospective-child? highlight))
+                                       "radial-map-link-prospective"
+
+                                       (and highlight (prospective-child? (.. % -target -data -name)))
+                                       "hidden"
+
+                                       (prospective-child? (.. % -target -data -name))
+                                       "radial-map-link-prospective"
+
+                                       (= active-sentence (.. % -source -data -name))
+                                       "radial-map-link"
+
                                        :else "hidden"))
                   (attr "d" radial-link))
 
@@ -49,23 +67,36 @@
                   (attr "class" "tree-map-node")
                   (attr "class" #(let [id (.. %  -data -name)
                                        parent-id (.. % -data -info)] ; the highlight state machine extavaganza!
-                                   (cond (= active-sentence id) (if-not highlight "tree-map-node-current"
-                                                                        (cond 
-                                                                          (= highlight active-sentence) "tree-map-node-current"
-                                                                          (contains? active-path id) "tree-map-node-current-superseded"
-                                                                          :else "tree-map-node-current-dim"))
-                                         (= highlight id)                        "tree-map-node-highlight"
-                                         (= root-sentence id)                    "tree-map-node-root"
-                                         (contains? active-path id)              "tree-map-node-active"
-                                         (seq (.. %  -data -children))           "tree-map-node-inactive"
-                                         (and (= active-sentence highlight)
-                                              (prospective-child? id))           "tree-map-node-prospective"
-                                         (and highlight (prospective-child? id)) "hidden"
-                                         (prospective-child? id)                 "tree-map-node-prospective"
-                                         (= highlight parent-id)                 "tree-map-node-prospective"
-                                         :else                                   "hidden")))
+                                   (cond (= active-sentence id)
+                                         (if-not highlight "tree-map-node-current"
+                                                 (cond (= highlight active-sentence) "tree-map-node-current"
+                                                       (contains? active-path id) "tree-map-node-current-superseded"
+                                                       :else "tree-map-node-current-dim"))
+
+                                         (= highlight id)
+                                         "tree-map-node-highlight"
+
+                                         (= root-sentence id)
+                                         "tree-map-node-root"
+
+                                         (contains? active-path id)
+                                         "tree-map-node-active"
+
+                                         (seq (.. %  -data -children))
+                                         "tree-map-node-inactive"
+
+                                         (and (= active-sentence parent-id) (prospective-child? highlight))
+                                         "radial-map-link-prospective"
+
+                                         (and highlight (prospective-child? id))
+                                         "hidden"
+
+                                         (or (= highlight parent-id) (prospective-child? id))
+                                         "tree-map-node-prospective"
+
+                                         :else "hidden")))
                   (attr "transform" #(str "rotate(" (- (/ (* (.-x %) 180) Math/PI) 90) ") " "translate(" (.-y %) ", 0)"))
-                  (on "pointerover" #(rf/dispatch [:highlight-sentence (.. %2 -data -name)]))
+                  (on "pointerover" #(rf/dispatch [:highlight-sentence (.. %2 -data -name) :source/map]))
                   (on "pointerout"  #(rf/dispatch [:remove-highlight]))
                   (on "pointerdown" #(rf/dispatch [:active-sentence (.. %2 -data -name)]))
                   (append "circle")

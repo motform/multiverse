@@ -34,7 +34,7 @@
 (reg-sub
  :prospect-path
  (fn [db _]
-   (let [prospect-sentence-id (get-in db [:state :highlight])
+   (let [{prospect-sentence-id :id} (get-in db [:state :highlight])
          story (get-in db [:state :active-story])
          sentences (get-in db [:stories story :sentences])
          prospect-sentence (sentences prospect-sentence-id)]
@@ -81,7 +81,7 @@
  (fn [db _]
    (let [story           (get-in db [:state :active-story])
          active-sentence @(rf/subscribe [:active-sentence])
-         highlight       @(rf/subscribe [:highlight])]
+         {highlight :id} @(rf/subscribe [:highlight])]
      (set (get-in db [:stories story :sentences (or highlight active-sentence) :path])))))
 
 (reg-sub
@@ -152,7 +152,7 @@
 (reg-sub
  :prospect-path-has-children?
  (fn [_ _]
-   (when-let [highlight @(rf/subscribe [:highlight])]
+   (when-let [{highlight :id} @(rf/subscribe [:highlight])]
      (seq @(rf/subscribe [:children highlight])))))
 
 ;;; Personalites 

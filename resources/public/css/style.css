@@ -703,7 +703,7 @@ h1 {
 
 .radial-map-link-prospective {
     fill: none;
-    stroke: var(--accent-10);
+    stroke: var(--accent-20);
     stroke-width: 1px;
     stroke-dasharray: 4;
 }
