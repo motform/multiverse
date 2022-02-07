@@ -45,10 +45,11 @@
 
 (defn spinner []
   (set! (.. js/document -body -style -animation) "gradient 1s ease infinate")
-  [:svg {:height 40 :width 80}
-   [:circle.spinner-1 {:cx 10 :cy 10 :r 8 :fill "var(--spinner-fill)"}]
-   [:circle.spinner-2 {:cx 40 :cy 10 :r 8 :fill "var(--spinner-fill)"}]
-   [:circle.spinner-3 {:cx 70 :cy 10 :r 8 :fill "var(--spinner-fill)"}]])
+  [:div.v-stack.centered
+   [:svg {:height 40 :width 80}
+    [:circle.spinner-1 {:cx 10 :cy 10 :r 8 :fill "var(--spinner-fill)"}]
+    [:circle.spinner-2 {:cx 40 :cy 10 :r 8 :fill "var(--spinner-fill)"}]
+    [:circle.spinner-3 {:cx 70 :cy 10 :r 8 :fill "var(--spinner-fill)"}]]])
 
 (def icon-plus
   [:svg

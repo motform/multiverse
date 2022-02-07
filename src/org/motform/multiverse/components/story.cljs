@@ -13,16 +13,18 @@
 
 (defn highlight? [id]
   (when-let [{highlight :id} @(rf/subscribe [:highlight])]
-    (let [path (set @(rf/subscribe [:path highlight]))]
-      (when-not (contains? path id)
-        "inactive"))))
+    (if (= highlight @(rf/subscribe [:active-sentence])) "" 
+        (let [path (set @(rf/subscribe [:path highlight]))]
+          (if-not (contains? path id)
+            "inactive"
+            "active")))))
 
 (defn child-sentence [text id visited?]
-  [:div>div {:id id
-             :class (str (when-not visited?  "un") "visited child " #_(highlight? id)) ; NOTE
-             :on-pointer-down #(rf/dispatch [:active-sentence    id])
-             :on-pointer-over #(rf/dispatch [:highlight-sentence id :source/children])
-             :on-pointer-out  #(rf/dispatch [:remove-highlight])}
+  [:div {:id id
+         :class (str (when-not visited?  "un") "visited child " (highlight? id)) ; NOTE
+         :on-pointer-down #(rf/dispatch [:active-sentence id])
+         :on-pointer-over #(rf/dispatch [:highlight-sentence id :source/children])
+         :on-pointer-out  #(rf/dispatch [:remove-highlight])}
    (if (str/blank? text) "..." text)])
 
 (defn typewrite [text]
@@ -100,11 +102,10 @@
        [:<> 
         [parent-sentences sentences prospect-path]
         [map/radial-map]])
-     (cond request? [:section.children.pad-full [util/spinner]]
-           ;; child-is-highlight? [:div] ; TODO show some kind of indication when we are previewing an empty child in the map
-           :else [:section.children.h-equal-3.gap-double.pad-full
-                  (for [{:keys [id text children]} children]
-                    ^{:key id} [child-sentence text id (seq children)])])]))
+     (if request? [:section.children.pad-full [util/spinner]]
+         [:section.children.h-equal-3.gap-double.pad-full
+          (for [{:keys [id text children]} children]
+            ^{:key id} [child-sentence text id (seq children)])])]))
 
 ;;; Header
 

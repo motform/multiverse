@@ -550,15 +550,18 @@ textarea:focus {
     color: var(--accent-25);
 }
 
-.scribble {
-    height: 5rem;
-    margin-left: 15rem;
-}
-
 .inactive {
     color: var(--accent-15);
 }
 
+.active {
+    color: var(--fg);
+    font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
+
+    background-color: var(--bg-transparent-1);
+    backdrop-filter: blur(10px);
+    border-color: var(--accent-4);
+}
 
 /* landing */
 
@@ -689,19 +692,19 @@ h1 {
 #radial-map-tree {
 }
 
-.radial-map-link {
+.tree-map-link {
     fill: none;
     stroke: var(--accent-10);
     stroke-width: 1px;
 }
 
-.radial-map-link-active {
+.tree-map-link-active {
     fill: none;
     stroke: var(--highlight);
     stroke-width: 2px;
 }
 
-.radial-map-link-prospective {
+.tree-map-link-prospective {
     fill: none;
     stroke: var(--accent-20);
     stroke-width: 1px;
@@ -750,12 +753,6 @@ h1 {
 .tree-map-node-inactive {
     fill: var(--accent-10);
     cursor: pointer;
-}
-
-.tree-map-node-prospective {
-    fill: var(--bg);
-    stroke: var(--accent-20);
-    stroke-dasharray: 4;
 }
 
 .tree-map-node-prospective {

@@ -36,27 +36,27 @@
                   (data links)
                   (join "path")
                   (attr "class" #(cond (active-path (.. % -target -data -name))
-                                       "radial-map-link-active"
+                                       "tree-map-link-active"
 
                                        (seq (.. %  -target -data -children))
-                                       "radial-map-link"
+                                       "tree-map-link"
 
                                        (= highlight (.. % -source -data -name))
-                                       "radial-map-link-prospective"
+                                       "tree-map-link-prospective"
 
                                        ;; should show if: there is an highlight, the highlight is either the parent or the child
                                        (and (= active-sentence (.. % -source -data -name))
                                             (prospective-child? highlight))
-                                       "radial-map-link-prospective"
+                                       "tree-map-link-prospective"
 
                                        (and highlight (prospective-child? (.. % -target -data -name)))
                                        "hidden"
 
                                        (prospective-child? (.. % -target -data -name))
-                                       "radial-map-link-prospective"
+                                       "tree-map-link-prospective"
 
                                        (= active-sentence (.. % -source -data -name))
-                                       "radial-map-link"
+                                       "tree-map-link"
 
                                        :else "hidden"))
                   (attr "d" radial-link))
@@ -85,8 +85,9 @@
                                          (seq (.. %  -data -children))
                                          "tree-map-node-inactive"
 
-                                         (and (= active-sentence parent-id) (prospective-child? highlight))
-                                         "radial-map-link-prospective"
+                                         (or (and (= active-sentence highlight) (prospective-child? id)) ; hover on child
+                                             (and (= active-sentence parent-id) (prospective-child? highlight))) ; hover on parent
+                                         "tree-map-node-prospective"
 
                                          (and highlight (prospective-child? id))
                                          "hidden"
