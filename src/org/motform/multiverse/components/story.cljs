@@ -13,13 +13,15 @@
 
 (defn highlight? [id]
   (when-let [{highlight :id} @(rf/subscribe [:highlight])]
-    (if (= highlight @(rf/subscribe [:active-sentence])) "" 
-        (let [path (set @(rf/subscribe [:path highlight]))]
-          (if-not (contains? path id)
-            "inactive"
-            "active")))))
+    (let [active-sentence @(rf/subscribe [:active-sentence])
+          highlight-path  (set @(rf/subscribe [:path highlight]))
+          active-path     (set @(rf/subscribe [:path active-sentence]))]
+      (cond (= highlight active-sentence) ""
+            (and (active-path id) (highlight-path id)) "active"
+            (active-path id) "inactive"
+            :else "inactive"))))
 
-(defn child-sentence [text id visited?]
+(defn child-selector [text id visited?]
   [:div {:id id
          :class (str (when-not visited?  "un") "visited child " (highlight? id)) ; NOTE
          :on-pointer-down #(rf/dispatch [:active-sentence id])
@@ -34,7 +36,7 @@
         (go (<! (timeout 1)) (swap! *i inc)))
       [:span (subs text 0 @*i)])))
 
-(defn branch-marks [id first-sentence?]  
+(defn branch-marks [id]  
   (let [count-branches @(rf/subscribe [:count-realized-children id])]
     [:span.branch-marks
      (if (zero? count-branches)
@@ -42,11 +44,12 @@
        (for [i (range count-branches)]
          ^{:key i} [:span.branch-mark]))]))
 
-(defn parent-sentence [{:keys [id text]} sentences prospect-path]
+(defn sentence-span
+  [{:keys [id text]} sentences prospect-path]
   (let [sentence-not-in-story? (and (not (contains? (set sentences) prospect-path))
                                     (= id (get prospect-path :id nil)))]
     [:span {:id id
-            :class (str "parent " (highlight? id))
+            :class (str "sentance " (highlight? id))
             :on-pointer-down #(rf/dispatch [:active-sentence id])
             :on-pointer-over #(rf/dispatch [:highlight-sentence id :source/sentences])
             :on-pointer-out  #(rf/dispatch [:remove-highlight])}
@@ -61,9 +64,9 @@
       (set! (.. node -style -borderTopWidth) "4px")
       (set! (.. node -style -borderTopWidth) "0px"))))
 
-(defn parent-sentences [sentences prospect-path prospect-path-in-parents?]
+(defn paragraph [sentences prospect-path prospect-path-in-parents?]
   (r/create-class
-   {:display-name "stories"
+   {:display-name "paragraph"
 
     :component-did-update
     (fn [this] ; Scroll to the bottom of the story view when we append a completion.
@@ -74,24 +77,27 @@
 
     :reagent-render 
     (fn [sentences prospect-path prospect-path-in-parents?]
-      [:section.sentences.pad-full
+      [:section.paragraph.pad-full
        {:on-scroll scroll-indicators}
        (for [{:keys [id] :as sentence} (distinct (util/conj? sentences prospect-path))]
-         ^{:key id} [parent-sentence sentence sentences prospect-path])])}))
+         ^{:key id} [sentence-span sentence sentences prospect-path])])}))
 
 (defn story []
   ;; NOTE this implementation means there can only be a single request out per parent, in theory, it is possible/preferable to have multiple ones.
-  (let [active-sentence     @(rf/subscribe [:active-sentence])
-        request?            @(rf/subscribe [:pending-request?])
-        highlight           @(rf/subscribe [:highlight])
-        prospect-path       @(rf/subscribe [:prospect-path])
+  (let [active-sentence @(rf/subscribe [:active-sentence])
+        request?        @(rf/subscribe [:pending-request?])
+        prospect-path   @(rf/subscribe [:prospect-path])
+        {highlight :id} @(rf/subscribe [:highlight])
         children            (if @(rf/subscribe [:prospect-path-has-children?])
                               @(rf/subscribe [:children (:id prospect-path)])
                               @(rf/subscribe [:children active-sentence]))
-        child-is-highlit? (contains? (set (map :id children)) (:id highlight))
-        sentences           (cond
-                              ;; (and highlight (not child-is-highlight?)) @(rf/subscribe [:sentences highlight]) ; TODO this should only fire when we are previewing an unexplored child
-                              :else @(rf/subscribe [:sentences active-sentence]))]
+        highlighting-other-subtree (and highlight ; get another branch if hovering over another branch
+                                        (not (contains? (set @(rf/subscribe [:path active-sentence])) highlight))
+                                        (not (contains? (set (map :id children)) highlight)))
+        
+        sentences (if highlighting-other-subtree
+                    @(rf/subscribe [:sentences highlight])
+                    @(rf/subscribe [:sentences active-sentence]))]
 
     ;; First, see if we have to request any new completions
     (when (not-any? identity [children request? @(rf/subscribe [:preview?])])
@@ -100,12 +106,12 @@
     [:<>
      (when sentences
        [:<> 
-        [parent-sentences sentences prospect-path]
+        [paragraph sentences prospect-path]
         [map/radial-map]])
      (if request? [:section.children.pad-full [util/spinner]]
          [:section.children.h-equal-3.gap-double.pad-full
           (for [{:keys [id text children]} children]
-            ^{:key id} [child-sentence text id (seq children)])])]))
+            ^{:key id} [child-selector text id (seq children)])])]))
 
 ;;; Header
 

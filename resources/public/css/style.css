@@ -454,7 +454,7 @@ textarea:focus {
     justify-items: center;
 }
 
-.sentences {
+.paragraph {
     overflow: scroll;
     height: 100%;
     width: 100%;
@@ -465,15 +465,15 @@ textarea:focus {
     padding-left: var(--space-double);
 }
 
-.sentences > span {
+.paragraph > span {
     hyphens: auto;
 }
 
-.sentences > span:hover {
+.paragraph > span:hover {
     cursor: pointer;
 }
 
-.sentences > span:last-of-type::after {
+.paragraph > span:last-of-type::after {
 }
 
 .branch-marks {
@@ -497,14 +497,9 @@ textarea:focus {
 
 .sentence {
     cursor: pointer;
-}
-
-.parent {
     margin-right: 4px;
 }
 
-.pending {
-}
 
 .highlight {
     color: var(--highlight);
@@ -557,10 +552,6 @@ textarea:focus {
 .active {
     color: var(--fg);
     font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
-
-    background-color: var(--bg-transparent-1);
-    backdrop-filter: blur(10px);
-    border-color: var(--accent-4);
 }
 
 /* landing */
