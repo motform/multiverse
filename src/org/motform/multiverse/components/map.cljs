@@ -58,6 +58,8 @@
                                          (= root-sentence id)                    "tree-map-node-root"
                                          (contains? active-path id)              "tree-map-node-active"
                                          (seq (.. %  -data -children))           "tree-map-node-inactive"
+                                         (and (= active-sentence highlight)
+                                              (prospective-child? id))           "tree-map-node-prospective"
                                          (and highlight (prospective-child? id)) "hidden"
                                          (prospective-child? id)                 "tree-map-node-prospective"
                                          (= highlight parent-id)                 "tree-map-node-prospective"

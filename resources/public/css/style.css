@@ -704,7 +704,7 @@ h1 {
 .radial-map-link-prospective {
     fill: none;
     stroke: var(--accent-10);
-    stroke-width: 0.5px;
+    stroke-width: 1px;
     stroke-dasharray: 4;
 }
 
@@ -754,13 +754,13 @@ h1 {
 
 .tree-map-node-prospective {
     fill: var(--bg);
-    stroke: var(--accent-10);
+    stroke: var(--accent-20);
     stroke-dasharray: 4;
 }
 
 .tree-map-node-prospective {
     fill: var(--bg);
-    stroke: var(--accent-10);
+    stroke: var(--accent-20);
     stroke-dasharray: 4;
     cursor: pointer;
 }

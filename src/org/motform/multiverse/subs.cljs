@@ -32,13 +32,13 @@
    (get-in db [:state :highlight])))
 
 (reg-sub
- :potential-path
+ :prospect-path
  (fn [db _]
-   (let [potential-sentence-id (get-in db [:state :highlight])
+   (let [prospect-sentence-id (get-in db [:state :highlight])
          story (get-in db [:state :active-story])
          sentences (get-in db [:stories story :sentences])
-         potential-sentence (sentences potential-sentence-id)]
-     potential-sentence)))
+         prospect-sentence (sentences prospect-sentence-id)]
+     prospect-sentence)))
 
 (reg-sub
  :preview?
@@ -143,11 +143,11 @@
         count)))
 
 (reg-sub
- :potential-path-in-parents?
+ :prospect-path-in-parents?
  (fn [_ _]
    (let [parent @(rf/subscribe [:active-sentence])
          sentences @(rf/subscribe [:sentences parent])]
-     (contains? (set sentences) @(rf/subscribe [:potential-path])))))
+     (contains? (set sentences) @(rf/subscribe [:prospect-path])))))
 
 ;;; Personalites 
 

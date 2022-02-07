@@ -44,9 +44,9 @@
        (for [i (range count-branches)]
          ^{:key i} [:span.branch-mark]))]))
 
-(defn parent-sentence [{:keys [id text] :as sentence} sentences potential-path]
-  (let [sentence-not-in-story? (and (not (contains? (set sentences) potential-path))
-                                    (= id (get potential-path :id nil)))]
+(defn parent-sentence [{:keys [id text] :as sentence} sentences prospect-path]
+  (let [sentence-not-in-story? (and (not (contains? (set sentences) prospect-path))
+                                    (= id (get prospect-path :id nil)))]
     [:span {:id id
             :class (str "parent " (highlight? id))
             :on-pointer-down #(rf/dispatch [:active-sentence    id])
@@ -63,32 +63,32 @@
       (set! (.. node -style -borderTopWidth) "4px")
       (set! (.. node -style -borderTopWidth) "0px"))))
 
-(defn parent-sentences [sentences potential-path potential-path-in-parents?]
+(defn parent-sentences [sentences prospect-path prospect-path-in-parents?]
   (r/create-class
    {:display-name "stories"
 
     :component-did-update
     (fn [this] ; Scroll to the bottom of the story view when we append a completion.
-      (let [[_ _ potential-path potential-path-in-parents?] (r/argv this)]
-        (when-not (or potential-path-in-parents? (not potential-path))
+      (let [[_ _ prospect-path prospect-path-in-parents?] (r/argv this)]
+        (when-not (or prospect-path-in-parents? (not prospect-path))
           (let [node (rdom/dom-node this)]
             (set! (.-scrollTop node) (.-scrollHeight node))))))
 
     :reagent-render 
-    (fn [sentences potential-path potential-path-in-parents?]
+    (fn [sentences prospect-path prospect-path-in-parents?]
       [:section.sentences.pad-full
        {:on-scroll scroll-indicators}
-       (for [{:keys [id] :as sentence} (distinct (util/conj? sentences potential-path))]
-         ^{:key id} [parent-sentence sentence sentences potential-path])])}))
+       (for [{:keys [id] :as sentence} (distinct (util/conj? sentences prospect-path))]
+         ^{:key id} [parent-sentence sentence sentences prospect-path])])}))
 
 (defn story []
   ;; NOTE this implementation means there can only be a single request out per parent, in theory, it is possible/preferable to have multiple ones.
   (let [parent         @(rf/subscribe [:active-sentence])
         request?       @(rf/subscribe [:pending-request?])
         sentences      @(rf/subscribe [:sentences parent])
-        potential-path @(rf/subscribe [:potential-path])
-        children        (if @(rf/subscribe [:potential-path-in-parents?])
-                          @(rf/subscribe [:children (:id potential-path)])
+        prospect-path @(rf/subscribe [:prospect-path])
+        children        (if @(rf/subscribe [:prospect-path-in-parents?])
+                          @(rf/subscribe [:children (:id prospect-path)])
                           @(rf/subscribe [:children parent]))]
 
     ;; First, see if we have to request any new completions
@@ -98,7 +98,7 @@
     [:<>
      (when sentences
        [:<> 
-        [parent-sentences sentences potential-path]
+        [parent-sentences sentences prospect-path]
         [map/radial-map]])
      (if request?
        [:section.children.pad-full [util/spinner]]
