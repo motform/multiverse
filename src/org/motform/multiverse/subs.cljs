@@ -149,6 +149,12 @@
          sentences @(rf/subscribe [:sentences parent])]
      (contains? (set sentences) @(rf/subscribe [:prospect-path])))))
 
+(reg-sub
+ :prospect-path-has-children?
+ (fn [_ _]
+   (when-let [highlight @(rf/subscribe [:highlight])]
+     (seq @(rf/subscribe [:children highlight])))))
+
 ;;; Personalites 
 
 (reg-sub
