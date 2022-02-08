@@ -6,61 +6,34 @@
 
 (defn link-class [{:keys [active-path active-sentence prospective-child?] {highlight :id} :highlight}]
   (fn [link]
-    (cond (active-path (.. link -target -data -name))
-          "tree-map-link-active"
+    (let [target-id (.. link -target -data -name)
+          source-id (.. link -source -data -name)
+          has-children? (seq (.. link -target -data -children))]
+      (cond (active-path target-id) "tree-map-link-active"
+            has-children?           "tree-map-link"
+            (= highlight source-id) "tree-map-link-prospective"
+            (and (= active-sentence source-id) (prospective-child? highlight)) "tree-map-link-prospective"
+            (and highlight (prospective-child? target-id)) "hidden"
+            (prospective-child? target-id) "tree-map-link-prospective"
+            (= active-sentence source-id)  "tree-map-link"
+            :else "hidden"))))
 
-          (seq (.. link -target -data -children))
-          "tree-map-link"
-
-          (= highlight (.. link -source -data -name))
-          "tree-map-link-prospective"
-
-          (and (= active-sentence (.. link -source -data -name)) (prospective-child? highlight))
-          "tree-map-link-prospective"
-
-          (and highlight (prospective-child? (.. link -target -data -name)))
-          "hidden"
-
-          (prospective-child? (.. link -target -data -name))
-          "tree-map-link-prospective"
-
-          (= active-sentence (.. link -source -data -name))
-          "tree-map-link"
-
-          :else "hidden")))
-
-(defn node-class [{:keys [active-path active-sentence root-sentence highlight prospective-child?]}]
+(defn node-class [{:keys [active-path active-sentence root-sentence prospective-child?] {highlight :id} :highlight}]
   (fn [node]
     (let [id (.. node  -data -name)
-          parent-id (.. node -data -info)] ; the highlight state machine extavaganza!
-      (cond (= active-sentence id)
-            (if-not highlight "tree-map-node-current"
-                    (cond (= highlight active-sentence) "tree-map-node-current"
-                          (contains? active-path id) "tree-map-node-current-superseded"
-                          :else "tree-map-node-current-dim"))
-
-            (= (:id highlight) id)
-            "tree-map-node-highlight"
-
-            (= root-sentence id)
-            "tree-map-node-root"
-
-            (contains? active-path id)
-            "tree-map-node-active"
-
-            (seq (.. node -data -children))
-            "tree-map-node-inactive"
-
-            (or (and (= active-sentence (:id highlight)) (prospective-child? id)) ; hover on child
-                (and (= active-sentence parent-id) (prospective-child? (:id highlight)))) ; hover on parent
-            "tree-map-node-prospective"
-
-            (and highlight (prospective-child? id))
-            "hidden"
-
-            (or (= parent-id (:id highlight)) (prospective-child? id))
-            "tree-map-node-prospective"
-
+          parent-id (.. node -data -info)]
+      (cond (= active-sentence id) (cond (not highlight)               "tree-map-node-current"
+                                         (= highlight active-sentence) "tree-map-node-current"
+                                         (contains? active-path id)    "tree-map-node-current-superseded"
+                                         :else "tree-map-node-current-dim")
+            (= highlight id)                "tree-map-node-highlight"
+            (= root-sentence id)            "tree-map-node-root"
+            (contains? active-path id)      "tree-map-node-active"
+            (seq (.. node -data -children)) "tree-map-node-inactive"
+            (and (= active-sentence highlight) (prospective-child? id))        "tree-map-node-prospective" ; hover on child
+            (and (= active-sentence parent-id) (prospective-child? highlight)) "tree-map-node-prospective" ; hover on parent
+            (and highlight (prospective-child? id)) "hidden"
+            (or (= parent-id highlight) (prospective-child? id)) "tree-map-node-prospective"
             :else "hidden"))))
 
 (defn draw-radial-map
