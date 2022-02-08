@@ -442,7 +442,7 @@ textarea:focus {
 
 .story {
     font-size: 20px;
-    line-height: 1.6;
+    line-height: 1;
     height: 94vh;
     border: 1px solid var(--accent-5);
     border-width: 1px 0 0 0;
@@ -498,6 +498,8 @@ textarea:focus {
 .sentence {
     cursor: pointer;
     margin-right: 4px;
+    padding: 16px 0;
+    line-height: 1.6;
 }
 
 
@@ -519,6 +521,7 @@ textarea:focus {
 }
 
 .child {
+    line-height: 1.6;
     text-align: left;
     border: 1px solid transparent;
     padding: var(--space-half);

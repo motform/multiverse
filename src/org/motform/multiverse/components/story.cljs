@@ -46,12 +46,12 @@
        (for [i (range count-branches)]
          ^{:key i} [:span.branch-mark]))]))
 
-(defn sentence-span
+(defn sentence
   [{:keys [id text]} sentences prospect-path]
   (let [sentence-not-in-story? (and (not (contains? (set sentences) prospect-path))
                                     (= id (get prospect-path :id nil)))]
     [:span {:id id
-            :class (str "sentance " (highlight? id))
+            :class (str "sentence " (highlight? id))
             :on-pointer-down #(rf/dispatch [:active-sentence id])
             :on-pointer-over #(rf/dispatch [:highlight-sentence id :source/sentences])
             :on-pointer-out  #(rf/dispatch [:remove-highlight])}
@@ -81,8 +81,8 @@
     (fn [sentences prospect-path prospect-path-in-parents?]
       [:section.paragraph.pad-full
        {:on-scroll scroll-indicators}
-       (for [{:keys [id] :as sentence} (distinct (util/conj? sentences prospect-path))]
-         ^{:key id} [sentence-span sentence sentences prospect-path])])}))
+       (for [{:keys [id] :as s} (distinct (util/conj? sentences prospect-path))]
+         ^{:key id} [sentence s sentences prospect-path])])}))
 
 (defn story []
   ;; NOTE this implementation means there can only be a single request out per parent, in theory, it is possible/preferable to have multiple ones.
