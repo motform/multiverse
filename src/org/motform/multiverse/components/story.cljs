@@ -14,11 +14,13 @@
 (defn highlight? [id]
   (when-let [{highlight :id} @(rf/subscribe [:highlight])]
     (let [active-sentence @(rf/subscribe [:active-sentence])
-          highlight-path  (set @(rf/subscribe [:path highlight]))
-          active-path     (set @(rf/subscribe [:path active-sentence]))]
+          in-highlight-path? (set @(rf/subscribe [:path highlight]))
+          in-active-path? (set @(rf/subscribe [:path active-sentence]))
+          child? (set (map :id @(rf/subscribe [:children active-sentence])))]
       (cond (= highlight active-sentence) ""
-            (and (active-path id) (highlight-path id)) "active"
-            (active-path id) "inactive"
+            (child? id) "active"
+            (and (in-active-path? id) (in-highlight-path? id)) "active"
+            (in-active-path? id) "inactive"
             :else "inactive"))))
 
 (defn child-selector [text id visited?]
