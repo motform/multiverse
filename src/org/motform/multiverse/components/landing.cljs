@@ -15,7 +15,7 @@
     :on-key-down  #(when (= (.-key %) "Enter")
                      (.preventDefault %)
                      (if validated?
-                       (rf/dispatch [:active-page :new-story])
+                       (rf/dispatch [:page/active :page/new-story])
                        (rf/dispatch [:open-ai/validate-api-key])))}])
 
 (defn key-input []
@@ -30,7 +30,7 @@
          :on-pointer-down #(when-not validated? (rf/dispatch [:open-ai/validate-api-key]))}
         "Check"]]] 
      [:a {:href (when validated?
-                  (routes/url-for (if (empty? @(rf/subscribe [:stories])) :new-story :library)))}
+                  (routes/url-for (if (empty? @(rf/subscribe [:stories])) :page/new-story :page/library)))}
       [:button.open-ai-key-dispatch.rounded.shadow-small
        {:disabled (not validated?)
         :style {:width "100%"  :margin-top "var(--space-half)"}}

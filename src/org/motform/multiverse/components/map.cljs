@@ -77,9 +77,9 @@
                   (join "g")
                   (attr "class" node-class)
                   (attr "transform" #(str "rotate(" (- (/ (* (.-x %) 180) Math/PI) 90) ") " "translate(" (.-y %) ", 0)"))
-                  (on "pointerover" #(rf/dispatch [:highlight-sentence (.. %2 -data -name) :source/map]))
-                  (on "pointerout"  #(rf/dispatch [:remove-highlight]))
-                  (on "pointerdown" #(rf/dispatch [:active-sentence (.. %2 -data -name)]))
+                  (on "pointerover" #(rf/dispatch [:sentence/highlight (.. %2 -data -name) :source/map]))
+                  (on "pointerout"  #(rf/dispatch [:sentence/remove-highlight]))
+                  (on "pointerdown" #(rf/dispatch [:sentence/active (.. %2 -data -name)]))
                   (append "circle")
                   (attr "r" #(let [id (.. %  -data -name)]
                                (if (or (= root-sentence id) (= active-sentence id))
@@ -100,7 +100,7 @@
   (fn []
     [radial-map-d3 {:sentence-tree   @(rf/subscribe [:sentence-tree])
                     :active-path     @(rf/subscribe [:active-path])
-                    :active-sentence @(rf/subscribe [:active-sentence])
-                    :highlight       @(rf/subscribe [:highlight])
-                    :prospective-child?  (->> @(rf/subscribe [:children @(rf/subscribe [:active-sentence])]) (map :id) set)
+                    :active-sentence @(rf/subscribe [:sentence/active])
+                    :highlight       @(rf/subscribe [:sentence/highlight])
+                    :prospective-child?  (->> @(rf/subscribe [:children @(rf/subscribe [:sentence/active])]) (map :id) set)
                     :root-sentence   @(rf/subscribe [:root-sentence])}]))

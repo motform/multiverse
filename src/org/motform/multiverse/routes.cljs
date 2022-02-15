@@ -4,21 +4,21 @@
             [pushy.core :as pushy]))
 
 (def titles
-  {:new-story "New story"
+  {:page/new-story "New story"
    :story     "Story"
-   :library   "Library"})
+   :page/library   "Library"})
 
-(def routes ["/" {""          :landing
-                  "story"     :story
-                  "new-story" :new-story
-                  "library"   :library}])
+(def routes ["/" {""          :page/landing
+                  "story"     :page/story
+                  "new-story" :page/new-story
+                  "library"   :page/library}])
 
 (defn- parse-url [url]
   (bidi/match-route routes url))
 
 (defn dispatch-route [matched-route]
   (let [page (:handler matched-route)]
-    (rf/dispatch [:active-page page])))
+    (rf/dispatch [:page/active page])))
 
 (defn app-routes []
   (pushy/start! (pushy/pushy dispatch-route parse-url)))

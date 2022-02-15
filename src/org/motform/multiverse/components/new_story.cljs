@@ -5,7 +5,7 @@
             [org.motform.multiverse.routes :as routes]))
 
 (defn prompt []
-  (let [prompt @(rf/subscribe [:new-story])
+  (let [prompt @(rf/subscribe [:new-story/prompt])
         blank? (str/blank? prompt)]
     [:section.prompt.v-stack.gap-half
      #_[:label.offset-label "Propmt"]
@@ -17,8 +17,8 @@
       {:disabled blank?
        :on-pointer-down #(when (not blank?)
                            (rf/dispatch [:submit-new-story])
-                           (rf/dispatch [:active-page :story])
-                           (. (.-history js/window) pushState #js {} "" (routes/url-for :story)))}
+                           (rf/dispatch [:page/active :page/story])
+                           (. (.-history js/window) pushState #js {} "" (routes/url-for :page/story)))}
       "prompt"]]))
 
 (defn new-story []

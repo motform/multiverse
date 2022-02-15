@@ -15,16 +15,16 @@
 ;;; State
 
 (reg-event-fx
- :initialize-db
+ :db/initialize
  [(inject-cofx :local-store-collections)]
  (fn [{:keys [local-store-collections]} [_ default-db]]
    {:db (merge default-db (if local-store-collections local-store-collections {}))}))
 
 (reg-event-fx
- :active-page
+ :page/active
  (fn [{:keys [db]} [_ page]]
-   {:db (assoc-in db [:state :active-page] page)
-    :dispatch [:page-title page]}))
+   {:db (assoc-in db [:state :page/active] page)
+    :dispatch [:page/title page]}))
 
 (reg-fx
  :title
@@ -34,61 +34,56 @@
      (set! (.-title js/document) title))))
 
 (reg-event-fx
- :page-title
+ :page/title
  (fn [_ [_ page]]
    (let [page-name (routes/titles page)]
      {:title page-name})))
 
-(reg-event-fx
- :page-title-story
- (fn [_ [_ title]]
-   {:title title}))
-
 (reg-event-db
- :active-story
+ :story/active
  (fn [db [_ story]]
-   (assoc-in db [:state :active-story] story)))
+   (assoc-in db [:state :story/active] story)))
 
 (reg-event-db
- :active-sentence
+ :sentence/active
  (fn [db [_ id]]
-   (let [story (get-in db [:state :active-story])]
-     (assoc-in db [:stories story :meta :active-sentence] id))))
+   (let [story (get-in db [:state :story/active])]
+     (assoc-in db [:stories story :meta :sentence/active] id))))
 
 (reg-event-db
- :highlight-sentence
+ :sentence/highlight
  (fn [db [_ sentence source]]
-   (assoc-in db [:state :highlight] {:id sentence :source source})))
+   (assoc-in db [:state :sentence/highlight] {:id sentence :source source})))
 
 (reg-event-db
- :remove-highlight
+ :sentence/remove-highlight
  (fn [db _]
-   (assoc-in db [:state :highlight] nil)))
+   (assoc-in db [:state :sentence/highlight] nil)))
 
 (reg-event-db
  :select-sentence
  (fn [db [_ sentence]]
-   (let [story (get-in db [:state :active-story])]
+   (let [story (get-in db [:state :story/active])]
      (-> db
          (assoc-in [:state :preview] sentence)
-         (assoc-in [:stories story :meta :active-sentence] sentence)))))
+         (assoc-in [:stories story :meta :sentence/active] sentence)))))
 
 (reg-event-db
  :preview-sentence
  (fn [db [_ sentence]]
-   (let [story (get-in db [:state :active-story])
-         active-sentence (get-in db [:stories story :meta :active-sentence])]
+   (let [story (get-in db [:state :story/active])
+         active-sentence (get-in db [:stories story :meta :sentence/active])]
      (-> db
          (assoc-in [:state :preview] active-sentence)
-         (assoc-in [:stories story :meta :active-sentence] sentence)))))
+         (assoc-in [:stories story :meta :sentence/active] sentence)))))
 
 (reg-event-db
  :remove-preview
  (fn [db _]
    (let [real-active-sentence (get-in db [:state :preview])
-         story (get-in db [:state :active-story])]
+         story (get-in db [:state :story/active])]
      (-> db
-         (assoc-in [:stories story :meta :active-sentence] real-active-sentence)
+         (assoc-in [:stories story :meta :sentence/active] real-active-sentence)
          (assoc-in [:state :preview] nil)))))
 
 (reg-event-db
@@ -105,14 +100,14 @@
   {:meta {:id      story-id
           :title   ""
           :updated (js/Date.)
-          :active-sentence sentence-id}
+          :sentence/active sentence-id}
    :sentences {sentence-id (->sentence sentence-id prompt [sentence-id] [])}})
 
 (reg-event-fx
  :submit-new-story
  (fn [{:keys [db]} _]
-   (let [prompt (get-in db [:state :new-story])]
-     {:db (assoc-in db [:state :new-story] "")
+   (let [prompt (get-in db [:state :new-story/prompt])]
+     {:db (assoc-in db [:state :new-story/prompt] "")
       :dispatch [:story prompt]})))
 
 (reg-event-fx
@@ -123,13 +118,13 @@
          sentence-id (nano-id 10)]
      {:db (-> db
               (assoc-in [:stories story-id] (->story story-id sentence-id prompt))
-              (assoc-in [:state :active-story] story-id))
+              (assoc-in [:state :story/active] story-id))
       :dispatch [:open-ai/title]})))
 
 (reg-event-db
  :prompt
  (fn [db [_ prompt]]
-   (assoc-in db [:state :new-story] prompt)))
+   (assoc-in db [:state :new-story/prompt] prompt)))
 
 (reg-event-db
  :dissoc-story
@@ -202,7 +197,7 @@
 (reg-event-fx
  :open-ai/completions
  (fn [{:keys [db]} [_ parent-id prompt]]
-   (let [story-id  (get-in db [:state :active-story])
+   (let [story-id  (get-in db [:state :story/active])
          api-key   (get-in db [:state :open-ai :api-key])
          {:keys [uri params]} (open-ai/completion-with :ada #_:text-davinci-001 
                                                        {:prompt prompt})]
@@ -220,7 +215,7 @@
  :open-ai/title
  (fn [{:keys [db]} _]
    (let [api-key   (get-in db [:state :open-ai :api-key])
-         story-id  (get-in db [:state :active-story])
+         story-id  (get-in db [:state :story/active])
          sentences (->> (get-in db [:stories story-id :sentences]) vals open-ai/format-prompt)
          {:keys [uri params]} (open-ai/completion-with :text-davinci-001
                                                        {:prompt (open-ai/format-title sentences)

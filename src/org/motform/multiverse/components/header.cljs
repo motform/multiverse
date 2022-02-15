@@ -11,9 +11,9 @@
    [:span.tooltip.rounded tooltip]])
 
 (defn header [content]
-  (let [active-page @(rf/subscribe [:active-page])]
+  (let [active-page @(rf/subscribe [:page/active])]
     [:header.header.h-stack.spaced
      [:section.header-content (or content [:div])]
      [:nav.h-stack.gap-half
-      [item util/icon-library :library   active-page "Library"]
-      [item util/icon-plus    :new-story active-page "New"]]]))
+      [item util/icon-library :page/library   active-page "Library"]
+      [item util/icon-plus    :page/new-story active-page "New"]]]))

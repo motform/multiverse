@@ -7,12 +7,12 @@
 
 (defn active-page [page]
   (case page
-    :landing   landing
-    :library   library
-    :new-story new-story
-    :story     multiverse))
+    :page/landing   landing
+    :page/library   library
+    :page/new-story new-story
+    :page/story     multiverse))
 
 (defn app []
-  (let [page @(rf/subscribe [:active-page])
+  (let [page @(rf/subscribe [:page/active])
         view (active-page page)]
     [view]))

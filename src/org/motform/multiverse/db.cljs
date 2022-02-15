@@ -19,26 +19,24 @@
 
 (def default-db
   {:state
-   {:active-page        :landing
-    :active-sentence    nil
-    :active-story       nil
-    :active-personality :personality/neutral
-    :highlight          nil
+   {:page/active        :page/landing
+    :new-story/prompt   ""
+    :story/active       nil
+    :personality/active :personality/neutral
+    :sentence/active    nil
+    :sentence/highlight {:id nil :source nil}
     :preview            nil
     :pending-request?   false
-    :new-story          ""
-    :sorting           {:order :updated :desc? false}
     :open-ai           {:api-key "" :validated? false}}
 
    :personalities #:personality
-   {:neutral  {:id :personality/neutral  :prompt "." :color ""}
-    :sf       {:id :personality/sf       :prompt "in the style of science fiction." :color ""}
-    :poetic   {:id :personality/poetic   :prompt "as a stanza of a poem." :color ""}
-    :unhinged {:id :personality/unhinged :prompt "where only the most strange, random and unexpected things happen." :color ""}
-    :user     {:id :personality/user     :prompt nil :color ""}}
+   {:neutral  {:id :personality/neutral  :prompt-modifier "." :color ""}
+    :sf       {:id :personality/sf       :prompt-modifier "in the style of science fiction." :color ""}
+    :poetic   {:id :personality/poetic   :prompt-modifier "as a stanza of a poem." :color ""}
+    :unhinged {:id :personality/unhinged :prompt-modifier "where only the most strange, random and unexpected things happen." :color ""}
+    :user     {:id :personality/user     :prompt-modifier nil :color ""}}
 
-   :stories
-   {}})
+   :stories {}})
 
 ;;; local-storage
 
