@@ -48,12 +48,12 @@
  :sentence/active
  (fn [db [_ id]]
    (let [story (get-in db [:db/state :story/active])]
-     (assoc-in db [:db/stories story :meta :sentence/active] id))))
+     (assoc-in db [:db/stories story :story/meta :sentence/active] id))))
 
 (reg-event-db
  :sentence/highlight
  (fn [db [_ sentence source]]
-   (assoc-in db [:db/state :sentence/highlight] {:id sentence :source source})))
+   (assoc-in db [:db/state :sentence/highlight] {:id sentence :source source}))) ; TODO
 
 (reg-event-db
  :sentence/remove-highlight
@@ -64,10 +64,10 @@
  :sentence/preview
  (fn [db [_ sentence]]
    (let [story (get-in db [:db/state :story/active])
-         active-sentence (get-in db [:db/stories story :meta :sentence/active])]
+         active-sentence (get-in db [:db/stories story :story/meta :sentence/active])]
      (-> db
          (assoc-in [:db/state :sentence/preview] active-sentence)
-         (assoc-in [:db/stories story :meta :sentence/active] sentence)))))
+         (assoc-in [:db/stories story :story/meta :sentence/active] sentence)))))
 
 (reg-event-db
  :open-ai/update-api-key
@@ -77,14 +77,19 @@
 ;;; Prompt
 
 (defn ->sentence [id text path children]
-  {:id id :text text :path path :children children :personality :personality/neutral})
+  #:sentence
+  {:id   id
+   :text text
+   :path path
+   :children children
+   :personality :personality/neutral})
 
 (defn ->story [story-id sentence-id prompt]
-  {:meta {:id      story-id
-          :title   ""
-          :updated (js/Date.)
-          :sentence/active sentence-id}
-   :sentences {sentence-id (->sentence sentence-id prompt [sentence-id] [])}})
+  {:story/meta {:story/id story-id
+                :story/title    ""
+                :story/updated (js/Date.)
+                :sentence/active sentence-id}
+   :story/sentences {sentence-id (->sentence sentence-id prompt [sentence-id] [])}})
 
 (reg-event-fx
  :new-story/submit
@@ -134,13 +139,13 @@
  :open-ai/handle-children
  [local-storage-interceptor]
  (fn [{:keys [db]} [_ story parent completions]]
-   (let [parent-path (get-in db [:db/stories story :sentences parent :path])
+   (let [parent-path (get-in db [:db/stories story :story/sentences parent :sentence/path])
          child-ids (repeatedly 3 #(nano-id 10))
          children (->children parent-path child-ids (open-ai-texts completions))]
      {:db (-> db
-              (update-in [:db/stories story :sentences] merge children)
-              (assoc-in  [:db/stories story :sentences parent :children] child-ids)
-              (assoc-in  [:db/stories story :meta :updated] (js/Date.))
+              (update-in [:db/stories story :story/sentences] merge children)
+              (assoc-in  [:db/stories story :story/sentences parent :sentence/children] child-ids)
+              (assoc-in  [:db/stories story :story/meta :story/updated] (js/Date.))
               (assoc-in  [:db/state :open-ai/pending-request?] false))})))
 
 (reg-event-db
@@ -148,7 +153,8 @@
  [local-storage-interceptor]
  (fn [db [_ story-id title]]
    (-> db
-       (assoc-in [:db/stories story-id :meta :title] (-> title :choices first :text)))))
+       (assoc-in [:db/stories story-id :story/meta :story/title]
+                 (-> title :choices first :text)))))
 
 
 (reg-event-db
@@ -193,7 +199,7 @@
  (fn [{:keys [db]} _]
    (let [api-key   (get-in db [:db/state :open-ai/key :open-ai/api-key])
          story-id  (get-in db [:db/state :story/active])
-         sentences (->> (get-in db [:db/stories story-id :sentences]) vals open-ai/format-prompt)
+         sentences (->> (get-in db [:db/stories story-id :story/sentences]) vals open-ai/format-prompt)
          {:keys [uri params]} (open-ai/completion-with :text-davinci-001
                                                        {:prompt (open-ai/format-title sentences)
                                                         :n           1
@@ -211,4 +217,3 @@
  :open-ai/failure
  (fn [db [_ result]]
    (assoc-in db [:db/state :open-ai/failure] result)))
-

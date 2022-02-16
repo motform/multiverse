@@ -4,7 +4,8 @@
             [reagent.core :as r]
             [reagent.dom :as rdom]))
 
-(defn link-class [{:keys [active-path active-sentence prospective-child?] {highlight :id} :highlight}]
+(defn link-class [{:keys [active-path active-sentence prospective-child?]
+                   {highlight :id} :highlight}]
   (fn [link]
     (let [target-id (.. link -target -data -name)
           source-id (.. link -source -data -name)
@@ -18,7 +19,8 @@
             (= active-sentence source-id)  "tree-map-link"
             :else "hidden"))))
 
-(defn node-class [{:keys [active-path active-sentence root-sentence prospective-child?] {highlight :id} :highlight}]
+(defn node-class [{:keys [active-path active-sentence root-sentence prospective-child?]
+                   {highlight :id} :highlight}]
   (fn [node]
     (let [id (.. node  -data -name)
           parent-id (.. node -data -info)]
@@ -82,6 +84,7 @@
                   (on "pointerdown" #(rf/dispatch [:sentence/active (.. %2 -data -name)]))
                   (append "circle")
                   (attr "r" #(let [id (.. %  -data -name)]
+                               (println id root-sentence active-sentence)
                                (if (or (= root-sentence id) (= active-sentence id))
                                  10 5))))]))
 
@@ -102,5 +105,5 @@
                     :active-path     @(rf/subscribe [:story/active-path])
                     :active-sentence @(rf/subscribe [:sentence/active])
                     :highlight       @(rf/subscribe [:sentence/highlight])
-                    :prospective-child?  (->> @(rf/subscribe [:sentence/children @(rf/subscribe [:sentence/active])]) (map :id) set)
-                    :root-sentence   @(rf/subscribe [:root-sentence])}]))
+                    :prospective-child?  (->> @(rf/subscribe [:sentence/children @(rf/subscribe [:sentence/active])]) (map :sentence/id) set)
+                    :root-sentence   @(rf/subscribe [:story/root-sentence])}]))

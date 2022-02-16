@@ -6,8 +6,8 @@
             [org.motform.multiverse.components.header :refer [header]]
             [org.motform.multiverse.util :as util]))
 
-(defn library-item [{:keys [meta sentences]}]
-  (let [{:keys [updated title id]} meta]
+(defn library-item [{:story/keys [meta sentences]}]
+  (let [{:story/keys [updated title id]} meta]
     [:a.library-item.v-stack.spaced.gap-full.blurred.rounded.shadow-large.pad-half.border
      {:href (routes/url-for :story)
       :on-pointer-down #(do (rf/dispatch [:story/active id])
@@ -30,7 +30,7 @@
 (defn library-items []
   [:section.library-items
    (for [story @(rf/subscribe [:db/stories])]
-     ^{:key (get-in story [:meta :id])} [library-item story])
+     ^{:key (get-in story [:story/meta :story/id])} [library-item story])
    [new-story-item]])
 
 (defn export-library

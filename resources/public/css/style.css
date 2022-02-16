@@ -510,8 +510,6 @@ textarea:focus {
 .children {
     grid-column: span 2;
     cursor: pointer;
-    border: 1px solid var(--accent-5);
-    border-width: 1px 0 0 0;
     width: 100%;
 }
 
@@ -679,8 +677,6 @@ h1 {
 #radial-map {
     height: 100%;
     width: 100%;
-    border: 1px solid var(--accent-5);
-    border-width: 0 0 0 1px;
 }
 
 #radial-map-tree {

@@ -29,12 +29,12 @@
     :open-ai/pending-request? false
     :open-ai/key              #:open-ai{:api-key "" :validated? false}}
 
-   :db/personalities #:personality
-   {:neutral  {:id :personality/neutral  :prompt-modifier "." :color ""}
-    :sf       {:id :personality/sf       :prompt-modifier "in the style of science fiction." :color ""}
-    :poetic   {:id :personality/poetic   :prompt-modifier "as a stanza of a poem." :color ""}
-    :unhinged {:id :personality/unhinged :prompt-modifier "where only the most strange, random and unexpected things happen." :color ""}
-    :user     {:id :personality/user     :prompt-modifier nil :color ""}}
+   :db/personalities
+   #:personality{:neutral  {:personality/id :personality/neutral  :personality/prompt-modifier "."                                :personality/color ""}
+                 :sf       {:personality/id :personality/sf       :personality/prompt-modifier "in the style of science fiction." :personality/color ""}
+                 :poetic   {:personality/id :personality/poetic   :personality/prompt-modifier "as a stanza of a poem."           :personality/color ""}
+                 :unhinged {:personality/id :personality/unhinged :personality/prompt-modifier "where only the most strange, random and unexpected things happen." :personality/color ""}
+                 :user     {:personality/id :personality/user     :personality/prompt-modifier nil                                :personality/color ""}}
 
    :db/stories {}})
 

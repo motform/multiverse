@@ -19,7 +19,7 @@
  :sentence/active
  (fn [db _]
    (let [story (get-in db [:db/state :story/active])]
-     (get-in db [:db/stories story :meta :sentence/active]))))
+     (get-in db [:db/stories story :story/meta :sentence/active]))))
 
 (reg-sub
  :sentence/highlight
@@ -36,7 +36,7 @@
  (fn [db _]
    (let [{prospect-sentence-id :id} (get-in db [:db/state :sentence/highlight])
          story (get-in db [:db/state :story/active])
-         sentences (get-in db [:db/stories story :sentences])
+         sentences (get-in db [:db/stories story :story/sentences])
          prospect-sentence (sentences prospect-sentence-id)]
      prospect-sentence)))
 
@@ -49,8 +49,8 @@
  :sentence/children
  (fn [db [_ parent-id]]
    (let [story-id (get-in db [:db/state :story/active])
-         sentences (get-in db [:db/stories story-id :sentences])
-         child-ids (get-in db [:db/stories story-id :sentences parent-id :children])]
+         sentences (get-in db [:db/stories story-id :story/sentences])
+         child-ids (get-in db [:db/stories story-id :story/sentences parent-id :sentence/children])]
      (vals (select-keys sentences child-ids)))))
 
 ;;; Library
@@ -66,15 +66,15 @@
  :story/meta
  (fn [db _]
    (let [story (get-in db [:db/state :story/active])]
-     (get-in db [:db/stories story :meta]))))
+     (get-in db [:db/stories story :story/meta]))))
 
 (reg-sub
  :story/active-path
  (fn [db _]
-   (let [story           (get-in db [:db/state :story/active])
+   (let [story (get-in db [:db/state :story/active])
          active-sentence @(rf/subscribe [:sentence/active])
          {highlight :id} @(rf/subscribe [:sentence/highlight])]
-     (set (get-in db [:db/stories story :sentences (or highlight active-sentence) :path])))))
+     (set (get-in db [:db/stories story :story/sentences (or highlight active-sentence) :sentence/path])))))
 
 ;; The "paragraph" of a sentence returns all the complete sentence maps
 ;; Whereas the "path" of a sentence returns a vector with id's of its path from the root
@@ -83,20 +83,20 @@
  :sentence/path
  (fn [db [_ id]]
    (let [story (get-in db [:db/state :story/active])]
-     (get-in db [:db/stories story :sentences id :path]))))
+     (get-in db [:db/stories story :story/sentences id :sentence/path]))))
 
 (reg-sub
  :sentence/paragraph
  (fn [db [_ id]]
    (let [story (get-in db [:db/state :story/active])
-         path (get-in db [:db/stories story :sentences id :path])]
+         path (get-in db [:db/stories story :story/sentences id :sentence/path])]
      (reduce (fn [sentences id]
-               (conj sentences (get-in db [:db/stories story :sentences id])))
+               (conj sentences (get-in db [:db/stories story :story/sentences id])))
              [] path))))
 
 
 (defn sentence-tree-level [sentences sentence-id active-sentence-id parent-id]
-  (let [{:keys [children]} (sentences sentence-id)]
+  (let [{:sentence/keys [children]} (sentences sentence-id)]
     {:name     sentence-id
      :info     parent-id  ; XXX confusing key
      :children (for [child-id children]
@@ -106,23 +106,16 @@
 (reg-sub
  :story/sentence-tree
  (fn [db _]
-   (sentence-tree-level (get-in db [:db/stories @(rf/subscribe [:story/active]) :sentences])
-                        @(rf/subscribe [:root-sentence])
+   (sentence-tree-level (get-in db [:db/stories @(rf/subscribe [:story/active]) :story/sentences])
+                        @(rf/subscribe [:story/root-sentence])
                         @(rf/subscribe [:sentence/active])
                         nil)))
 
 (reg-sub
- :root-sentence
+ :story/root-sentence
  (fn [db _]
-   (let [sentences (get-in db [:db/stories @(rf/subscribe [:story/active]) :sentences])]
-     (-> sentences keys first sentences :path first))))
-
-(reg-sub
- :visited?
- (fn [db [_ parent]]
-   (let [story (get-in db [:db/state :story/active])]
-     (seq (get-in db [:db/stories story :sentences parent :children])))))
-
+   (let [sentences (get-in db [:db/stories @(rf/subscribe [:story/active]) :story/sentences])]
+     (-> sentences keys first sentences :sentence/path first))))
 
 (reg-sub
  :story/count-realized-children

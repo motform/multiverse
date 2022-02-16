@@ -16,7 +16,7 @@
     (let [active-sentence    @(rf/subscribe [:sentence/active])
           in-highlight-path? (set @(rf/subscribe [:sentence/path highlight]))
           in-active-path?    (set @(rf/subscribe [:sentence/path active-sentence]))
-          child?             (set (map :id @(rf/subscribe [:sentence/children active-sentence])))]
+          child?             (set (map :sentence/id @(rf/subscribe [:sentence/children active-sentence])))]
       (cond (= highlight active-sentence) ""
             (and (= highlight id)         (child? id)) "active"
             (and (in-active-path? id)     (in-highlight-path? id)) "active"
@@ -46,14 +46,13 @@
        (for [i (range count-branches)]
          ^{:key i} [:span.branch-mark]))]))
 
-(defn sentence
-  [{:keys [id text]} sentences prospect-path]
+(defn sentence [{:sentence/keys [id text]} sentences prospect-path]
   (let [sentence-not-in-story? (and (not (contains? (set sentences) prospect-path))
-                                    (= id (get prospect-path :id nil)))]
+                                    (= id (get prospect-path :sentence/id nil)))]
     [:span {:id id
             :class (str "sentence " (highlight? id))
             :on-pointer-down #(rf/dispatch [:sentence/active id])
-            :on-pointer-over #(rf/dispatch [:sentence/highlight id :source/sentences])
+            :on-pointer-over #(rf/dispatch [:sentence/highlight id :source/paragraph])
             :on-pointer-out  #(rf/dispatch [:sentence/remove])}
      (if sentence-not-in-story?
        [typewrite text]
@@ -83,7 +82,7 @@
       [:section.paragraph.pad-full
        {:on-scroll scroll-indicators}
        (for [s (distinct (util/conj? paragraph prospect-path))]
-         ^{:key (:id s)} [sentence s paragraph prospect-path])])}))
+         ^{:key (:sentence/id s)} [sentence s paragraph prospect-path])])}))
 
 (defn story []
   (let [active-sentence @(rf/subscribe [:sentence/active])
@@ -93,12 +92,12 @@
          highlight-source :source} @(rf/subscribe [:sentence/highlight])
 
         children            (if (and (= :source/map highlight-source) @(rf/subscribe [:story/prospect-path-has-children?]))
-                              @(rf/subscribe [:sentence/children (:id prospect-path)])
+                              @(rf/subscribe [:sentence/children (:sentence/id prospect-path)])
                               @(rf/subscribe [:sentence/children active-sentence]))
 
         highlighting-other-subtree (and highlight ; get another branch if hovering over another branch
                                         (not (contains? (set @(rf/subscribe [:sentence/path active-sentence])) highlight))
-                                        (not (contains? (set (map :id children)) highlight)))
+                                        (not (contains? (set (map :sentence/id children)) highlight)))
         
         paragraphs (if highlighting-other-subtree
                      @(rf/subscribe [:sentence/paragraph highlight])
@@ -117,13 +116,13 @@
      (if request?
        [:section.children.pad-full [util/spinner]]
        [:section.children.h-equal-3.gap-double.pad-full
-        (for [{:keys [id text children]} children]
+        (for [{:sentence/keys [id text children]} children]
           ^{:key id} [child-selector text id (seq children)])])]))
 
 ;;; Header
 
 (defn title []
-  (let [{:keys [title]} @(rf/subscribe [:story/meta])]
+  (let [{:story/keys [title]} @(rf/subscribe [:story/meta])]
     (if-not (str/blank? title)
       [:h2.title.tooltip-container
        {:on-pointer-down #(rf/dispatch [:open-ai/title nil])}
