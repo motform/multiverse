@@ -758,7 +758,7 @@ h1 {
 }
 
 .tree-map-node-prospective {
-    fill: var(--bg);
+    fill: var(--accent-3);
     stroke: var(--accent-20);
     stroke-dasharray: 4;
     cursor: pointer;

@@ -41,4 +41,4 @@
   "Returns space-delimited str from a vec of `sentences`"
   [sentences]
   (let [personality (get @(rf/subscribe [:personality/personalities]) @(rf/subscribe [:personality/active]))]
-    (->> sentences (map :text) (interpose " ") (apply str))))
+    (->> sentences (map :sentence/text) (interpose " ") (apply str))))

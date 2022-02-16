@@ -106,7 +106,7 @@
 
     ;; First, see if we have to request any new completions
     (when (not-any? identity [children request? @(rf/subscribe [:sentence/preview?])])
-      (rf/dispatch [:open-ai/completions active-sentence (open-ai/format-prompt paragraphs )]))
+      (rf/dispatch [:open-ai/completions active-sentence (open-ai/format-prompt paragraphs)]))
 
     [:main.story.blurred.shadow-large.h-stack
      [personalities]
