@@ -23,7 +23,7 @@
 (reg-event-fx
  :page/active
  (fn [{:keys [db]} [_ page]]
-   {:db (assoc-in db [:state :page/active] page)
+   {:db (assoc-in db [:db/state :page/active] page)
     :dispatch [:page/title page]}))
 
 (reg-fx
@@ -42,54 +42,37 @@
 (reg-event-db
  :story/active
  (fn [db [_ story]]
-   (assoc-in db [:state :story/active] story)))
+   (assoc-in db [:db/state :story/active] story)))
 
 (reg-event-db
  :sentence/active
  (fn [db [_ id]]
-   (let [story (get-in db [:state :story/active])]
-     (assoc-in db [:stories story :meta :sentence/active] id))))
+   (let [story (get-in db [:db/state :story/active])]
+     (assoc-in db [:db/stories story :meta :sentence/active] id))))
 
 (reg-event-db
  :sentence/highlight
  (fn [db [_ sentence source]]
-   (assoc-in db [:state :sentence/highlight] {:id sentence :source source})))
+   (assoc-in db [:db/state :sentence/highlight] {:id sentence :source source})))
 
 (reg-event-db
  :sentence/remove-highlight
  (fn [db _]
-   (assoc-in db [:state :sentence/highlight] nil)))
+   (assoc-in db [:db/state :sentence/highlight] nil)))
 
 (reg-event-db
- :select-sentence
+ :sentence/preview
  (fn [db [_ sentence]]
-   (let [story (get-in db [:state :story/active])]
+   (let [story (get-in db [:db/state :story/active])
+         active-sentence (get-in db [:db/stories story :meta :sentence/active])]
      (-> db
-         (assoc-in [:state :preview] sentence)
-         (assoc-in [:stories story :meta :sentence/active] sentence)))))
-
-(reg-event-db
- :preview-sentence
- (fn [db [_ sentence]]
-   (let [story (get-in db [:state :story/active])
-         active-sentence (get-in db [:stories story :meta :sentence/active])]
-     (-> db
-         (assoc-in [:state :preview] active-sentence)
-         (assoc-in [:stories story :meta :sentence/active] sentence)))))
-
-(reg-event-db
- :remove-preview
- (fn [db _]
-   (let [real-active-sentence (get-in db [:state :preview])
-         story (get-in db [:state :story/active])]
-     (-> db
-         (assoc-in [:stories story :meta :sentence/active] real-active-sentence)
-         (assoc-in [:state :preview] nil)))))
+         (assoc-in [:db/state :sentence/preview] active-sentence)
+         (assoc-in [:db/stories story :meta :sentence/active] sentence)))))
 
 (reg-event-db
  :open-ai/update-api-key
  (fn [db [_ api-key]]
-   (assoc-in db [:state :open-ai :api-key] api-key)))
+   (assoc-in db [:db/state :open-ai/key :open-ai/api-key] api-key)))
 
 ;;; Prompt
 
@@ -104,41 +87,35 @@
    :sentences {sentence-id (->sentence sentence-id prompt [sentence-id] [])}})
 
 (reg-event-fx
- :submit-new-story
+ :new-story/submit
  (fn [{:keys [db]} _]
-   (let [prompt (get-in db [:state :new-story/prompt])]
-     {:db (assoc-in db [:state :new-story/prompt] "")
-      :dispatch [:story prompt]})))
+   (let [prompt (get-in db [:db/state :new-story/prompt])]
+     {:db (assoc-in db [:db/state :new-story/prompt] "")
+      :dispatch [:story/new prompt]})))
 
 (reg-event-fx
- :story
+ :story/new
  [local-storage-interceptor]
  (fn [{:keys [db]} [_ prompt]]
    (let [story-id    (nano-id 10)
          sentence-id (nano-id 10)]
      {:db (-> db
-              (assoc-in [:stories story-id] (->story story-id sentence-id prompt))
-              (assoc-in [:state :story/active] story-id))
+              (assoc-in [:db/stories story-id] (->story story-id sentence-id prompt))
+              (assoc-in [:db/state :story/active] story-id))
       :dispatch [:open-ai/title]})))
 
 (reg-event-db
- :prompt
+ :new-story/update-prompt
  (fn [db [_ prompt]]
-   (assoc-in db [:state :new-story/prompt] prompt)))
-
-(reg-event-db
- :dissoc-story
- [local-storage-interceptor]
- (fn [db [_ id]]
-   (update db :stories dissoc id)))
+   (assoc-in db [:db/state :new-story/prompt] prompt)))
 
 ;;; Library
 
 (reg-event-db
- :clear-library
+ :library/clear
  [local-storage-interceptor]
  (fn [db _]
-   (assoc db :stories {})))
+   (assoc db :db/stories {})))
 
 ;;; Story
 
@@ -154,24 +131,24 @@
   (map (comp #(str % \.) :text) (:choices completions)))
 
 (reg-event-fx
- :handle-children
+ :open-ai/handle-children
  [local-storage-interceptor]
  (fn [{:keys [db]} [_ story parent completions]]
-   (let [parent-path (get-in db [:stories story :sentences parent :path])
+   (let [parent-path (get-in db [:db/stories story :sentences parent :path])
          child-ids (repeatedly 3 #(nano-id 10))
          children (->children parent-path child-ids (open-ai-texts completions))]
      {:db (-> db
-              (update-in [:stories story :sentences] merge children)
-              (assoc-in  [:stories story :sentences parent :children] child-ids)
-              (assoc-in  [:stories story :meta :updated] (js/Date.))
-              (assoc-in  [:state :pending-request?] false))})))
+              (update-in [:db/stories story :sentences] merge children)
+              (assoc-in  [:db/stories story :sentences parent :children] child-ids)
+              (assoc-in  [:db/stories story :meta :updated] (js/Date.))
+              (assoc-in  [:db/state :open-ai/pending-request?] false))})))
 
 (reg-event-db
- :handle-title
+ :open-ai/handle-title
  [local-storage-interceptor]
  (fn [db [_ story-id title]]
    (-> db
-       (assoc-in [:stories story-id :meta :title] (-> title :choices first :text)))))
+       (assoc-in [:db/stories story-id :meta :title] (-> title :choices first :text)))))
 
 
 (reg-event-db
@@ -179,14 +156,14 @@
  [local-storage-interceptor]
  (fn [db _]
    (-> db
-       (assoc-in [:state :open-ai :validated?] true) ; failed requests go to :failure-http
-       (assoc-in [:state :pending-request?] false)))) 
+       (assoc-in [:db/state :open-ai/key :open-ai/validated?] true)
+       (assoc-in [:db/state :open-ai/pending-request?] false)))) 
 
 (reg-event-fx
  :open-ai/validate-api-key
  (fn [{:keys [db]} _]
-   (let [api-key (get-in db [:state :open-ai :api-key])]
-     {:db (assoc-in db [:state :pending-request?] true)
+   (let [api-key (get-in db [:db/state :open-ai/key :open-ai/api-key])]
+     {:db (assoc-in db [:db/state :open-ai/pending-request?] true)
       :http-xhrio {:method          :get
                    :uri             "https://api.openai.com/v1/engines"
                    :headers         {"Authorization" (str "Bearer " api-key)}
@@ -197,26 +174,26 @@
 (reg-event-fx
  :open-ai/completions
  (fn [{:keys [db]} [_ parent-id prompt]]
-   (let [story-id  (get-in db [:state :story/active])
-         api-key   (get-in db [:state :open-ai :api-key])
+   (let [story-id  (get-in db [:db/state :story/active])
+         api-key   (get-in db [:db/state :open-ai/key :open-ai/api-key])
          {:keys [uri params]} (open-ai/completion-with :ada #_:text-davinci-001 
                                                        {:prompt prompt})]
-     {:db (assoc-in db [:state :pending-request?] true)
+     {:db (assoc-in db [:db/state :open-ai/pending-request?] true)
       :http-xhrio {:method  :post
                    :uri     uri 
                    :headers {"Authorization" (str "Bearer " api-key)}
                    :params  params
                    :format  (ajax/json-request-format)
                    :response-format (ajax/json-response-format {:keywords? true})
-                   :on-success [:handle-children story-id parent-id] ; TODO
-                   :on-failure [:failure-http]}})))
+                   :on-success [:open-ai/handle-children story-id parent-id] ; TODO
+                   :on-failure [:open-ai/failure]}})))
 
 (reg-event-fx
  :open-ai/title
  (fn [{:keys [db]} _]
-   (let [api-key   (get-in db [:state :open-ai :api-key])
-         story-id  (get-in db [:state :story/active])
-         sentences (->> (get-in db [:stories story-id :sentences]) vals open-ai/format-prompt)
+   (let [api-key   (get-in db [:db/state :open-ai/key :open-ai/api-key])
+         story-id  (get-in db [:db/state :story/active])
+         sentences (->> (get-in db [:db/stories story-id :sentences]) vals open-ai/format-prompt)
          {:keys [uri params]} (open-ai/completion-with :text-davinci-001
                                                        {:prompt (open-ai/format-title sentences)
                                                         :n           1
@@ -227,11 +204,11 @@
                    :params          params
                    :format          (ajax/json-request-format)
                    :response-format (ajax/json-response-format {:keywords? true})
-                   :on-success      [:handle-title story-id]
-                   :on-failure      [:failure-http]}})))
+                   :on-success      [:open-ai/handle-title story-id]
+                   :on-failure      [:open-ai/failure]}})))
 
 (reg-event-db
- :failure-http
+ :open-ai/failure
  (fn [db [_ result]]
-   (assoc-in db [:state :failure-http] result)))
+   (assoc-in db [:db/state :open-ai/failure] result)))
 

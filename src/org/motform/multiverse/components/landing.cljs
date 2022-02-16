@@ -19,7 +19,7 @@
                        (rf/dispatch [:open-ai/validate-api-key])))}])
 
 (defn key-input []
-  (let [{:keys [api-key validated?]} @(rf/subscribe [:open-ai])]
+  (let [{:open-ai/keys [api-key validated?]} @(rf/subscribe [:open-ai/key])]
     [:article.key-input-container.v-stack.gap-half.rounded-large.shadow-large.blurred.pad-full.border
      [:div.v-stack.gap-quarter
       [:label.offset-label "OpenAI API key"]
@@ -30,7 +30,7 @@
          :on-pointer-down #(when-not validated? (rf/dispatch [:open-ai/validate-api-key]))}
         "Check"]]] 
      [:a {:href (when validated?
-                  (routes/url-for (if (empty? @(rf/subscribe [:stories])) :page/new-story :page/library)))}
+                  (routes/url-for (if (empty? @(rf/subscribe [:db/stories])) :page/new-story :page/library)))}
       [:button.open-ai-key-dispatch.rounded.shadow-small
        {:disabled (not validated?)
         :style {:width "100%"  :margin-top "var(--space-half)"}}

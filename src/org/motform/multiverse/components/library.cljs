@@ -29,14 +29,14 @@
 
 (defn library-items []
   [:section.library-items
-   (for [story @(rf/subscribe [:stories])]
+   (for [story @(rf/subscribe [:db/stories])]
      ^{:key (get-in story [:meta :id])} [library-item story])
    [new-story-item]])
 
 (defn export-library
   "SOURCE: https://gist.github.com/zoren/cc74758198b503b1755b75d1a6b376e7"
   []
-  (let [library   (js/Blob. #js [(prn-str @(rf/subscribe [:stories]))] #js {:type "application/edn"})
+  (let [library   (js/Blob. #js [(prn-str @(rf/subscribe [:db/stories]))] #js {:type "application/edn"})
         file-name (nano-id)
         edn-url   (js/URL.createObjectURL library)
         anchor    (doto (js/document.createElement "a")
@@ -54,7 +54,7 @@
    [:section.h-stack.gap-half
     [:button.library-button.rounded.shadow-medium.blurred
      {:on-pointer-down #(when (.confirm js/window "Do you really want to clear the library? This can not be undone!")
-                          (rf/dispatch [:clear-library]))}
+                          (rf/dispatch [:library/clear]))}
      "empty library"]
     [:button.library-button.rounded.shadow-medium.blurred
      {:on-pointer-down #(export-library)}
@@ -69,7 +69,7 @@
   [:div.app-container.v-stack.overlay
    [header [:p.title.title-library "LIBRARY"]]
    [:main.library.v-stack.gap-double.pad-half
-    (if @(rf/subscribe [:stories])
+    (if @(rf/subscribe [:db/stories])
       [:<>
        [library-items]
        [library-toggles]]

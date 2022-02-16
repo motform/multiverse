@@ -44,7 +44,7 @@
         node-class (node-class props)
 
         w (.-clientWidth node)
-        h (.-clientHeight node)
+        h (- (.-clientHeight node) 100) ; NOTE: does this cause clipping?
 
         svg (.. js/d3 (select "#radial-map-tree")
                 (attr "width" w)
@@ -102,5 +102,5 @@
                     :active-path     @(rf/subscribe [:active-path])
                     :active-sentence @(rf/subscribe [:sentence/active])
                     :highlight       @(rf/subscribe [:sentence/highlight])
-                    :prospective-child?  (->> @(rf/subscribe [:children @(rf/subscribe [:sentence/active])]) (map :id) set)
+                    :prospective-child?  (->> @(rf/subscribe [:sentence/children @(rf/subscribe [:sentence/active])]) (map :id) set)
                     :root-sentence   @(rf/subscribe [:root-sentence])}]))

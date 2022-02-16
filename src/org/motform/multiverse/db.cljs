@@ -18,25 +18,25 @@
 ;; — LLA, 200514
 
 (def default-db
-  {:state
-   {:page/active        :page/landing
-    :new-story/prompt   ""
-    :story/active       nil
-    :personality/active :personality/neutral
-    :sentence/active    nil
-    :sentence/highlight {:id nil :source nil}
-    :preview            nil
-    :pending-request?   false
-    :open-ai           {:api-key "" :validated? false}}
+  {:db/state
+   {:page/active              :page/landing
+    :new-story/prompt         ""
+    :story/active             nil
+    :personality/active       :personality/neutral
+    :sentence/active          nil
+    :sentence/highlight       {:id nil :source nil}
+    :sentence/preview         nil
+    :open-ai/pending-request? false
+    :open-ai/key              #:open-ai{:api-key "" :validated? false}}
 
-   :personalities #:personality
+   :db/personalities #:personality
    {:neutral  {:id :personality/neutral  :prompt-modifier "." :color ""}
     :sf       {:id :personality/sf       :prompt-modifier "in the style of science fiction." :color ""}
     :poetic   {:id :personality/poetic   :prompt-modifier "as a stanza of a poem." :color ""}
     :unhinged {:id :personality/unhinged :prompt-modifier "where only the most strange, random and unexpected things happen." :color ""}
     :user     {:id :personality/user     :prompt-modifier nil :color ""}}
 
-   :stories {}})
+   :db/stories {}})
 
 ;;; local-storage
 

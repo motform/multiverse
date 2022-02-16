@@ -16,7 +16,7 @@
     (let [active-sentence    @(rf/subscribe [:sentence/active])
           in-highlight-path? (set @(rf/subscribe [:path highlight]))
           in-active-path?    (set @(rf/subscribe [:path active-sentence]))
-          child?             (set (map :id @(rf/subscribe [:children active-sentence])))]
+          child?             (set (map :id @(rf/subscribe [:sentence/children active-sentence])))]
       (cond (= highlight active-sentence) ""
             (and (= highlight id)         (child? id)) "active"
             (and (in-active-path? id)     (in-highlight-path? id)) "active"
@@ -39,7 +39,7 @@
       [:span (subs text 0 @*i)])))
 
 (defn branch-marks [id]  
-  (let [count-branches @(rf/subscribe [:count-realized-children id])]
+  (let [count-branches @(rf/subscribe [:story/count-realized-children id])]
     [:span.branch-marks
      (if (zero? count-branches)
        [:span.weak-branch-mark]
@@ -67,7 +67,7 @@
     (set! (.. node -style -borderTopWidth)
           (if (< 20 (.-scrollTop node)) "4px" "0px"))))
 
-(defn paragraph [sentences prospect-path prospect-path-in-parents?]
+(defn paragraph [sentences prospect-path]
   (r/create-class
    {:display-name "paragraph"
 
@@ -79,7 +79,7 @@
           (set! (.-scrollTop node) (.-scrollHeight node)))))
 
     :reagent-render 
-    (fn [sentences prospect-path prospect-path-in-parents?]
+    (fn [sentences prospect-path]
       [:section.paragraph.pad-full
        {:on-scroll scroll-indicators}
        (for [s (distinct (util/conj? sentences prospect-path))]
@@ -87,14 +87,14 @@
 
 (defn story []
   (let [active-sentence @(rf/subscribe [:sentence/active])
-        request?        @(rf/subscribe [:pending-request?])
-        prospect-path   @(rf/subscribe [:prospect-path])
+        request?        @(rf/subscribe [:open-ai/pending-request?])
+        prospect-path   @(rf/subscribe [:story/prospect-path])
         {highlight :id
          highlight-source :source} @(rf/subscribe [:sentence/highlight])
 
-        children            (if (and (= :source/map highlight-source) @(rf/subscribe [:prospect-path-has-children?]))
-                              @(rf/subscribe [:children (:id prospect-path)])
-                              @(rf/subscribe [:children active-sentence]))
+        children            (if (and (= :source/map highlight-source) @(rf/subscribe [:story/prospect-path-has-children?]))
+                              @(rf/subscribe [:sentence/children (:id prospect-path)])
+                              @(rf/subscribe [:sentence/children active-sentence]))
 
         highlighting-other-subtree (and highlight ; get another branch if hovering over another branch
                                         (not (contains? (set @(rf/subscribe [:path active-sentence])) highlight))
@@ -105,7 +105,7 @@
                     @(rf/subscribe [:sentences active-sentence]))]
 
     ;; First, see if we have to request any new completions
-    (when (not-any? identity [children request? @(rf/subscribe [:preview?])])
+    (when (not-any? identity [children request? @(rf/subscribe [:sentence/preview?])])
       (rf/dispatch [:open-ai/completions active-sentence (open-ai/format-prompt sentences)]))
 
     [:main.story.blurred.shadow-large.h-stack
