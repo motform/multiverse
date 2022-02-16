@@ -98,8 +98,8 @@
 
 (defn radial-map []
   (fn []
-    [radial-map-d3 {:sentence-tree   @(rf/subscribe [:sentence-tree])
-                    :active-path     @(rf/subscribe [:active-path])
+    [radial-map-d3 {:sentence-tree   @(rf/subscribe [:story/sentence-tree])
+                    :active-path     @(rf/subscribe [:story/active-path])
                     :active-sentence @(rf/subscribe [:sentence/active])
                     :highlight       @(rf/subscribe [:sentence/highlight])
                     :prospective-child?  (->> @(rf/subscribe [:sentence/children @(rf/subscribe [:sentence/active])]) (map :id) set)

@@ -7,8 +7,8 @@
    [:span.tooltip.rounded {:style {:width 100 :margin-left -50}} (name id)]])
 
 (defn personalities []
-  (let [active-personality @(rf/subscribe [:active-personality])]
+  (let [active-personality @(rf/subscribe [:personality/active])]
     [:aside.personalities.v-stack.gap-half.centered.shadow-large.rounded-large.pad-half
-     (for [personality @(rf/subscribe [:personalities])]
+     (for [personality @(rf/subscribe [:personality/personalities])]
        ^{:key (:id personality)}
        [personality-toggle personality active-personality])]))

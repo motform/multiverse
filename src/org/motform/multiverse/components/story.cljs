@@ -14,8 +14,8 @@
 (defn highlight? [id]
   (when-let [{highlight :id} @(rf/subscribe [:sentence/highlight])]
     (let [active-sentence    @(rf/subscribe [:sentence/active])
-          in-highlight-path? (set @(rf/subscribe [:path highlight]))
-          in-active-path?    (set @(rf/subscribe [:path active-sentence]))
+          in-highlight-path? (set @(rf/subscribe [:sentence/path highlight]))
+          in-active-path?    (set @(rf/subscribe [:sentence/path active-sentence]))
           child?             (set (map :id @(rf/subscribe [:sentence/children active-sentence])))]
       (cond (= highlight active-sentence) ""
             (and (= highlight id)         (child? id)) "active"
@@ -67,7 +67,7 @@
     (set! (.. node -style -borderTopWidth)
           (if (< 20 (.-scrollTop node)) "4px" "0px"))))
 
-(defn paragraph [sentences prospect-path]
+(defn paragraph [paragraph prospect-path]
   (r/create-class
    {:display-name "paragraph"
 
@@ -79,11 +79,11 @@
           (set! (.-scrollTop node) (.-scrollHeight node)))))
 
     :reagent-render 
-    (fn [sentences prospect-path]
+    (fn [paragraph prospect-path]
       [:section.paragraph.pad-full
        {:on-scroll scroll-indicators}
-       (for [s (distinct (util/conj? sentences prospect-path))]
-         ^{:key (:id s)} [sentence s sentences prospect-path])])}))
+       (for [s (distinct (util/conj? paragraph prospect-path))]
+         ^{:key (:id s)} [sentence s paragraph prospect-path])])}))
 
 (defn story []
   (let [active-sentence @(rf/subscribe [:sentence/active])
@@ -97,22 +97,22 @@
                               @(rf/subscribe [:sentence/children active-sentence]))
 
         highlighting-other-subtree (and highlight ; get another branch if hovering over another branch
-                                        (not (contains? (set @(rf/subscribe [:path active-sentence])) highlight))
+                                        (not (contains? (set @(rf/subscribe [:sentence/path active-sentence])) highlight))
                                         (not (contains? (set (map :id children)) highlight)))
         
-        sentences (if highlighting-other-subtree
-                    @(rf/subscribe [:sentences highlight])
-                    @(rf/subscribe [:sentences active-sentence]))]
+        paragraphs (if highlighting-other-subtree
+                     @(rf/subscribe [:sentence/paragraph highlight])
+                     @(rf/subscribe [:sentence/paragraph active-sentence]))]
 
     ;; First, see if we have to request any new completions
     (when (not-any? identity [children request? @(rf/subscribe [:sentence/preview?])])
-      (rf/dispatch [:open-ai/completions active-sentence (open-ai/format-prompt sentences)]))
+      (rf/dispatch [:open-ai/completions active-sentence (open-ai/format-prompt paragraphs )]))
 
     [:main.story.blurred.shadow-large.h-stack
      [personalities]
-     (when sentences
+     (when paragraphs 
        [:<>
-        [paragraph sentences prospect-path]
+        [paragraph paragraphs prospect-path]
         [map/radial-map]])
      (if request?
        [:section.children.pad-full [util/spinner]]
@@ -123,7 +123,7 @@
 ;;; Header
 
 (defn title []
-  (let [{:keys [title]} @(rf/subscribe [:meta])]
+  (let [{:keys [title]} @(rf/subscribe [:story/meta])]
     (if-not (str/blank? title)
       [:h2.title.tooltip-container
        {:on-pointer-down #(rf/dispatch [:open-ai/title nil])}

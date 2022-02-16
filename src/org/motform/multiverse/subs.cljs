@@ -45,6 +45,14 @@
  (fn [db _]
    (get-in db [:db/state :sentence/preview])))
 
+(reg-sub
+ :sentence/children
+ (fn [db [_ parent-id]]
+   (let [story-id (get-in db [:db/state :story/active])
+         sentences (get-in db [:db/stories story-id :sentences])
+         child-ids (get-in db [:db/stories story-id :sentences parent-id :children])]
+     (vals (select-keys sentences child-ids)))))
+
 ;;; Library
 
 (reg-sub
@@ -55,27 +63,30 @@
 ;;; Story
 
 (reg-sub
- :meta
+ :story/meta
  (fn [db _]
    (let [story (get-in db [:db/state :story/active])]
      (get-in db [:db/stories story :meta]))))
 
 (reg-sub
- :path
- (fn [db [_ id]]
-   (let [story (get-in db [:db/state :story/active])]
-     (get-in db [:db/stories story :sentences id :path]))))
-
-(reg-sub
- :active-path
+ :story/active-path
  (fn [db _]
    (let [story           (get-in db [:db/state :story/active])
          active-sentence @(rf/subscribe [:sentence/active])
          {highlight :id} @(rf/subscribe [:sentence/highlight])]
      (set (get-in db [:db/stories story :sentences (or highlight active-sentence) :path])))))
 
+;; The "paragraph" of a sentence returns all the complete sentence maps
+;; Whereas the "path" of a sentence returns a vector with id's of its path from the root
+
 (reg-sub
- :sentences
+ :sentence/path
+ (fn [db [_ id]]
+   (let [story (get-in db [:db/state :story/active])]
+     (get-in db [:db/stories story :sentences id :path]))))
+
+(reg-sub
+ :sentence/paragraph
  (fn [db [_ id]]
    (let [story (get-in db [:db/state :story/active])
          path (get-in db [:db/stories story :sentences id :path])]
@@ -93,7 +104,7 @@
 
 
 (reg-sub
- :sentence-tree
+ :story/sentence-tree
  (fn [db _]
    (sentence-tree-level (get-in db [:db/stories @(rf/subscribe [:story/active]) :sentences])
                         @(rf/subscribe [:root-sentence])
@@ -112,13 +123,6 @@
    (let [story (get-in db [:db/state :story/active])]
      (seq (get-in db [:db/stories story :sentences parent :children])))))
 
-(reg-sub
- :sentence/children
- (fn [db [_ parent-id]]
-   (let [story-id (get-in db [:db/state :story/active])
-         sentences (get-in db [:db/stories story-id :sentences])
-         child-ids (get-in db [:db/stories story-id :sentences parent-id :children])]
-     (vals (select-keys sentences child-ids)))))
 
 (reg-sub
  :story/count-realized-children
@@ -136,12 +140,12 @@
 ;;; Personalites 
 
 (reg-sub
- :active-personality
+ :personality/active
  (fn [db _]
    (get-in db [:db/state :personality/active])))
 
 (reg-sub
- :personalities
+ :personality/personalities
  (fn [db _]
    (-> db :db/personalities vals)))
 
