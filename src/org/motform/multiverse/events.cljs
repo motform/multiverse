@@ -12,13 +12,15 @@
 (def ->local-storage (after db/collections->local-storage))
 (def local-storage-interceptor [->local-storage])
 
-;;; State
+;;; DB
 
 (reg-event-fx
  :db/initialize
  [(inject-cofx :local-store-collections)]
  (fn [{:keys [local-store-collections]} [_ default-db]]
    {:db (merge default-db (if local-store-collections local-store-collections {}))}))
+
+;;; Story
 
 (reg-event-fx
  :page/active
@@ -74,7 +76,7 @@
  (fn [db [_ api-key]]
    (assoc-in db [:db/state :open-ai/key :open-ai/api-key] api-key)))
 
-;;; Prompt
+;;; New-story
 
 (defn ->sentence [id text path children]
   #:sentence
@@ -122,7 +124,7 @@
  (fn [db _]
    (assoc db :db/stories {})))
 
-;;; Story
+;;; OpenAI
 
 (defn ->children
   "Make children map to be merged into sentences."

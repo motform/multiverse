@@ -498,7 +498,7 @@ textarea:focus {
 .sentence {
     cursor: pointer;
     margin-right: 4px;
-    padding: 16px 0;
+    padding: 3px 0 29px 0;
     line-height: 1.6;
 }
 
@@ -521,25 +521,37 @@ textarea:focus {
 .child {
     line-height: 1.6;
     text-align: left;
-    border: 1px solid transparent;
     padding: var(--space-half);
-    border-radius: 20px;
     max-width: 100%;
+
+    border-radius: 20px;
+    border: 2px dashed var(--accent-8);
+    background-color: var(--accent-3);
+    box-shadow: 1.4px 1.4px 3.1px rgba(0, 0, 0, 0.008), 3.3px 3.3px 7.7px rgba(0, 0, 0, 0.012), 6.3px 6.3px 14.1px rgba(0, 0, 0, 0.015), 11.1px 11.1px 23.9px rgba(0, 0, 0, 0.018), 20.9px 20.9px 40px rgba(0, 0, 0, 0.022), 50px 50px 80px rgba(0, 0, 0, 0.03);
+}
+
+.child.visited {
+    border-style: solid;
+    background-color: var(--accent-4);
+    color: var(--accent-30);
+}
+
+.child.visited.inactive {
+    color: var(--accent-15);
 }
 
 .child:hover {
     color: var(--fg);
+    border-style: solid;
+    background-color: var(--accent-15);
+    border-color: var(--accent-15);
     font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
-
-    background-color: var(--bg-transparent-1);
-    backdrop-filter: blur(10px);
-    border-color: var(--accent-4);
-
-    box-shadow: 1.4px 1.4px 3.1px rgba(0, 0, 0, 0.008), 3.3px 3.3px 7.7px rgba(0, 0, 0, 0.012), 6.3px 6.3px 14.1px rgba(0, 0, 0, 0.015), 11.1px 11.1px 23.9px rgba(0, 0, 0, 0.018), 20.9px 20.9px 40px rgba(0, 0, 0, 0.022), 50px 50px 80px rgba(0, 0, 0, 0.03);
 }
 
-.visited {
-}
+/* .child.inactive { */
+/*     border-style: dashed; */
+/*     border-color: var(--accent-3); */
+/* } */
 
 .unvisited {
     font-variation-settings: "CASL" 1, "CRSV" 0, "slnt" -15;

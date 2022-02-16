@@ -24,11 +24,12 @@
             :else "inactive"))))
 
 (defn child-selector [text id visited?]
-  [:div {:id id
-         :class (str (when-not visited?  "un") "visited child " (highlight? id)) ; NOTE
-         :on-pointer-down #(rf/dispatch [:sentence/active id])
-         :on-pointer-over #(rf/dispatch [:sentence/highlight id :source/children])
-         :on-pointer-out  #(rf/dispatch [:sentence/remove-highlight])}
+  [:div>div
+   {:id id
+    :class (str (when-not visited?  "un") "visited child " (highlight? id)) ; NOTE
+    :on-pointer-down #(rf/dispatch [:sentence/active id])
+    :on-pointer-over #(rf/dispatch [:sentence/highlight id :source/children])
+    :on-pointer-out  #(rf/dispatch [:sentence/remove-highlight])}
    (if (str/blank? text) "..." text)])
 
 (defn typewrite [text]
