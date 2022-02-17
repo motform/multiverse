@@ -1,67 +1,60 @@
-:root {
-    --accent-38: #f2f7f7;
-    --accent-37: #e6f0ee;
-    --accent-36: #d9e8e6;
-    --accent-35: #cce0dd;
-    --accent-34: #c0d9d5;
-    --accent-33: #b3d1cc;
-    --accent-32: #a6c9c4;
-    --accent-31: #99c1bb;
-    --accent-30: #8dbab3;
-    --accent-29: #80b2aa;
-    --accent-28: #73aaa2;
-    --accent-27: #67a399;
-    --accent-26: #5a9b91;
-    --accent-25: #4d9388;
-    --accent-24: #418c80;
-    --accent-23: #348477;
-    --accent-22: #277c6f;
-    --accent-21: #1a7466;
-    --accent-20: #0e6d5e;
-    --accent-19: #016555;
-    --accent-18: #016051;
-    --accent-17: #015b4d;
-    --accent-16: #015648;
-    --accent-15: #015144;
-    --accent-14: #014c40;
-    --accent-13: #01473b;
-    --accent-12: #014237;
-    --accent-11: #013d33;
-    --accent-10: #01382f;
-    --accent-9: #01332b;
-    --accent-8: #002d26;
-    --accent-7: #002822;
-    --accent-6: #00231e;
-    --accent-5: #001e1a;
-    --accent-4: #001915;
-    --accent-3: #001411;
-    --accent-2: #000f0d;
-    --accent-1: #000a08;
-    --accent-0: #000504;
+:root  {
+
+    --accent-0: #111a1e;
+    --accent-1: #172024;
+    --accent-2: #1d2629;
+    --accent-3: #232b2f;
+    --accent-4: #2a3135;
+    --accent-5: #30373b;
+    --accent-6: #363d40;
+    --accent-7: #3c4346;
+    --accent-8: #42494c;
+    --accent-9: #484f52;
+    --accent-10: #4e5558;
+    --accent-11: #545b5d;
+    --accent-12: #5a6063;
+    --accent-13: #606669;
+    --accent-14: #676c6f;
+    --accent-15: #6d7274;
+    --accent-16: #73787a;
+    --accent-17: #797e80;
+    --accent-18: #7f8486;
+    --accent-19: #858a8c;
+    --accent-20: #8b8f91;
+    --accent-21: #919597;
+    --accent-22: #979b9d;
+    --accent-23: #9da1a3;
+    --accent-24: #a4a7a8;
+    --accent-25: #aaadae;
+    --accent-26: #b0b3b4;
+    --accent-27: #b6b9ba;
+    --accent-28: #bcbebf;
+    --accent-29: #c2c4c5;
+    --accent-30: #c8cacb;
+    --accent-31: #ced0d1;
+    --accent-32: #d4d6d7;
+    --accent-33: #dadcdc;
+    --accent-34: #e1e2e2;
+    --accent-35: #e7e8e8;
+    --accent-36: #ededee;
+    --accent-37: #f3f3f3;
+    --accent-38: #f9f9f9;
+    --accent-39: #ffffff;
 
     --fg: #fff;
 
     --err: red;
-    --ok: var(--accent-20);
-    --highlight: var(--accent-20);
+    --ok: #529167;
+    --highlight: var(--accent-30);
 
-    /* --bg-base: #000a08; */
-    /* --bg-overlay: linear-gradient(180deg, #000a08, #000a0866, #000a0800, #000a0800, #000a0800, #000a0800); */
-    /* --bg-0: linear-gradient(-46deg, #000000, #000f0d, #001915, #00231e, #002822, #002d26); */
-    /* --bg-0-calm: linear-gradient(-46deg, #000000, #000f0d, #001915, #00231e); */
-    /* --bg-0: linear-gradient(-46deg, #002822, #002d26); */
-    /* --bg-0: #070c0e; */
-    --bg-0: #070c0e;
-
-    /* --bg-transparent-1: #070c0e85; */
-    /* --bg-transparent-1: #090e0d85; */
-
-    --bg: #0B1418;
     --bg-transparent-1: #0B1418;
-    --bg-transparent-2: #013d3333;
+    --bg-transparent-2: #8b8f9133;
 
-    --spinner-fill: #0e6d5e88;
+    --spinner-fill: var(--accent-35);
 
     --personality-1: linear-gradient(-46deg, #002d26, #014237, #013d33, #01382f, #01332b);
     --personality-1: linear-gradient(-46deg, green, yellow);
+
+    --bg: #0B1418;
+
 }

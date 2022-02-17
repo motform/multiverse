@@ -25,7 +25,7 @@ body {
 }
 
 html {
-    background-color: var(--bg-base);
+    background-color: var(--bg);
     font-size: 5px;
     -webkit-font-smoothing: antialiased;
 }
@@ -34,9 +34,9 @@ body {
     color: var(--fg);
     font: 400 15px/1.4 "Recursive", sans-serif;
 
-    background: var(--bg-0);
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
+    background: var(--bg);
+    /* background-size: 400% 400%; */
+    /* animation: gradient 15s ease infinite; */
 }
 
 @keyframes gradient {
@@ -85,7 +85,8 @@ main {
 label {
     font: 12px/1 "Obviously", sans-serif;
     text-transform: uppercase;
-    letter-spacing: 3px;
+    letter-spacing: 2px;
+    color: var(--accent-30);
 }
 
 .offset-label {
@@ -98,25 +99,25 @@ button {
     letter-spacing: 2px;
     font-size: 3rem;
     color: var(--fg);
-    background-color: var(--accent-6);
+    background-color: var(--accent-9);
     width: auto;
     padding: 2rem 4rem;
-    border: 1px solid var(--accent-7);
+    border: 1px solid var(--accent-13);
     cursor: pointer;
 }
 
 button:hover {
-    background-color: var(--accent-10);
+    background-color: var(--accent-13);
 }
 
 button:disabled:hover {
-    background-color: var(--accent-4);
+    background-color: var(--accent-5);
 }
 
 button:disabled {
-    background-color: var(--accent-4);
-    border-color: var(--accent-5);
-    color: var(--accent-10);
+    background-color: var(--accent-5);
+    border-color: var(--accent-6);
+    color: var(--accent-15);
     cursor: not-allowed;
 }
 
@@ -129,20 +130,19 @@ textarea {
     resize: none;
     overflow: hidden;
     color: var(--fg);
-    background-color: var(--accent-6);
-    border: 1px solid var(--accent-7);
+    background-color: var(--accent-9);
+    border: 1px solid var(--accent-13);
     padding: 3rem;
     font-size: 16px;
 }
 
 textarea:hover {
-    background-color: var(--accent-10);
-    border: 1px solid var(--accent-10);
+    background-color: var(--accent-12);
 }
 
 textarea:focus {
-    background-color: var(--accent-10);
-    border: 1px solid var(--accent-10);
+    background-color: var(--accent-13);
+    border: 1px solid var(--accent-13);
 }
 
 .textarea-small {
@@ -212,12 +212,12 @@ textarea:focus {
 .rounded       { border-radius: 10px; }
 
 .border {
-    border: 1px solid var(--accent-4);
+    border: 1px solid var(--accent-3);
 }
 
 .blurred {
-    background-color: var(--bg-transparent-1);
     backdrop-filter: blur(10px);
+    background-color: var(--accent-1);
 }
 
 .blurred-medium {
@@ -526,7 +526,7 @@ textarea:focus {
 
     border-radius: 20px;
     border: 2px dashed var(--accent-8);
-    background-color: var(--accent-3);
+    background-color: var(--accent-2);
     box-shadow: 1.4px 1.4px 3.1px rgba(0, 0, 0, 0.008), 3.3px 3.3px 7.7px rgba(0, 0, 0, 0.012), 6.3px 6.3px 14.1px rgba(0, 0, 0, 0.015), 11.1px 11.1px 23.9px rgba(0, 0, 0, 0.018), 20.9px 20.9px 40px rgba(0, 0, 0, 0.022), 50px 50px 80px rgba(0, 0, 0, 0.03);
 }
 
@@ -609,6 +609,7 @@ h1 {
     min-width: 400px;
     max-width: 600px;
     margin-top: 80px;
+    background-color: var(--accent-1);
 }
 
 .key-input {
@@ -616,6 +617,7 @@ h1 {
 
 .key-valid {
     border-color: var(--ok);
+    box-shadow:inset 0px 0px 0px 1px var(--ok);
 }
 
 .key-valid:focus {
@@ -647,6 +649,8 @@ h1 {
 
 .library-item {
     font-size: 2rem;
+    background-color: var(--accent-9);
+    border-color: var(--accent-13);
 }
 
 .library-item h2 {
@@ -658,8 +662,7 @@ h1 {
 }
 
 .library-item:hover {
-    background-color: var(--accent-7);
-    border-color: var(--accent-7);
+    background-color: var(--accent-13);
     cursor: pointer;
 }
 
@@ -670,7 +673,8 @@ h1 {
 
 .library-item-new-story {
     padding: 30px 48px;
-    border: 1px solid var(--accent-12);
+    background-color: var(--accent-9);
+    border: 1px solid var(--accent-13);
     border-radius: 99999px;
     font-size: 40px;
     font-weight: 100;
@@ -678,8 +682,7 @@ h1 {
 }
 
 .library-item-new-story:hover {
-    background-color: var(--accent-12);
-    border-color: var(--accent-12);
+    background-color: var(--accent-13);
     color: var(--fg);
     cursor: pointer;
 }
@@ -714,16 +717,16 @@ h1 {
 }
 
 .tree-map-node-root {
-    fill: var(--accent-20);
-    stroke: var(--accent-20);
+    fill: var(--accent-30);
+    stroke: var(--accent-30);
     stroke-width: 3px;
     cursor: pointer;
 }
 
 .tree-map-node-current {
     cursor: pointer;
-    fill: var(--accent-30);
-    stroke: var(--accent-20);
+    fill: var(--accent-20);
+    stroke: var(--accent-30);
     stroke-width: 3px;
 }
 

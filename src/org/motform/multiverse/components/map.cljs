@@ -86,7 +86,7 @@
                   (attr "r" #(let [id (.. %  -data -name)]
                                (println id root-sentence active-sentence)
                                (if (or (= root-sentence id) (= active-sentence id))
-                                 12 7))))])) ; TODO this size should probably be set dynamically in response to the amount of nodes in the graph
+                                 12 6))))])) ; TODO this size should probably be set dynamically in response to the amount of nodes in the graph
 
 (defn redraw [this]
   (draw-radial-map (rdom/dom-node this) (r/props this)))

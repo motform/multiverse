@@ -8,7 +8,7 @@
 
 (defn library-item [{:story/keys [meta sentences]}]
   (let [{:story/keys [updated title id]} meta]
-    [:a.library-item.v-stack.spaced.gap-full.blurred.rounded.shadow-large.pad-half.border
+    [:a.library-item.v-stack.spaced.gap-full.rounded.shadow-large.pad-half.border
      {:href (routes/url-for :story)
       :on-pointer-down #(do (rf/dispatch [:story/active id])
                             (rf/dispatch [:page/active :page/story])
@@ -52,11 +52,11 @@
    [:p>a.source-code {:href "https://github.com/motform/multiverse" :target "_bank"}
     "Source code avalible on GitHub"]
    [:section.h-stack.gap-half
-    [:button.library-button.rounded.shadow-medium.blurred
+    [:button.library-button.rounded.shadow-medium
      {:on-pointer-down #(when (.confirm js/window "Do you really want to clear the library? This can not be undone!")
                           (rf/dispatch [:library/clear]))}
      "empty library"]
-    [:button.library-button.rounded.shadow-medium.blurred
+    [:button.library-button.rounded.shadow-medium
      {:on-pointer-down #(export-library)}
      "export library"]]])
 
