@@ -1,5 +1,6 @@
 :root {
     --space-full: 40px;
+    --space-3-4: 30px;
     --space-double: calc(var(--space-full) * 2);
     --space-half: calc(var(--space-full) / 2);
     --space-quarter: calc(var(--space-full) / 4);
@@ -199,6 +200,7 @@ textarea:focus {
 .pad-eight   { padding: var(--space-eight)   }
 .pad-quarter { padding: var(--space-quarter) }
 .pad-half    { padding: var(--space-half)    }
+.pad-3-4    { padding: var(--space-3-4)    }
 .pad-full    { padding: var(--space-full)    }
 .pad-double  { padding: var(--space-double)  }
 
@@ -287,9 +289,6 @@ textarea:focus {
 
 .header {
     width: 100%;
-    height: auto;
-    padding: var(--space-half);
-    color: var(--accent-20);
     align-items: center;
 }
 
@@ -308,7 +307,7 @@ textarea:focus {
 .tab {
     background: var(--accent-5);
     padding: 12px 18px 8px 18px;
-    border-radius: 8px;
+    border-radius: 6px;
     font-family: "Obviously", "Verdana", sans-serif;
     font-weight: 600;
     color: var(--fg);
@@ -395,16 +394,17 @@ textarea:focus {
 
 .new-story {
     align-items: center;
-    margin-top: 75px;
+    margin-top: 5vh;
 }
 
 .new-story-container {
     padding: var(--space-full) var(--space-double);
-    background-color: var(--accent-1);
 }
 
 .prompt {
-    margin: 0 -20px;
+    background-color: var(--accent-1);
+    margin: 0 -40px;
+    padding: var(--space-3-4) var(--space-full);
 }
 
 .prompt-title {
@@ -468,26 +468,33 @@ textarea:focus {
 .personality {
     height: 45px;
     width: 45px;
-    border: 1px solid var(--accent-10);
     border-radius: 9999px;
     background: var(--accent-8);
     cursor: pointer;
-}
 
-.personality:hover {
-    background: var(--accent-20);
+    background-size: 300% 300%;
+    animation: gradient 15s ease infinite;
 }
 
 .personality-active {
     background: var(--accent-20);
 }
 
-/* .personality:first-of-type { */
-/*     background: var(--personality-1); */
-/*     border-color: var(--accent-4); */
-/*     background-size: 400% 400%; */
-/*     animation: gradient 15s ease infinite; */
-/* } */
+.personality-neutral-inactive       { background: var(--personality-neutral-inactive); }
+.personality-neutral-inactive:hover { background: var(--personality-neutral-active);   }
+.personality-neutral-active         { background: var(--personality-neutral-active);   }
+
+.personality-fantasy-inactive       { background: var(--personality-fantasy-inactive); }
+.personality-fantasy-inactive:hover { background: var(--personality-fantasy-active);   }
+.personality-fantasy-active         { background: var(--personality-fantasy-active);   }
+
+.personality-sf-inactive            { background: var(--personality-sf-inactive);      }
+.personality-sf-inactive:hover      { background: var(--personality-sf-active);        }
+.personality-sf-active              { background: var(--personality-sf-active);        }
+
+.personality-poetic-inactive       { background: var(--personality-poetic-inactive);   }
+.personality-poetic-inactive:hover { background: var(--personality-poetic-active);     }
+.personality-poetic-active         { background: var(--personality-poetic-active);     }
 
 @keyframes gradient {
     0%   { background-position: 0% 50%; }
@@ -516,6 +523,7 @@ textarea:focus {
     max-width: 900px;
     max-height: 100%;
     font-size: 16px;
+    padding-top: 0;
 }
 
 .paragraph > span {
@@ -780,81 +788,311 @@ h1 {
 #radial-map-tree {
 }
 
-.tree-map-link {
-    fill: none;
-    stroke: var(--accent-10);
-    stroke-width: 1px;
-}
-
-.tree-map-link-active {
-    fill: none;
-    stroke: var(--highlight);
-    stroke-width: 2px;
-}
-
-.tree-map-link-prospective {
-    fill: none;
-    stroke: var(--accent-20);
-    stroke-width: 1px;
-    stroke-dasharray: 4;
-}
-
-.tree-map-node-root {
+.neutral-tree-map-node-root {
     fill: var(--accent-30);
     stroke: var(--accent-30);
     stroke-width: 3px;
     cursor: pointer;
 }
 
-.tree-map-node-current {
+.neutral-tree-map-node-current {
     cursor: pointer;
     fill: var(--accent-20);
     stroke: var(--accent-30);
     stroke-width: 3px;
 }
 
-.tree-map-node-current-dim {
+.neutral-tree-map-node-current-dim {
     fill: var(--accent-10);
     stroke: var(--accent-10);
     stroke-width: 3px;
     cursor: pointer;
 }
 
-.tree-map-node-current-superseded {
+.neutral-tree-map-node-current-superseded {
     fill: var(--accent-20);
     stroke: var(--accent-20);
     cursor: pointer;
 }
 
-.tree-map-node-highlight {
+.neutral-tree-map-node-highlight {
     cursor: pointer;
     fill: var(--accent-30);
     stroke: var(--accent-30);
     stroke-width: 3px;
 }
 
-.tree-map-node-active {
+.neutral-tree-map-node-active {
     fill: var(--highlight);
     cursor: pointer;
 }
 
-.tree-map-node-inactive {
+.neutral-tree-map-node-inactive {
     fill: var(--accent-10);
     cursor: pointer;
 }
 
-.tree-map-node-prospective {
+.neutral-tree-map-node-prospective {
     fill: var(--accent-3);
     stroke: var(--accent-20);
     stroke-dasharray: 4;
     cursor: pointer;
 }
 
-.tree-map-node-active:hover, .tree-map-node-root:hover, .tree-map-node-current:hover, .tree-map-node-inactive:hover  {
+.neutral-tree-map-node-active:hover, .neutral-tree-map-node-root:hover, .neutral-tree-map-node-current:hover, .neutral-tree-map-node-inactive:hover  {
     fill: var(--fg);
     cursor: pointer;
 }
 
-.hidden {
-    display: none;
+.hidden {display: none;}
+.neutral-hidden {display: none;}
+.fantasy-hidden {display: none;}
+.sf-hidden      {display: none;}
+.poetic-hidden  {display: none;}
+
+.fantasy-tree-map-node-root {
+    fill: var(--fantasy-6);
+    stroke: var(--fantasy-6);
+    stroke-width: 3px;
+    cursor: pointer;
+}
+
+.fantasy-tree-map-node-current {
+    cursor: pointer;
+    fill: var(--fantasy-4);
+    stroke: var(--fantasy-6);
+    stroke-width: 3px;
+}
+
+.fantasy-tree-map-node-current-dim {
+    fill: var(--fantasy-3);
+    stroke: var(--fantasy-3);
+    stroke-width: 3px;
+    cursor: pointer;
+}
+
+.fantasy-tree-map-node-current-superseded {
+    fill: var(--fantasy-4);
+    stroke: var(--fantasy-4);
+    cursor: pointer;
+    stroke-width: 3px;
+}
+
+.fantasy-tree-map-node-highlight {
+    cursor: pointer;
+    fill: var(--fantasy-6);
+    stroke: var(--fantasy-6);
+    stroke-width: 3px;
+}
+
+.fantasy-tree-map-node-active {
+    fill: var(--fantasy-6);
+    cursor: pointer;
+}
+
+.fantasy-tree-map-node-inactive {
+    fill: var(--fantasy-3);
+    cursor: pointer;
+}
+
+.fantasy-tree-map-node-prospective {
+    fill: var(--bg);
+    stroke: var(--fantasy-5);
+    stroke-dasharray: 4;
+    cursor: pointer;
+}
+
+.fantasy-tree-map-node-active:hover, .fantasy-tree-map-node-root:hover, .fantasy-tree-map-node-current:hover, .fantasy-tree-map-node-inactive:hover  {
+    fill: var(--fantasy-7);
+    cursor: pointer;
+}
+
+.sf-tree-map-node-root {
+    fill: var(--sf-6);
+    stroke: var(--sf-6);
+    stroke-width: 3px;
+    cursor: pointer;
+}
+
+.sf-tree-map-node-current {
+    cursor: pointer;
+    fill: var(--sf-4);
+    stroke: var(--sf-6);
+    stroke-width: 3px;
+}
+
+.sf-tree-map-node-current-dim {
+    fill: var(--sf-3);
+    stroke: var(--sf-3);
+    stroke-width: 3px;
+    cursor: pointer;
+}
+
+.sf-tree-map-node-current-superseded {
+    fill: var(--sf-4);
+    stroke: var(--sf-4);
+    cursor: pointer;
+    stroke-width: 3px;
+}
+
+.sf-tree-map-node-highlight {
+    cursor: pointer;
+    fill: var(--sf-6);
+    stroke: var(--sf-6);
+    stroke-width: 3px;
+}
+
+.sf-tree-map-node-active {
+    fill: var(--sf-6);
+    cursor: pointer;
+}
+
+.sf-tree-map-node-inactive {
+    fill: var(--sf-3);
+    cursor: pointer;
+}
+
+.sf-tree-map-node-prospective {
+    fill: var(--bg);
+    stroke: var(--sf-5);
+    stroke-dasharray: 4;
+    cursor: pointer;
+}
+
+.sf-tree-map-node-active:hover, .sf-tree-map-node-root:hover, .sf-tree-map-node-current:hover, .sf-tree-map-node-inactive:hover  {
+    fill: var(--sf-7);
+    cursor: pointer;
+}
+
+.poetic-tree-map-node-root {
+    fill: var(--poetic-6);
+    stroke: var(--poetic-6);
+    stroke-width: 3px;
+    cursor: pointer;
+}
+
+.poetic-tree-map-node-current {
+    cursor: pointer;
+    fill: var(--poetic-4);
+    stroke: var(--poetic-6);
+    stroke-width: 3px;
+}
+
+.poetic-tree-map-node-current-dim {
+    fill: var(--poetic-3);
+    stroke: var(--poetic-3);
+    stroke-width: 3px;
+    cursor: pointer;
+}
+
+.poetic-tree-map-node-current-superseded {
+    fill: var(--poetic-4);
+    stroke: var(--poetic-4);
+    cursor: pointer;
+    stroke-width: 3px;
+}
+
+.poetic-tree-map-node-highlight {
+    cursor: pointer;
+    fill: var(--poetic-6);
+    stroke: var(--poetic-6);
+    stroke-width: 3px;
+}
+
+.poetic-tree-map-node-active {
+    fill: var(--poetic-6);
+    cursor: pointer;
+}
+
+.poetic-tree-map-node-inactive {
+    fill: var(--poetic-3);
+    cursor: pointer;
+}
+
+.poetic-tree-map-node-prospective {
+    fill: var(--bg);
+    stroke: var(--poetic-5);
+    stroke-dasharray: 4;
+    cursor: pointer;
+}
+
+.poetic-tree-map-node-active:hover, .poetic-tree-map-node-root:hover, .poetic-tree-map-node-current:hover, .poetic-tree-map-node-inactive:hover  {
+    fill: var(--poetic-7);
+    cursor: pointer;
+}
+
+.neutral-tree-map-link {
+    fill: none;
+    stroke: var(--accent-10);
+    stroke-width: 1px;
+}
+
+.neutral-tree-map-link-active {
+    fill: none;
+    stroke: var(--highlight);
+    stroke-width: 2px;
+}
+
+.neutral-tree-map-link-prospective {
+    fill: none;
+    stroke: var(--accent-20);
+    stroke-width: 1px;
+    stroke-dasharray: 4;
+}
+
+.fantasy-tree-map-link {
+    fill: none;
+    stroke: var(--fantasy-3);
+    stroke-width: 1px;
+}
+
+.fantasy-tree-map-link-active {
+    fill: none;
+    stroke: var(--fantasy-6);
+    stroke-width: 2px;
+}
+
+.fantasy-tree-map-link-prospective {
+    fill: none;
+    stroke: var(--fantasy-6);
+    stroke-width: 1px;
+    stroke-dasharray: 4;
+}
+
+.sf-tree-map-link {
+    fill: none;
+    stroke: var(--sf-3);
+    stroke-width: 1px;
+}
+
+.sf-tree-map-link-active {
+    fill: none;
+    stroke: var(--sf-6);
+    stroke-width: 2px;
+}
+
+.sf-tree-map-link-prospective {
+    fill: none;
+    stroke: var(--sf-6);
+    stroke-width: 1px;
+    stroke-dasharray: 4;
+}
+
+.poetic-tree-map-link {
+    fill: none;
+    stroke: var(--poetic-3);
+    stroke-width: 1px;
+}
+
+.poetic-tree-map-link-active {
+    fill: none;
+    stroke: var(--poetic-6);
+    stroke-width: 2px;
+}
+
+.poetic-tree-map-link-prospective {
+    fill: none;
+    stroke: var(--poetic-6);
+    stroke-width: 1px;
+    stroke-dasharray: 4;
 }

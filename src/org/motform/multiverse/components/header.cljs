@@ -4,7 +4,7 @@
             [re-frame.core :as rf]))
 
 (defn item [label key active-page tooltip type]
-  [:a.hitem.tab
+  [:a.hitem.tab.shadow-medium
    {:class (str (case type :library "tab" :new-story " tab-new-story")
                 (when (= key active-page) " tab-active"))
     :href (routes/url-for key)}
@@ -17,7 +17,7 @@
     [:nav.tabs.h-stack.gap-half
      (for [{:story/keys [title id]} @(rf/subscribe [:story/recent])]
        ^{:key id}
-       [:div.tab
+       [:div.tab.shadow-medium
         {:class (when (and (= active-page :page/story)
                            (= active-story-id id)) "tab-active")
          :on-pointer-down #(do (rf/dispatch [:story/active id])
@@ -30,9 +30,10 @@
 
 (defn header []
   (let [active-page @(rf/subscribe [:page/active])]
-    [:header.header.h-stack.spaced
-     [:section.header-content.h-stack.gap-half
-      [tabs]
-      [item util/icon-plus :page/new-story active-page nil :new-story]]
-     [:nav.header-icons.v-stack
-      [item util/icon-library :page/library active-page "Library" :library]]]))
+    (when @(rf/subscribe [:db/stories])
+      [:header.header.h-stack.spaced.pad-3-4
+       [:section.header-content.h-stack.gap-half
+        [tabs]
+        [item util/icon-plus :page/new-story active-page nil :new-story]]
+       [:nav.header-icons.v-stack
+        [item util/icon-library :page/library active-page "Library" :library]]])))

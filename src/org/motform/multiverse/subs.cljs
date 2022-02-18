@@ -99,7 +99,7 @@
   (let [{:sentence/keys [personality children]} (sentences sentence-id)]
     {:name       sentence-id
      :info       parent-id  ; XXX confusing key
-     :personalty personality
+     :personality personality
      :children   (for [child-id children]
                    (sentence-tree-level sentences child-id active-sentence-id sentence-id))}))
 

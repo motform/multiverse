@@ -81,8 +81,7 @@
 (defn format-prompt
   "Returns space-delimited str from a vec of `paragraph`"
   [paragraph]
-  (let [{:personality/keys [id]} (get @(rf/subscribe [:personality/personalities]) @(rf/subscribe [:personality/active]))
-        {:keys [style template]} (few-shot-personalities id)]
+  (let [{:keys [style template]} (few-shot-personalities @(rf/subscribe [:personality/active]))]
     (str template (when-not (str/blank? template) "\n\n")
          "Write the next sentence of this story." style "\n"
          "Story: " (->> paragraph (map :sentence/text) (interpose " ") (apply str)) "\n"

@@ -7,7 +7,7 @@
 (defn prompt []
   (let [prompt @(rf/subscribe [:new-story/prompt])
         blank? (str/blank? prompt)]
-    [:section.prompt.v-stack.gap-half
+    [:section.prompt.v-stack.gap-half.v-stack.gap-half.rounded-large.shadow-large.blurred.border
      [:textarea.textarea-large.rounded.shadow-large.pad-half
       {:value prompt
        :auto-focus true
@@ -24,7 +24,7 @@
   [:div.app-container.v-stack.overlay
    [header [:p.library-title "NEW STORY"]]
    [:main.new-story.v-stack
-    [:div.new-story-container.v-stack.gap-full.pad-double.rounded-large.border
+    [:div.new-story-container.v-stack.gap-full
      [:div.gap-half.landing-blurb.v-stack
       [:h2.prompt-title "Prompt the network"]
       [:p "to enter a literary space. Language models, despite trained on massive data sets of text, always require something to instagate the generative process."]

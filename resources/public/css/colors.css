@@ -1,5 +1,4 @@
 :root  {
-
     --accent-0: #111a1e;
     --accent-1: #172024;
     --accent-2: #1d2629;
@@ -52,9 +51,45 @@
 
     --spinner-fill: var(--accent-35);
 
-    --personality-1: linear-gradient(-46deg, #002d26, #014237, #013d33, #01382f, #01332b);
-    --personality-1: linear-gradient(-46deg, green, yellow);
+    --personality-neutral-inactive: linear-gradient(-46deg, var(--accent-6), var(--accent-7), var(--accent-8), var(--accent-9));
+    --personality-neutral-active:   linear-gradient(-46deg, var(--accent-30), var(--accent-31), var(--accent-32), var(--accent-33));
 
+
+
+    --fantasy-0: #002d26;
+    --fantasy-1: #014237;
+    --fantasy-2: #013d33;
+    --fantasy-3: #01382f;
+    --fantasy-4: #026555;
+    --fantasy-5: #027e6a;
+    --fantasy-6: #03977f;
+    --fantasy-7: #03b094;
+
+    --sf-0: #1a1601;
+    --sf-1: #332b01;
+    --sf-2: #4c4002;
+    --sf-3: #655502;
+    --sf-4: #7e6a02;
+    --sf-5: #977f03;
+    --sf-6: #b09403;
+    --sf-7: #c9a903;
+
+    --poetic-0: #01111a;
+    --poetic-1: #012233;
+    --poetic-2: #02334c;
+    --poetic-3: #024465;
+    --poetic-4: #02557e;
+    --poetic-5: #036697;
+    --poetic-6: #0377b0;
+    --poetic-7: #0388c9;
+
+    --personality-fantasy-inactive: linear-gradient(-46deg, var(--fantasy-0), var(--fantasy-1), var(--fantasy-2), var(--fantasy-3));
+    --personality-fantasy-active:   linear-gradient(-46deg, var(--fantasy-4), var(--fantasy-5), var(--fantasy-6), var(--fantasy-7));
+
+    --personality-sf-inactive:      linear-gradient(-46deg, var(--sf-0), var(--sf-1), var(--sf-2), var(--sf-3));
+    --personality-sf-active:        linear-gradient(-46deg, var(--sf-4), var(--sf-5), var(--sf-6), var(--sf-7));
+
+    --personality-poetic-inactive:  linear-gradient(-46deg, var(--poetic-0), var(--poetic-1), var(--poetic-2), var(--poetic-3));
+    --personality-poetic-active:    linear-gradient(-46deg, var(--poetic-4), var(--poetic-5), var(--poetic-6), var(--poetic-7));
     --bg: #0B1418;
-
 }

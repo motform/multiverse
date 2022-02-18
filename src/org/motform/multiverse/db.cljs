@@ -17,23 +17,18 @@
 ;; — LLA, 200514
 
 (def default-db
-  {:db/state
-   {:page/active              :page/landing
-    :new-story/prompt         ""
-    :story/active             nil
-    :story/recent             []
-    :personality/active       :personality/neutral
-    :sentence/active          nil
-    :sentence/highlight       {:id nil :source nil}
-    :sentence/preview         nil
-    :open-ai/pending-request? false
-    :open-ai/key              #:open-ai{:api-key "" :validated? false}}
+  {:db/state {:page/active              :page/landing
+              :new-story/prompt         ""
+              :story/active             nil
+              :story/recent             []
+              :personality/active       :personality/neutral
+              :sentence/active          nil
+              :sentence/highlight       {:id nil :source nil}
+              :sentence/preview         nil
+              :open-ai/pending-request? false
+              :open-ai/key              #:open-ai{:api-key "" :validated? false}}
 
-   :db/personalities
-   #:personality{:neutral {:personality/id :personality/neutral  :personality/color ""}
-                 :sf      {:personality/id :personality/sf       :personality/color ""}
-                 :fantasy {:personality/id :personality/fantasy  :personality/color ""}
-                 :poetic  {:personality/id :personality/poetic   :personality/color ""}}
+   :db/personalities [:personality/neutral :personality/sf :personality/fantasy :personality/poetic]
 
    :db/stories {}})
 

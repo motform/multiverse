@@ -87,20 +87,20 @@
 
 ;;; New-story
 
-(defn ->sentence [id text path children]
+(defn ->sentence [id text path children personality]
   #:sentence
    {:id   id
     :text text
     :path path
     :children children
-    :personality :personality/neutral})
+    :personality personality})
 
-(defn ->story [story-id sentence-id prompt]
+(defn ->story [story-id sentence-id prompt personality]
   {:story/meta {:story/id story-id
                 :story/title    ""
                 :story/updated (js/Date.)
                 :sentence/active sentence-id}
-   :story/sentences {sentence-id (->sentence sentence-id prompt [sentence-id] [])}})
+   :story/sentences {sentence-id (->sentence sentence-id prompt [sentence-id] [] personality)}})
 
 (reg-event-fx
  :new-story/submit
@@ -114,9 +114,10 @@
  [local-storage-interceptor]
  (fn [{:keys [db]} [_ prompt]]
    (let [story-id    (nano-id 10)
-         sentence-id (nano-id 10)]
+         sentence-id (nano-id 10)
+         active-personality (get-in db [:db/state :personality/active])]
      {:db (-> db
-              (assoc-in  [:db/stories story-id] (->story story-id sentence-id prompt))
+              (assoc-in  [:db/stories story-id] (->story story-id sentence-id prompt active-personality))
               (assoc-in  [:db/state :story/active] story-id)
               (update-in [:db/state :story/recent] conj story-id))
       :dispatch [:open-ai/title]})))
@@ -138,14 +139,14 @@
 
 (defn ->children
   "Make children map to be merged into sentences."
-  [parent-path child-ids texts]
+  [parent-path child-ids texts active-personality]
   (let [child-pairs (util/pairs child-ids texts)]
     (reduce (fn [children [id text]]
-              (assoc children id (->sentence id text (conj parent-path id) [])))
+              (assoc children id (->sentence id text (conj parent-path id) [] active-personality)))
             {} child-pairs)))
 
 (defn- open-ai-texts [completions]
-  (map (comp #(str % \.) :text) (:choices completions)))
+  (map :text (:choices completions)))
 
 (reg-event-fx
  :open-ai/handle-children
@@ -153,7 +154,7 @@
  (fn [{:keys [db]} [_ story parent completions]]
    (let [parent-path (get-in db [:db/stories story :story/sentences parent :sentence/path])
          child-ids (repeatedly 3 #(nano-id 10))
-         children (->children parent-path child-ids (open-ai-texts completions))]
+         children (->children parent-path child-ids (open-ai-texts completions) (get-in db [:db/state :personality/active]))]
      {:db (-> db
               (update-in [:db/stories story :story/sentences] merge children)
               (assoc-in  [:db/stories story :story/sentences parent :sentence/children] child-ids)
@@ -195,7 +196,7 @@
  (fn [{:keys [db]} [_ parent-id prompt]]
    (let [story-id  (get-in db [:db/state :story/active])
          api-key   (get-in db [:db/state :open-ai/key :open-ai/api-key])
-         {:keys [uri params]} (open-ai/completion-with #_:ada :text-davinci-001
+         {:keys [uri params]} (open-ai/completion-with :ada #_:text-davinci-001
                                                        {:prompt prompt})]
      {:db (assoc-in db [:db/state :open-ai/pending-request?] true)
       :http-xhrio {:method  :post
