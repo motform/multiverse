@@ -87,11 +87,11 @@
 
 (defn ->sentence [id text path children]
   #:sentence
-  {:id   id
-   :text text
-   :path path
-   :children children
-   :personality :personality/neutral})
+   {:id   id
+    :text text
+    :path path
+    :children children
+    :personality :personality/neutral})
 
 (defn ->story [story-id sentence-id prompt]
   {:story/meta {:story/id story-id
@@ -161,6 +161,7 @@
  :open-ai/handle-title
  [local-storage-interceptor]
  (fn [db [_ story-id title]]
+   (db story-id title)
    (-> db
        (assoc-in [:db/stories story-id :story/meta :story/title]
                  (-> title :choices first :text)))))
@@ -191,7 +192,7 @@
  (fn [{:keys [db]} [_ parent-id prompt]]
    (let [story-id  (get-in db [:db/state :story/active])
          api-key   (get-in db [:db/state :open-ai/key :open-ai/api-key])
-         {:keys [uri params]} (open-ai/completion-with :ada #_:text-davinci-001 
+         {:keys [uri params]} (open-ai/completion-with #_:ada :text-davinci-001 
                                                        {:prompt prompt})]
      {:db (assoc-in db [:db/state :open-ai/pending-request?] true)
       :http-xhrio {:method  :post
@@ -208,13 +209,14 @@
  (fn [{:keys [db]} _]
    (let [api-key   (get-in db [:db/state :open-ai/key :open-ai/api-key])
          story-id  (get-in db [:db/state :story/active])
-         sentences (->> (get-in db [:db/stories story-id :story/sentences]) vals open-ai/format-prompt)
+         story     (vals (get-in db [:db/stories story-id :story/sentences]))
          {:keys [uri params]} (open-ai/completion-with :text-davinci-001
-                                                       {:prompt (open-ai/format-title sentences)
+                                                       {:prompt (open-ai/format-title story)
                                                         :n           1
-                                                        :max_tokens  15})]
+                                                        :max_tokens  15
+                                                        :stop ["\"\"\""]})]
      {:http-xhrio {:method          :post
-                   :uri             uri 
+                   :uri             uri
                    :headers         {"Authorization" (str "Bearer " api-key)}
                    :params          params
                    :format          (ajax/json-request-format)

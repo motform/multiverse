@@ -22,9 +22,9 @@
 
 (defn new-story []
   [:div.app-container.v-stack.overlay
-   [header [:p.library-title "New story"]]
+   [header [:p.library-title "NEW STORY"]]
    [:main.new-story.v-stack
-    [:div.new-story-container.v-stack.gap-full.blurred.pad-double.rounded-large.border
+    [:div.new-story-container.v-stack.gap-full.pad-double.rounded-large.border
      [:div.gap-half.landing-blurb.v-stack
       [:h2.prompt-title "Prompt the network"]
       [:p "to enter a literary space. Language models, despite trained on massive data sets of text, always require something to instagate the generative process."]

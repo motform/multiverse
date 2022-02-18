@@ -14,7 +14,7 @@
                             (rf/dispatch [:page/active :page/story])
                             (. (.-history js/window) pushState #js {} "" (routes/url-for :page/story)))}
      [:h2 (if-not (str/blank? title) (util/title-case title) "Generating title...")]
-     [:section.h-stack.spaced
+     [:section.h-stack.spaced.library-item-meta
       [:p (str (count sentences) " sentences")]
       [:p "Last explored " (util/format-date updated)]]]))
 

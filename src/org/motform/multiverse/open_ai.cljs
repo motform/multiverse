@@ -21,8 +21,7 @@
   {:max_tokens  64
    :temperature 0.8
    :n           3
-   :top_p       1
-   :stop         ["\n" "." "?" "!"]})
+   :top_p       1})
 
 (defn- request [engine task params]
   {:uri    (str "https://api.openai.com/v1/engines/" engine "/" task)
@@ -33,10 +32,13 @@
   [engine params]
   {:pre [(valid-engines engine)
          (set/subset? (set (keys params)) valid-params)]}
+  (println "completion-with " (request (name engine) "completions" params))
   (request (name engine) "completions" params))
 
 (defn format-title [story]
-  (str "I was asked to give a title to this story:\n\"\"\"\n\n" story "\n\"\"\"\nThe title i came up with was:\n\"\"\""))
+  (str "I was asked to give a title to this story:\n\"\"\"\n\n"
+       (->> story (map :sentence/text) (interpose " ") (apply str))
+       "\n\"\"\"\nThe title i came up with was:\n\"\"\""))
 
 (defn random-story-start []
   (rand-nth ["I was walking my dog down the Avenue of the Americas. When suddenly, the sky turned dark."
@@ -55,39 +57,34 @@
 ;; It would be great to do this kind of thing on a larger scale using Gutenberg data, but I don't think I will have time for that any time soon…
 (def few-shot-personalities
   #:personality
-  {:neutral (training-template "" [])
+   {:neutral (training-template "" [])
 
-   :sf      (training-template "The story is written in the style of science-fiction"
-                               ["The ship slowly came to halt, having just left transgalatic light-speed."
-                                "Sentient AI ruled this planet, at first colonized by humans, only to be occupied by the android."
-                                "My dog was of a curious alien breed, faintly glowing in the dark every time another Auphorian passed by."])
+    :sf      (training-template "The story is written in the style of science-fiction"
+                                ["The ship slowly came to halt, having just left transgalatic light-speed."
+                                 "Sentient AI ruled this planet, at first colonized by humans, only to be occupied by the android."
+                                 "My dog was of a curious alien breed, faintly glowing in the dark every time another Auphorian passed by."])
 
-   :fantasy (training-template "The story is written in the style of high fantasy."
-                               ["I look up, and a pack of wild harpies where swarming us."
-                                "The elven troops rallied, their long hair reflecting the faint sunlight that was left."
-                                "There where all kinds of wonderous creatures, a mightly display of life and magic."])
+    :fantasy (training-template "The story is written in the style of high fantasy."
+                                ["I look up, and a pack of wild harpies where swarming us."
+                                 "The elven troops rallied, their long hair reflecting the faint sunlight that was left."
+                                 "There where all kinds of wonderous creatures, a mightly display of life and magic."])
 
-   :poetic  (training-template "The story is in the style of an epic poem, similar to the Divine Comedy or the Greek classics."
-                               ["Oh heavens, how be thy of such ruthe! Oh hells, why dost thou discrimiate even around fools?"
-                                "Of Beatrice, and that saintly walk. That it may issue, bearing true report. Of the mind's impress; not aught thy words."
-                                "How hard the valley desceneds and climbs, how long the Avenue stretches along the shroes."])
-   
-   :unhigned (training-template "The story is in the style of an epic poem, similar to the Divine Comedy or the Greek classics." ; TODO: Write prompts
+    :poetic  (training-template "The story is in the style of an epic poem, similar to the Divine Comedy or the Greek classics."
                                 ["Oh heavens, how be thy of such ruthe! Oh hells, why dost thou discrimiate even around fools?"
                                  "Of Beatrice, and that saintly walk. That it may issue, bearing true report. Of the mind's impress; not aught thy words."
-                                 "How hard the valley desceneds and climbs, how long the Avenue stretches along the shroes."])})
+                                 "How hard the valley desceneds and climbs, how long the Avenue stretches along the shroes."])
+
+    :unhigned (training-template "The story is in the style of an epic poem, similar to the Divine Comedy or the Greek classics." ; TODO: Write prompts
+                                 ["Oh heavens, how be thy of such ruthe! Oh hells, why dost thou discrimiate even around fools?"
+                                  "Of Beatrice, and that saintly walk. That it may issue, bearing true report. Of the mind's impress; not aught thy words."
+                                  "How hard the valley desceneds and climbs, how long the Avenue stretches along the shroes."])})
 
 (defn format-prompt
   "Returns space-delimited str from a vec of `paragraph`"
   [paragraph]
   (let [{:personality/keys [id]} (get @(rf/subscribe [:personality/personalities]) @(rf/subscribe [:personality/active]))
         {:keys [style template]} (few-shot-personalities id)]
-    (println
-     (str template (when-not (str/blank? template) "\n\n")
-          "Write the next sentence of this story." style "\n" 
-          "Story: " (->> paragraph (map :sentence/text) (interpose " ") (apply str)) "\n"
-          "Next sentence:"))
     (str template (when-not (str/blank? template) "\n\n")
-         "Write the next sentence of this story." style "\n" 
+         "Write the next sentence of this story." style "\n"
          "Story: " (->> paragraph (map :sentence/text) (interpose " ") (apply str)) "\n"
          "Next sentence:")))

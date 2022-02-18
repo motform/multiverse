@@ -19,13 +19,13 @@ input, button, textarea, select {
 
 html,
 body {
-    height: 110%;
+    height: 100%;
     margin: 0;
     overflow: hidden;
 }
 
 html {
-    background-color: var(--bg);
+    background-color: var(--accent-1);
     font-size: 5px;
     -webkit-font-smoothing: antialiased;
 }
@@ -34,7 +34,7 @@ body {
     color: var(--fg);
     font: 400 15px/1.4 "Recursive", sans-serif;
 
-    background: var(--bg);
+    background: var(--accent-1);
     /* background-size: 400% 400%; */
     /* animation: gradient 15s ease infinite; */
 }
@@ -102,7 +102,7 @@ button {
     color: var(--bg);
     background-color: var(--accent-25);
     width: auto;
-    padding: 3rem 4rem;
+    padding: 2.8rem 4rem 3.2rem 4rem;
     border: 1px solid var(--accent-27);
     cursor: pointer;
 }
@@ -218,7 +218,7 @@ textarea:focus {
 
 .blurred {
     backdrop-filter: blur(10px);
-    background-color: var(--accent-1);
+    background-color: var(--bg);
 }
 
 .blurred-medium {
@@ -258,7 +258,7 @@ textarea:focus {
     letter-spacing: 1px;
     text-transform: uppercase;
     opacity: 0%;
-    background-color: var(--bg-transparent-2);
+    background-color: var(--accent-10);
     backdrop-filter: blur(5px);
     text-align: center;
     padding: 8px 12px;
@@ -266,9 +266,8 @@ textarea:focus {
     z-index: 1;
     top: 90%;
     left: 50%;
-    width: 80px;
-    margin-left: -40px;
     border: 1px solid var(--accent-4);
+    border-radius: 8px;
 }
 
 .tooltip-large {
@@ -292,11 +291,16 @@ textarea:focus {
     height: auto;
     padding: var(--space-half) var(--space-full);
     color: var(--accent-20);
+    align-items: center;
 }
 
 .header-wordmark  {
     font-family: "Obviously Wide", "Verdana", sans-serif;
     text-transform: uppercase;
+}
+
+.header-icons {
+    align-items: center;
 }
 
 .title {
@@ -308,7 +312,7 @@ textarea:focus {
 }
 
 .title:hover {
-    color: var(--highlight);
+    color: var(--fg);
     cursor: pointer;
 }
 
@@ -317,6 +321,17 @@ textarea:focus {
     letter-spacing: 1px;
 }
 
+.hitem {
+    font: 12px/1 "Obviously", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent-30);
+    align-items: center;
+}
+
+.hitem:hover {
+    color: var(--fg);
+}
 
 .spinner-1 { animation: fade 1.5s ease infinite alternate; }
 .spinner-2 { animation: fade 1.5s ease infinite alternate; animation-delay: 0.5s;}
@@ -344,6 +359,7 @@ textarea:focus {
 
 .new-story-container {
     padding: var(--space-full) var(--space-double);
+    background-color: var(--accent-2);
 }
 
 .prompt {
@@ -402,10 +418,10 @@ textarea:focus {
 
 .personalities {
     grid-row: span 1;
-    border: 1px solid var(--accent-5);
-    margin: var(--space-half);
-    margin-left: var(--space-double);
-    background-color: #111f25;
+    /* border: 1px solid var(--accent-5); */
+    /* margin: var(--space-half); */
+    /* margin-left: var(--space-double); */
+    /* background-color: #111f25; */
 }
 
 .personality {
@@ -610,7 +626,7 @@ h1 {
     min-width: 400px;
     max-width: 600px;
     margin-top: 80px;
-    background-color: var(--accent-1);
+    background-color: var(--accent-2);
 }
 
 .key-input {
@@ -650,8 +666,15 @@ h1 {
 
 .library-item {
     font-size: 2rem;
-    background-color: var(--accent-2);
-    border-color: var(--accent-4);
+    background-color: var(--bg);
+    border-color: var(--accent-6);
+}
+
+.library-item-meta {
+    font: 8px/1 "Obviously", sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--accent-30);
 }
 
 .library-item h2 {
@@ -663,7 +686,7 @@ h1 {
 }
 
 .library-item:hover {
-    background-color: var(--accent-4);
+    border-color: var(--accent-10);
     cursor: pointer;
 }
 
@@ -674,8 +697,8 @@ h1 {
 
 .library-item-new-story {
     padding: 30px 48px;
-    background-color: var(--accent-2);
-    border: 1px solid var(--accent-5);
+    background-color: var(--bg);
+    border: 1px solid var(--accent-6);
     border-radius: 99999px;
     font-size: 40px;
     font-weight: 100;

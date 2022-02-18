@@ -5,7 +5,7 @@
   [:div.personality.shadow-medium.tooltip-container
    {:class (str "personality-" (when-not (= id active-personality) "in") "active")
     :on-pointer-down #(rf/dispatch [:personality/active id])}
-   [:span.tooltip.rounded {:style {:width 100 :margin-left -50}} (name id)]])
+   [:span.tooltip.rounded {:style {:top "15%" :left "120%"}} (name id)]])
 
 (defn personalities []
   (let [active-personality @(rf/subscribe [:personality/active])]
