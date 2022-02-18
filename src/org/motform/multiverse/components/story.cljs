@@ -23,10 +23,10 @@
             (in-active-path? id)          "inactive"
             :else "inactive"))))
 
-(defn child-selector [text id visited?]
-  [:div>div
+(defn child-selector [text id visited? personality]
+  [:div>div.shadow-large
    {:id id
-    :class (str (when-not visited?  "un") "visited child " (highlight? id)) ; NOTE
+    :class (str (name personality) "-" (when-not visited?  "un") "visited child " (highlight? id)) ; NOTE
     :on-pointer-down #(rf/dispatch [:sentence/active id])
     :on-pointer-over #(rf/dispatch [:sentence/highlight id :source/children])
     :on-pointer-out  #(rf/dispatch [:sentence/remove-highlight])}
@@ -116,8 +116,8 @@
      (if request?
        [:section.children.pad-full [util/spinner]]
        [:section.children.h-equal-3.gap-double.pad-full
-        (for [{:sentence/keys [id text children]} children]
-          ^{:key id} [child-selector text id (seq children)])])]))
+        (for [{:sentence/keys [id text children personality]} children]
+          ^{:key id} [child-selector text id (seq children) personality])])]))
 
 ;;; Header
 

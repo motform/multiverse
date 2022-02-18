@@ -395,7 +395,6 @@ textarea:focus {
 
 .new-story {
     align-items: center;
-    margin-top: 5vh;
 }
 
 .new-story-container {
@@ -480,7 +479,7 @@ textarea:focus {
 
 .personality-neutral-inactive       { background-color: var(--accent-10); }
 .personality-neutral-inactive:hover { background-color: var(--accent-15);   }
-.personality-neutral-active         { background-color: var(--accent-22);   }
+.personality-neutral-active         { background-color: var(--accent-30);   }
 
 .personality-fantasy-inactive       { background-color: var(--fantasy-3); }
 .personality-fantasy-inactive:hover { background-color: var(--fantasy-5);   }
@@ -589,15 +588,16 @@ textarea:focus {
 }
 
 .child {
-    line-height: 1.6;
+    font-size: 18px;
+    line-height: 1.4;
     text-align: left;
     padding: var(--space-half);
     max-width: 100%;
 
-    border-radius: 20px;
-    border: 2px dashed var(--accent-8);
-    background-color: var(--accent-2);
-    box-shadow: 1.4px 1.4px 3.1px rgba(0, 0, 0, 0.008), 3.3px 3.3px 7.7px rgba(0, 0, 0, 0.012), 6.3px 6.3px 14.1px rgba(0, 0, 0, 0.015), 11.1px 11.1px 23.9px rgba(0, 0, 0, 0.018), 20.9px 20.9px 40px rgba(0, 0, 0, 0.022), 50px 50px 80px rgba(0, 0, 0, 0.03);
+    border-radius: 15px;
+    border: 1px dashed var(--accent-4);
+    background-color: var(--accent-0);
+    font-variation-settings: "CASL" 0, "CRSV" 0;
 }
 
 .child.visited {
@@ -618,10 +618,133 @@ textarea:focus {
     font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
 }
 
-/* .child.inactive { */
-/*     border-style: dashed; */
-/*     border-color: var(--accent-3); */
-/* } */
+.child.poetic-visited {
+    border-style: solid;
+    background-color: var(--poetic-2);
+    border-color: var(--poetic-2);
+    color: var(--poetic-7);
+}
+
+.child.poetic-visited.inactive {
+    color: var(--poetic-5);
+}
+
+.child.poetic-visited:hover {
+    color: var(--fg);
+    border-style: solid;
+    background-color: var(--poetic-4);
+    border-color: var(--poetic-4);
+    font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
+}
+
+.child.poetic-unvisited {
+    border-radius: 15px;
+    border: 1px dashed var(--poetic-3);
+    background-color: var(--poetic-0);
+    color: var(--poetic-4);
+}
+
+.child.poetic-unvisited:hover {
+    border: 1px dashed var(--poetic-5);
+    background-color: var(--poetic-5);
+    color: var(--fg);
+}
+
+.child.sf-visited {
+    border-style: solid;
+    background-color: var(--sf-2);
+    border-color: var(--sf-2);
+    color: var(--sf-7);
+}
+
+.child.sf-visited.inactive {
+    color: var(--sf-5);
+}
+
+.child.sf-visited:hover {
+    color: var(--fg);
+    border-style: solid;
+    background-color: var(--sf-4);
+    border-color: var(--sf-4);
+    font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
+}
+
+.child.sf-unvisited {
+    border-radius: 15px;
+    border: 1px dashed var(--sf-3);
+    background-color: var(--sf-0);
+    color: var(--sf-4);
+}
+
+.child.sf-unvisited:hover {
+    border: 1px dashed var(--sf-5);
+    background-color: var(--sf-5);
+    color: var(--fg);
+}
+
+.child.fantasy-visited {
+    border-style: solid;
+    background-color: var(--fantasy-2);
+    border-color: var(--fantasy-2);
+    color: var(--fantasy-7);
+}
+
+.child.fantasy-visited.inactive {
+    color: var(--fantasy-5);
+}
+
+.child.fantasy-visited:hover {
+    color: var(--fg);
+    border-style: solid;
+    background-color: var(--fantasy-5);
+    border-color: var(--fantasy-5);
+    font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
+}
+
+.child.fantasy-unvisited {
+    border-radius: 15px;
+    border: 1px dashed var(--fantasy-2);
+    background-color: var(--fantasy-0);
+    color: var(--fantasy-5);
+}
+
+.child.fantasy-unvisited:hover {
+    border: 1px dashed var(--fantasy-5);
+    background-color: var(--fantasy-5);
+    color: var(--fg);
+}
+
+.child.neutral-visited {
+    border-style: solid;
+    background-color: var(--accent-10);
+    border-color: var(--accent-10);
+    color: var(--accent-25);
+}
+
+.child.neutral-visited.inactive {
+    color: var(--accent-15);
+}
+
+.child.neutral-visited:hover {
+    color: var(--bg); /* NOTE: A bit jaaring in context! */
+    border-style: solid;
+    background-color: var(--accent-30);
+    border-color: var(--accent-30);
+    font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
+}
+
+.child.neutral-unvisited {
+    border-radius: 15px;
+    border: 1px dashed var(--accent-10);
+    background-color: var(--accent-2);
+    color: var(--accent-20);
+}
+
+.child.neutral-unvisited:hover {
+    border: 1px dashed var(--accent-30);
+    background-color: var(--accent-30);
+    color: var(--bg);
+}
 
 .unvisited {
     font-variation-settings: "CASL" 1, "CRSV" 0, "slnt" -15;
@@ -819,8 +942,8 @@ h1 {
 }
 
 .neutral-tree-map-node-current-superseded {
-    fill: var(--accent-20);
-    stroke: var(--accent-20);
+    fill: var(--accent-30);
+    stroke: var(--accent-30);
     cursor: pointer;
 }
 
@@ -881,8 +1004,8 @@ h1 {
 }
 
 .fantasy-tree-map-node-current-superseded {
-    fill: var(--fantasy-4);
-    stroke: var(--fantasy-4);
+    fill: var(--fantasy-6);
+    stroke: var(--fantasy-6);
     cursor: pointer;
     stroke-width: 3px;
 }
@@ -938,8 +1061,8 @@ h1 {
 }
 
 .sf-tree-map-node-current-superseded {
-    fill: var(--sf-4);
-    stroke: var(--sf-4);
+    fill: var(--sf-6);
+    stroke: var(--sf-6);
     cursor: pointer;
     stroke-width: 3px;
 }
@@ -995,8 +1118,8 @@ h1 {
 }
 
 .poetic-tree-map-node-current-superseded {
-    fill: var(--poetic-4);
-    stroke: var(--poetic-4);
+    fill: var(--poetic-6);
+    stroke: var(--poetic-6);
     cursor: pointer;
     stroke-width: 3px;
 }
