@@ -6,3 +6,6 @@ node_modules/
 resources/public/js/
 resources/public/fonts/
 package-lock.json
+process
+BESTOF
+TODO.org

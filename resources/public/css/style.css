@@ -95,19 +95,20 @@ label {
 
 button {
     font-family: "Obviously", sans-serif;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     font-size: 3rem;
-    color: var(--fg);
-    background-color: var(--accent-9);
+    color: var(--bg);
+    background-color: var(--accent-25);
     width: auto;
-    padding: 2rem 4rem;
-    border: 1px solid var(--accent-13);
+    padding: 3rem 4rem;
+    border: 1px solid var(--accent-27);
     cursor: pointer;
 }
 
 button:hover {
-    background-color: var(--accent-13);
+    background-color: var(--accent-30);
 }
 
 button:disabled:hover {
@@ -130,23 +131,23 @@ textarea {
     resize: none;
     overflow: hidden;
     color: var(--fg);
-    background-color: var(--accent-9);
-    border: 1px solid var(--accent-13);
+    background-color: var(--accent-2);
+    border: 1px solid var(--accent-10);
     padding: 3rem;
     font-size: 16px;
 }
 
 textarea:hover {
-    background-color: var(--accent-12);
+    background-color: var(--accent-3);
 }
 
 textarea:focus {
-    background-color: var(--accent-13);
-    border: 1px solid var(--accent-13);
+    background-color: var(--accent-3);
+    border-color: var(--accent-15);
 }
 
 .textarea-small {
-    height: 50px;
+    height: 55px;
     width: 100%;
 }
 
@@ -338,7 +339,7 @@ textarea:focus {
 
 .new-story {
     align-items: center;
-    margin-top: 150px;
+    margin-top: 75px;
 }
 
 .new-story-container {
@@ -400,7 +401,7 @@ textarea:focus {
 /* personalities */
 
 .personalities {
-    grid-row: span 2;
+    grid-row: span 1;
     border: 1px solid var(--accent-5);
     margin: var(--space-half);
     margin-left: var(--space-double);
@@ -424,12 +425,12 @@ textarea:focus {
     background: var(--accent-20);
 }
 
-.personality:first-of-type {
-    background: var(--personality-1);
-    border-color: var(--accent-4);
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
-}
+/* .personality:first-of-type { */
+/*     background: var(--personality-1); */
+/*     border-color: var(--accent-4); */
+/*     background-size: 400% 400%; */
+/*     animation: gradient 15s ease infinite; */
+/* } */
 
 @keyframes gradient {
     0%   { background-position: 0% 50%; }
@@ -508,7 +509,7 @@ textarea:focus {
 }
 
 .children {
-    grid-column: span 2;
+    grid-column: span 3;
     cursor: pointer;
     width: 100%;
 }
@@ -649,8 +650,8 @@ h1 {
 
 .library-item {
     font-size: 2rem;
-    background-color: var(--accent-9);
-    border-color: var(--accent-13);
+    background-color: var(--accent-2);
+    border-color: var(--accent-4);
 }
 
 .library-item h2 {
@@ -662,7 +663,7 @@ h1 {
 }
 
 .library-item:hover {
-    background-color: var(--accent-13);
+    background-color: var(--accent-4);
     cursor: pointer;
 }
 
@@ -673,8 +674,8 @@ h1 {
 
 .library-item-new-story {
     padding: 30px 48px;
-    background-color: var(--accent-9);
-    border: 1px solid var(--accent-13);
+    background-color: var(--accent-2);
+    border: 1px solid var(--accent-5);
     border-radius: 99999px;
     font-size: 40px;
     font-weight: 100;
@@ -682,9 +683,13 @@ h1 {
 }
 
 .library-item-new-story:hover {
-    background-color: var(--accent-13);
+    background-color: var(--accent-5);
     color: var(--fg);
     cursor: pointer;
+}
+
+.source-code {
+    color: var(--acccent-30);
 }
 
 /* radial map */

@@ -46,7 +46,7 @@
         node-class (node-class props)
 
         w (.-clientWidth node)
-        h (- (.-clientHeight node) 100) ; NOTE: does this cause clipping?
+        h (.-clientHeight node)
 
         svg (.. js/d3 (select "#radial-map-tree")
                 (attr "width" w)
@@ -84,9 +84,8 @@
                   (on "pointerdown" #(rf/dispatch [:sentence/active (.. %2 -data -name)]))
                   (append "circle")
                   (attr "r" #(let [id (.. %  -data -name)]
-                               (println id root-sentence active-sentence)
                                (if (or (= root-sentence id) (= active-sentence id))
-                                 12 6))))])) ; TODO this size should probably be set dynamically in response to the amount of nodes in the graph
+                                 8 4))))])) ; TODO this size should probably be set dynamically in response to the amount of nodes in the graph
 
 (defn redraw [this]
   (draw-radial-map (rdom/dom-node this) (r/props this)))

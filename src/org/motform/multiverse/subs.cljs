@@ -96,11 +96,12 @@
 
 
 (defn sentence-tree-level [sentences sentence-id active-sentence-id parent-id]
-  (let [{:sentence/keys [children]} (sentences sentence-id)]
-    {:name     sentence-id
-     :info     parent-id  ; XXX confusing key
-     :children (for [child-id children]
-                 (sentence-tree-level sentences child-id active-sentence-id sentence-id))}))
+  (let [{:sentence/keys [personality children]} (sentences sentence-id)]
+    {:name       sentence-id
+     :info       parent-id  ; XXX confusing key
+     :personalty personality
+     :children   (for [child-id children]
+                   (sentence-tree-level sentences child-id active-sentence-id sentence-id))}))
 
 
 (reg-sub
@@ -140,7 +141,7 @@
 (reg-sub
  :personality/personalities
  (fn [db _]
-   (-> db :db/personalities vals)))
+   (-> db :db/personalities)))
 
 ;;; OpenAI
 

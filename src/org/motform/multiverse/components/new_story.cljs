@@ -8,7 +8,7 @@
   (let [prompt @(rf/subscribe [:new-story/prompt])
         blank? (str/blank? prompt)]
     [:section.prompt.v-stack.gap-half
-     [:textarea.textarea-large.rounded.border.shadow-large.pad-half
+     [:textarea.textarea-large.rounded.shadow-large.pad-half
       {:value prompt
        :auto-focus true
        :on-change #(rf/dispatch [:new-story/update-prompt (.. % -target -value)])}]
@@ -18,7 +18,7 @@
                            (rf/dispatch [:new-story/submit])
                            (rf/dispatch [:page/active :page/story])
                            (. (.-history js/window) pushState #js {} "" (routes/url-for :page/story)))}
-      "prompt"]]))
+      "Explore"]]))
 
 (defn new-story []
   [:div.app-container.v-stack.overlay

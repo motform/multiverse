@@ -54,13 +54,10 @@
             :class (str "sentence " (highlight? id))
             :on-pointer-down #(rf/dispatch [:sentence/active id])
             :on-pointer-over #(rf/dispatch [:sentence/highlight id :source/paragraph])
-            :on-pointer-out  #(rf/dispatch [:sentence/remove])}
+            :on-pointer-out  #(rf/dispatch [:sentence/remove-highlight])}
      (if sentence-not-in-story?
        [typewrite text]
-       [:<> text [branch-marks id]])
-     #_[:<>
-        (if-not sentence-in-story? [typewrite text] text)
-        (when sentence-in-story? [branch-marks id])]]))
+       [:<> text [branch-marks id]])]))
 
 (defn scroll-indicators [event]
   (let [node (.-target event)]
@@ -108,10 +105,10 @@
     (when (not-any? identity [children request? @(rf/subscribe [:sentence/preview?])])
       (rf/dispatch [:open-ai/completions active-sentence (open-ai/format-prompt paragraphs)]))
 
-    [:main.story.blurred.shadow-large.h-stack
-     [personalities]
+    [:main.story.blurred.shadow-large
      (when paragraphs 
        [:<>
+        [personalities]
         [paragraph paragraphs prospect-path]
         [map/radial-map]])
      (if request?

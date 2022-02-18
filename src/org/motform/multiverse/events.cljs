@@ -76,6 +76,13 @@
  (fn [db [_ api-key]]
    (assoc-in db [:db/state :open-ai/key :open-ai/api-key] api-key)))
 
+;;; Personalites
+
+(reg-event-db
+ :personality/active
+ (fn [db [_ personality-id]]
+   (assoc-in db [:db/state :personality/active] personality-id)))
+
 ;;; New-story
 
 (defn ->sentence [id text path children]
