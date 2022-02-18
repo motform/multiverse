@@ -131,6 +131,13 @@
    (when-let [{highlight :id} @(rf/subscribe [:sentence/highlight])]
      (seq @(rf/subscribe [:sentence/children highlight])))))
 
+(reg-sub
+ :story/recent
+ (fn [db _]
+   (let [recent  (get-in db [:db/state :story/recent])
+         stories (-> db :db/stories (select-keys recent) vals)]
+     (map :story/meta stories))))
+
 ;;; Personalites 
 
 (reg-sub

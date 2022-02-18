@@ -43,8 +43,10 @@
 
 (reg-event-db
  :story/active
- (fn [db [_ story]]
-   (assoc-in db [:db/state :story/active] story)))
+ (fn [db [_ story-id]]
+   (-> db
+       (assoc-in  [:db/state :story/active] story-id)
+       (update-in [:db/state :story/recent] conj story-id))))
 
 (reg-event-db
  :sentence/active
@@ -114,8 +116,9 @@
    (let [story-id    (nano-id 10)
          sentence-id (nano-id 10)]
      {:db (-> db
-              (assoc-in [:db/stories story-id] (->story story-id sentence-id prompt))
-              (assoc-in [:db/state :story/active] story-id))
+              (assoc-in  [:db/stories story-id] (->story story-id sentence-id prompt))
+              (assoc-in  [:db/state :story/active] story-id)
+              (update-in [:db/state :story/recent] conj story-id))
       :dispatch [:open-ai/title]})))
 
 (reg-event-db
@@ -192,11 +195,11 @@
  (fn [{:keys [db]} [_ parent-id prompt]]
    (let [story-id  (get-in db [:db/state :story/active])
          api-key   (get-in db [:db/state :open-ai/key :open-ai/api-key])
-         {:keys [uri params]} (open-ai/completion-with #_:ada :text-davinci-001 
+         {:keys [uri params]} (open-ai/completion-with #_:ada :text-davinci-001
                                                        {:prompt prompt})]
      {:db (assoc-in db [:db/state :open-ai/pending-request?] true)
       :http-xhrio {:method  :post
-                   :uri     uri 
+                   :uri     uri
                    :headers {"Authorization" (str "Bearer " api-key)}
                    :params  params
                    :format  (ajax/json-request-format)

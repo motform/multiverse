@@ -2,10 +2,10 @@
   (:use-macros [cljs.core.async.macros :only [go]])
   (:require [clojure.string :as str]
             [clojure.core.async :refer [<! timeout]]
-            [re-frame.core :as rf]                       
+            [re-frame.core :as rf]
             [reagent.core :as r]
             [reagent.dom :as rdom]
-            [org.motform.multiverse.components.header :refer [header]]           
+            [org.motform.multiverse.components.header :refer [header]]
             [org.motform.multiverse.components.map :as map]
             [org.motform.multiverse.components.personalities :refer [personalities]]
             [org.motform.multiverse.open-ai :as open-ai]
@@ -39,7 +39,7 @@
         (go (<! (timeout 1)) (swap! *i inc)))
       [:span (subs text 0 @*i)])))
 
-(defn branch-marks [id]  
+(defn branch-marks [id]
   (let [count-branches @(rf/subscribe [:story/count-realized-children id])]
     [:span.branch-marks
      (if (zero? count-branches)
@@ -75,9 +75,9 @@
         (when-not (or prospect-path-in-parents? (not prospect-path))
           (set! (.-scrollTop node) (.-scrollHeight node)))))
 
-    :reagent-render 
+    :reagent-render
     (fn [paragraph prospect-path]
-      [:section.paragraph.pad-full
+      [:section.paragraph.pad-half
        {:on-scroll scroll-indicators}
        (for [s (distinct (util/conj? paragraph prospect-path))]
          ^{:key (:sentence/id s)} [sentence s paragraph prospect-path])])}))
@@ -96,7 +96,7 @@
         highlighting-other-subtree (and highlight ; get another branch if hovering over another branch
                                         (not (contains? (set @(rf/subscribe [:sentence/path active-sentence])) highlight))
                                         (not (contains? (set (map :sentence/id children)) highlight)))
-        
+
         paragraphs (if highlighting-other-subtree
                      @(rf/subscribe [:sentence/paragraph highlight])
                      @(rf/subscribe [:sentence/paragraph active-sentence]))]
@@ -106,7 +106,7 @@
       (rf/dispatch [:open-ai/completions active-sentence (open-ai/format-prompt paragraphs)]))
 
     [:main.story.blurred.shadow-large
-     (when paragraphs 
+     (when paragraphs
        [:<>
         [personalities]
         [paragraph paragraphs prospect-path]
@@ -119,18 +119,9 @@
 
 ;;; Header
 
-(defn title []
-  (let [{:story/keys [title]} @(rf/subscribe [:story/meta])]
-    (if-not (str/blank? title)
-      [:h2.title.tooltip-container
-       {:on-pointer-down #(rf/dispatch [:open-ai/title nil])}
-       title
-       [:span.tooltip.tooltip-large.rounded "Generate new title"]]
-      [util/spinner])))
-
 ;;; Main
 
 (defn multiverse []
   [:div.app-container.v-stack.overlay
-   [header [title]]
+   [header]
    [story]])

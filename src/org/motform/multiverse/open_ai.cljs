@@ -32,7 +32,6 @@
   [engine params]
   {:pre [(valid-engines engine)
          (set/subset? (set (keys params)) valid-params)]}
-  (println "completion-with " (request (name engine) "completions" params))
   (request (name engine) "completions" params))
 
 (defn format-title [story]

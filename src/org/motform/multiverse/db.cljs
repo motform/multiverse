@@ -21,6 +21,7 @@
    {:page/active              :page/landing
     :new-story/prompt         ""
     :story/active             nil
+    :story/recent             []
     :personality/active       :personality/neutral
     :sentence/active          nil
     :sentence/highlight       {:id nil :source nil}

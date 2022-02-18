@@ -25,7 +25,7 @@ body {
 }
 
 html {
-    background-color: var(--accent-1);
+    background-color: var(--bg);
     font-size: 5px;
     -webkit-font-smoothing: antialiased;
 }
@@ -34,7 +34,7 @@ body {
     color: var(--fg);
     font: 400 15px/1.4 "Recursive", sans-serif;
 
-    background: var(--accent-1);
+    background: var(--bg);
     /* background-size: 400% 400%; */
     /* animation: gradient 15s ease infinite; */
 }
@@ -96,8 +96,7 @@ label {
 button {
     font-family: "Obviously", sans-serif;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+    text-transform: Capitalize;
     font-size: 3rem;
     color: var(--bg);
     background-color: var(--accent-25);
@@ -289,7 +288,7 @@ textarea:focus {
 .header {
     width: 100%;
     height: auto;
-    padding: var(--space-half) var(--space-full);
+    padding: var(--space-half);
     color: var(--accent-20);
     align-items: center;
 }
@@ -303,12 +302,62 @@ textarea:focus {
     align-items: center;
 }
 
-.title {
+.tabs {
+}
+
+.tab {
+    background: var(--accent-5);
+    padding: 12px 18px 8px 18px;
+    border-radius: 8px;
     font-family: "Obviously", "Verdana", sans-serif;
     font-weight: 600;
-    text-transform: capitalize;
     color: var(--fg);
-    font-size: 13px;
+    font-size: 12px;
+    height: 40px;
+}
+
+.tab:hover {
+    background: var(--accent-25);
+    color: var(--bg);
+    cursor: pointer;
+}
+
+.tab-active {
+    background: var(--accent-35);
+    color: var(--bg);
+}
+
+.tab-active:hover {
+    background: var(--accent-35);
+    color: var(--bg);
+}
+
+.tab-new-story {
+    background: var(--bg);
+    color: var(--fg);
+    width: 40px;
+    height: 40px;
+    padding: 7px 0 0 7px;
+    border-radius: 9999px
+}
+
+.tab-new-story:hover {
+    background: var(--accent-25);
+    color: var(--bg);
+}
+
+.tab-active.tab-new-story {
+    background: var(--accent-35);
+    color: var(--bg);
+}
+
+.tab-new-story:hover {
+    background: var(--accent-35);
+    color: var(--bg);
+}
+
+.tab-new-story > svg {
+    margin: 0 auto;
 }
 
 .title:hover {
@@ -322,15 +371,7 @@ textarea:focus {
 }
 
 .hitem {
-    font: 12px/1 "Obviously", sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--accent-30);
     align-items: center;
-}
-
-.hitem:hover {
-    color: var(--fg);
 }
 
 .spinner-1 { animation: fade 1.5s ease infinite alternate; }
@@ -359,7 +400,7 @@ textarea:focus {
 
 .new-story-container {
     padding: var(--space-full) var(--space-double);
-    background-color: var(--accent-2);
+    background-color: var(--accent-1);
 }
 
 .prompt {
@@ -461,9 +502,6 @@ textarea:focus {
     font-size: 20px;
     line-height: 1;
     height: 94vh;
-    border: 1px solid var(--accent-5);
-    border-width: 1px 0 0 0;
-
     display: grid;
     grid-template-rows: 60% 40%;
     grid-template-columns: 8% 40% 52%;
@@ -478,8 +516,6 @@ textarea:focus {
     max-width: 900px;
     max-height: 100%;
     font-size: 16px;
-
-    padding-left: var(--space-double);
 }
 
 .paragraph > span {
@@ -626,7 +662,7 @@ h1 {
     min-width: 400px;
     max-width: 600px;
     margin-top: 80px;
-    background-color: var(--accent-2);
+    background-color: var(--accent-1);
 }
 
 .key-input {
@@ -655,7 +691,21 @@ h1 {
 }
 
 .library-button {
+    background: var(--accent-5);
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-family: "Obviously", "Verdana", sans-serif;
+    font-weight: 600;
+    color: var(--accent-25);
     font-size: 12px;
+    height: 40px;
+}
+
+
+.library-button:hover {
+    background: var(--accent-25);
+    color: var(--bg);
 }
 
 .library-items {
@@ -666,8 +716,8 @@ h1 {
 
 .library-item {
     font-size: 2rem;
-    background-color: var(--bg);
-    border-color: var(--accent-6);
+    background-color: var(--accent-2);
+    border-color: var(--accent-3);
 }
 
 .library-item-meta {
@@ -686,8 +736,13 @@ h1 {
 }
 
 .library-item:hover {
-    border-color: var(--accent-10);
+    border-color: var(--accent-25);
+    background-color: var(--accent-25);
     cursor: pointer;
+}
+
+.library-item:hover > * {
+    color: var(--bg);
 }
 
 .library-item-new-story-card {
