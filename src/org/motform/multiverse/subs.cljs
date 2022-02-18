@@ -122,7 +122,7 @@
  :story/count-realized-children
  (fn [_ [_ parent-id]]
    (->> @(rf/subscribe [:sentence/children parent-id])
-        (remove #(empty? (:children %)))
+        (remove #(empty? (:sentence/children %)))
         count)))
 
 (reg-sub
@@ -149,6 +149,12 @@
  :personality/personalities
  (fn [db _]
    (-> db :db/personalities)))
+
+(reg-sub
+ :sentence/child-personalities
+ (fn [_ [_ sentence-id]]
+   (let [children @(rf/subscribe [:sentence/children sentence-id])]
+     (map :sentence/personality children))))
 
 ;;; OpenAI
 

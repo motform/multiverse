@@ -83,13 +83,14 @@
     --poetic-6: #0377b0;
     --poetic-7: #0388c9;
 
-    --personality-fantasy-inactive: linear-gradient(-46deg, var(--fantasy-0), var(--fantasy-1), var(--fantasy-2), var(--fantasy-3));
-    --personality-fantasy-active:   linear-gradient(-46deg, var(--fantasy-4), var(--fantasy-5), var(--fantasy-6), var(--fantasy-7));
+    /* --personality-fantasy-inactive: linear-gradient(-46deg, var(--fantasy-0), var(--fantasy-1), var(--fantasy-2), var(--fantasy-3)); */
+    /* --personality-fantasy-active:   linear-gradient(-46deg, var(--fantasy-4), var(--fantasy-5), var(--fantasy-6), var(--fantasy-7)); */
 
-    --personality-sf-inactive:      linear-gradient(-46deg, var(--sf-0), var(--sf-1), var(--sf-2), var(--sf-3));
-    --personality-sf-active:        linear-gradient(-46deg, var(--sf-4), var(--sf-5), var(--sf-6), var(--sf-7));
+    /* --personality-sf-inactive:      linear-gradient(-46deg, var(--sf-0), var(--sf-1), var(--sf-2), var(--sf-3)); */
+    /* --personality-sf-active:        linear-gradient(-46deg, var(--sf-4), var(--sf-5), var(--sf-6), var(--sf-7)); */
 
-    --personality-poetic-inactive:  linear-gradient(-46deg, var(--poetic-0), var(--poetic-1), var(--poetic-2), var(--poetic-3));
-    --personality-poetic-active:    linear-gradient(-46deg, var(--poetic-4), var(--poetic-5), var(--poetic-6), var(--poetic-7));
+    /* --personality-poetic-inactive:  linear-gradient(-46deg, var(--poetic-0), var(--poetic-1), var(--poetic-2), var(--poetic-3)); */
+    /* --personality-poetic-active:    linear-gradient(-46deg, var(--poetic-4), var(--poetic-5), var(--poetic-6), var(--poetic-7)); */
+
     --bg: #0B1418;
 }

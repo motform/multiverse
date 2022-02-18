@@ -39,15 +39,17 @@
         (go (<! (timeout 1)) (swap! *i inc)))
       [:span (subs text 0 @*i)])))
 
-(defn branch-marks [id]
-  (let [count-branches @(rf/subscribe [:story/count-realized-children id])]
+(defn branch-marks [id personality]
+  (let [count-branches @(rf/subscribe [:story/count-realized-children id])
+        child-personality (or (first @(rf/subscribe [:sentence/child-personalities id]))
+                              personality)]
     [:span.branch-marks
      (if (zero? count-branches)
-       [:span.weak-branch-mark]
+       [:span.weak-branch-mark {:class (str (name child-personality) "-branch-mark")}]
        (for [i (range count-branches)]
-         ^{:key i} [:span.branch-mark]))]))
+         ^{:key i} [:span.branch-mark {:class (str (name child-personality) "-branch-mark")}]))]))
 
-(defn sentence [{:sentence/keys [id text]} sentences prospect-path]
+(defn sentence [{:sentence/keys [id text personality]} sentences prospect-path]
   (let [sentence-not-in-story? (and (not (contains? (set sentences) prospect-path))
                                     (= id (get prospect-path :sentence/id nil)))]
     [:span {:id id
@@ -57,7 +59,7 @@
             :on-pointer-out  #(rf/dispatch [:sentence/remove-highlight])}
      (if sentence-not-in-story?
        [typewrite text]
-       [:<> text [branch-marks id]])]))
+       [:<> text [branch-marks id personality]])]))
 
 (defn scroll-indicators [event]
   (let [node (.-target event)]

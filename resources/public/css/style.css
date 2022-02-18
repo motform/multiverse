@@ -290,6 +290,7 @@ textarea:focus {
 .header {
     width: 100%;
     align-items: center;
+    margin-bottom: var(--space-half);
 }
 
 .header-wordmark  {
@@ -471,30 +472,27 @@ textarea:focus {
     border-radius: 9999px;
     background: var(--accent-8);
     cursor: pointer;
-
-    background-size: 300% 300%;
-    animation: gradient 15s ease infinite;
 }
 
 .personality-active {
     background: var(--accent-20);
 }
 
-.personality-neutral-inactive       { background: var(--personality-neutral-inactive); }
-.personality-neutral-inactive:hover { background: var(--personality-neutral-active);   }
-.personality-neutral-active         { background: var(--personality-neutral-active);   }
+.personality-neutral-inactive       { background-color: var(--accent-10); }
+.personality-neutral-inactive:hover { background-color: var(--accent-15);   }
+.personality-neutral-active         { background-color: var(--accent-22);   }
 
-.personality-fantasy-inactive       { background: var(--personality-fantasy-inactive); }
-.personality-fantasy-inactive:hover { background: var(--personality-fantasy-active);   }
-.personality-fantasy-active         { background: var(--personality-fantasy-active);   }
+.personality-fantasy-inactive       { background-color: var(--fantasy-3); }
+.personality-fantasy-inactive:hover { background-color: var(--fantasy-5);   }
+.personality-fantasy-active         { background-color: var(--fantasy-7);   }
 
-.personality-sf-inactive            { background: var(--personality-sf-inactive);      }
-.personality-sf-inactive:hover      { background: var(--personality-sf-active);        }
-.personality-sf-active              { background: var(--personality-sf-active);        }
+.personality-sf-inactive            { background-color: var(--sf-2);      }
+.personality-sf-inactive:hover      { background-color: var(--sf-4);        }
+.personality-sf-active              { background-color: var(--sf-6);        }
 
-.personality-poetic-inactive       { background: var(--personality-poetic-inactive);   }
-.personality-poetic-inactive:hover { background: var(--personality-poetic-active);     }
-.personality-poetic-active         { background: var(--personality-poetic-active);     }
+.personality-poetic-inactive       { background-color: var(--poetic-3);   }
+.personality-poetic-inactive:hover { background-color: var(--poetic-5);     }
+.personality-poetic-active         { background-color: var(--poetic-7);     }
 
 @keyframes gradient {
     0%   { background-position: 0% 50%; }
@@ -555,6 +553,17 @@ textarea:focus {
     margin: 0 2px;
 }
 
+.branch-mark.neutral-branch-mark      { border-color: var(--accent-20); }
+.weak-branch-mark.neutral-branch-mark { border-color: var(--accent-10); }
+
+.branch-mark.fantasy-branch-mark      { border-color: var(--fantasy-6); }
+.weak-branch-mark.fantasy-branch-mark { border-color: var(--fantasy-3); }
+
+.branch-mark.sf-branch-mark      { border-color: var(--sf-6); }
+.weak-branch-mark.sf-branch-mark { border-color: var(--sf-3); }
+
+.branch-mark.poetic-branch-mark      { border-color: var(--poetic-6); }
+.weak-branch-mark.poetic-branch-mark { border-color: var(--poetic-3); }
 
 .sentence {
     cursor: pointer;
