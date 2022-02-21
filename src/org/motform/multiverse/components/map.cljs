@@ -21,6 +21,15 @@
                  (= active-sentence source-id)  "tree-map-link"
                  :else "hidden")))))
 
+;; TODO this size should probably be set dynamically in response to the amount of nodes in the graph
+(defn node-size [root active source]
+  (fn [node]
+    (let [id (.. node  -data -name)
+          scale (if (= source :source/story) 4 2)]
+      (if (or (= root id) (= active id))
+        (* scale 2)
+        scale))))
+
 (defn node-class [{:keys [active-path active-sentence root-sentence prospective-child?]
                    {highlight :id} :highlight}]
   (fn [node]
@@ -44,15 +53,15 @@
 
 (defn draw-radial-map
   "Based on:  https://medium.com/analytics-vidhya/creating-a-radial-tree-using-d3-js-for-javascript-be943e23b74e"
-  [node {:keys [sentence-tree active-sentence root-sentence] :as props}]
-  (.. js/d3 (select "g") remove) ; clear old image
+  [node {:keys [sentence-tree active-sentence root-sentence source] :as props} map-id]
+  (.. js/d3 (select (str "#g-" map-id)) remove) ; clear old image
   (let [link-class (link-class props)
         node-class (node-class props)
 
         w (.-clientWidth node)
         h (.-clientHeight node)
 
-        svg (.. js/d3 (select "#radial-map-tree")
+        svg (.. js/d3 (select (str "#" map-id))
                 (attr "width" w)
                 (attr "height" h))
 
@@ -70,6 +79,7 @@
                         (radius #(.-y %)))
 
         graph-group (.. svg (append "g")
+                        (attr "id" (str "g-" map-id))
                         (attr "transform" (str "translate(" (/ w 2) "," (/ h 2) ")")))
 
         links (.. graph-group (selectAll ".link")
@@ -87,26 +97,30 @@
                   (on "pointerout"  #(rf/dispatch [:sentence/remove-highlight]))
                   (on "pointerdown" #(rf/dispatch [:sentence/active (.. %2 -data -name)]))
                   (append "circle")
-                  (attr "r" #(let [id (.. %  -data -name)]
-                               (if (or (= root-sentence id) (= active-sentence id))
-                                 8 4))))])) ; TODO this size should probably be set dynamically in response to the amount of nodes in the graph
+                  (attr "r" (node-size root-sentence active-sentence source)))]))
 
-(defn redraw [this]
-  (draw-radial-map (rdom/dom-node this) (r/props this)))
+(defn redraw [map-id]
+  (fn [this]
+    (draw-radial-map (rdom/dom-node this) (r/props this) map-id)))
 
 (defn radial-map-d3 []
-  (r/create-class
-   {:display-name         "radial-tree-map"
-    :component-did-mount  redraw
-    :component-did-update redraw
-    :reagent-render       (fn []
-                            [:section#radial-map [:svg#radial-map-tree]])}))
+  (let [map-id (str "mapid-" (random-uuid))]
+    (r/create-class
+     {:display-name         (str "radial-tree-map-" map-id)
+      :component-did-mount  (redraw map-id)
+      :component-did-update (redraw map-id)
+      :reagent-render       (fn []
+                              [:section.radial-map
+                               [:svg {:id map-id}]])})))
 
-(defn radial-map []
+(defn radial-map [source story-id]
   (fn []
-    [radial-map-d3 {:sentence-tree      @(rf/subscribe [:story/sentence-tree])
-                    :active-path        @(rf/subscribe [:story/active-path])
-                    :active-sentence    @(rf/subscribe [:sentence/active])
+    [radial-map-d3 {:sentence-tree      @(rf/subscribe [:story/sentence-tree story-id])
+                    :active-path        @(rf/subscribe [:story/active-path story-id])
+                    :active-sentence    @(rf/subscribe [:sentence/active story-id])
                     :highlight          @(rf/subscribe [:sentence/highlight])
-                    :prospective-child? (->> @(rf/subscribe [:sentence/children @(rf/subscribe [:sentence/active])]) (map :sentence/id) set)
-                    :root-sentence      @(rf/subscribe [:story/root-sentence])}]))
+                    :source             source
+                    :prospective-child? (->> @(rf/subscribe [:sentence/children @(rf/subscribe [:sentence/active story-id]) story-id])
+                                             (map :sentence/id)
+                                             set)
+                    :root-sentence      @(rf/subscribe [:story/root-sentence story-id])}]))

@@ -8,6 +8,13 @@
  (fn [db _]
    (get-in db [:db/state :new-story/prompt])))
 
+;;; Tabs
+
+(reg-sub
+ :tab/highlight
+ (fn [db _]
+   (get-in db [:db/state :tab/highlight])))
+
 ;;; State
 
 (reg-sub
@@ -17,8 +24,8 @@
 
 (reg-sub
  :sentence/active
- (fn [db _]
-   (let [story (get-in db [:db/state :story/active])]
+ (fn [db [_ story-id]]
+   (let [story (or story-id (get-in db [:db/state :story/active]))]
      (get-in db [:db/stories story :story/meta :sentence/active]))))
 
 (reg-sub
@@ -47,8 +54,8 @@
 
 (reg-sub
  :sentence/children
- (fn [db [_ parent-id]]
-   (let [story-id (get-in db [:db/state :story/active])
+ (fn [db [_ parent-id story-id]]
+   (let [story-id (or story-id (get-in db [:db/state :story/active]))
          sentences (get-in db [:db/stories story-id :story/sentences])
          child-ids (get-in db [:db/stories story-id :story/sentences parent-id :sentence/children])]
      (vals (select-keys sentences child-ids)))))
@@ -70,11 +77,11 @@
 
 (reg-sub
  :story/active-path
- (fn [db _]
-   (let [story (get-in db [:db/state :story/active])
-         active-sentence @(rf/subscribe [:sentence/active])
+ (fn [db [_ story-id]]
+   (let [story (or story-id (get-in db [:db/state :story/active]))
+         active-sentence @(rf/subscribe [:sentence/active story])
          {highlight :id} @(rf/subscribe [:sentence/highlight])]
-     (set (get-in db [:db/stories story :story/sentences (or highlight active-sentence) :sentence/path])))))
+     (set (get-in db [:db/stories story :story/sentences (or highlight active-sentence) :sentence/path]))))) ; we don't have an inative path, but maybe that is OK?
 
 ;; The "paragraph" of a sentence returns all the complete sentence maps
 ;; Whereas the "path" of a sentence returns a vector with id's of its path from the root
@@ -97,25 +104,27 @@
 
 (defn sentence-tree-level [sentences sentence-id active-sentence-id parent-id]
   (let [{:sentence/keys [personality children]} (sentences sentence-id)]
-    {:name       sentence-id
-     :info       parent-id  ; XXX confusing key
+    {:name        sentence-id
+     :info        parent-id  ; XXX confusing key
      :personality personality
-     :children   (for [child-id children]
-                   (sentence-tree-level sentences child-id active-sentence-id sentence-id))}))
+     :children    (for [child-id children]
+                    (sentence-tree-level sentences child-id active-sentence-id sentence-id))}))
 
 
 (reg-sub
  :story/sentence-tree
- (fn [db _]
-   (sentence-tree-level (get-in db [:db/stories @(rf/subscribe [:story/active]) :story/sentences])
-                        @(rf/subscribe [:story/root-sentence])
-                        @(rf/subscribe [:sentence/active])
-                        nil)))
+ (fn [db [_ story-id]]
+   (let [story (or story-id @(rf/subscribe [:story/active]))]
+     (sentence-tree-level (get-in db [:db/stories story :story/sentences])
+                          @(rf/subscribe [:story/root-sentence story])
+                          @(rf/subscribe [:sentence/active story])
+                          nil))))
 
 (reg-sub
  :story/root-sentence
- (fn [db _]
-   (let [sentences (get-in db [:db/stories @(rf/subscribe [:story/active]) :story/sentences])]
+ (fn [db [_ story-id]]
+   (let [story (or story-id @(rf/subscribe [:story/active]))
+         sentences (get-in db [:db/stories story :story/sentences])]
      (-> sentences keys first sentences :sentence/path first))))
 
 (reg-sub

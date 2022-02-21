@@ -25,6 +25,7 @@
               :sentence/active          nil
               :sentence/highlight       {:id nil :source nil}
               :sentence/preview         nil
+              :sentence/tab             nil
               :open-ai/pending-request? false
               :open-ai/key              #:open-ai{:api-key "" :validated? false}}
 

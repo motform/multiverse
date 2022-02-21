@@ -107,12 +107,12 @@
     (when (not-any? identity [children request? @(rf/subscribe [:sentence/preview?])])
       (rf/dispatch [:open-ai/completions active-sentence (open-ai/format-prompt paragraphs)]))
 
-    [:main.story.blurred.shadow-large
+    [:main.story
      (when paragraphs
        [:<>
         [personalities]
         [paragraph paragraphs prospect-path]
-        [map/radial-map]])
+        [map/radial-map :source/story]])
      (if request?
        [:section.children.pad-full [util/spinner]]
        [:section.children.h-equal-3.gap-double.pad-full

@@ -313,8 +313,6 @@ textarea:focus {
     align-items: center;
 }
 
-.tabs {
-}
 
 .tab {
     background: var(--accent-5);
@@ -322,7 +320,7 @@ textarea:focus {
     border-radius: 6px;
     font-family: "Obviously", "Verdana", sans-serif;
     font-weight: 600;
-    color: var(--accent-25);
+    color: var(--accent-20);
     font-size: 12px;
     height: 40px;
 }
@@ -395,6 +393,21 @@ textarea:focus {
 
 .hitem {
     align-items: center;
+}
+
+.tab-map {
+    color: var(--bg);
+    background-color: var(--accent-1);
+    border: 5px solid var(--accent-25);
+    position: absolute;
+    z-index: 1;
+    left: 0px;
+    top: calc(var(--space-full) + var(--space-quarter));
+    border-radius: 8px;
+}
+
+.tab-active .tab-map {
+    display: none;
 }
 
 .spinner-1 { animation: fade 1.5s ease infinite alternate; }
@@ -593,6 +606,9 @@ textarea:focus {
     line-height: 1.6;
 }
 
+.sentence.inactive {
+    color: var(--accent-5);
+}
 
 .highlight {
     color: var(--highlight);
@@ -892,12 +908,9 @@ h1 {
 
 /* radial map */
 
-#radial-map {
+.radial-map {
     height: 100%;
     width: 100%;
-}
-
-#radial-map-tree {
 }
 
 .neutral-tree-map-node-root {

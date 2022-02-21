@@ -78,6 +78,18 @@
  (fn [db [_ api-key]]
    (assoc-in db [:db/state :open-ai/key :open-ai/api-key] api-key)))
 
+;;; Tabs
+
+(reg-event-db
+ :tab/highlight
+ (fn [db [_ story-id]]
+   (assoc-in db [:db/state :tab/highlight] story-id)))
+
+(reg-event-db
+ :tab/remove-highlight
+ (fn [db _]
+   (assoc-in db [:db/state :tab/highlight] nil)))
+
 ;;; Personalites
 
 (reg-event-db
