@@ -1,7 +1,15 @@
 (ns org.motform.multiverse.components.new-story
   (:require [clojure.string :as str]
             [re-frame.core :as rf]
-            [org.motform.multiverse.routes :as routes]))
+            [org.motform.multiverse.routes :as routes]
+            [org.motform.multiverse.components.personalities :as personalities]))
+
+(defn personalities []
+  (let [active-personality @(rf/subscribe [:personality/active])]
+    [:section.prompt-personalities.h-stack.gap-half
+     (for [personality @(rf/subscribe [:personality/personalities])]
+       [personalities/personality-toggle personality active-personality
+                                  {:top "120%" :left "0%"}])]))
 
 (defn prompt []
   (let [prompt @(rf/subscribe [:new-story/prompt])
@@ -11,13 +19,15 @@
       {:value prompt
        :auto-focus true
        :on-change #(rf/dispatch [:new-story/update-prompt (.. % -target -value)])}]
-     [:button.rounded.shadow-medium
-      {:disabled blank?
-       :on-pointer-down #(when (not blank?)
-                           (rf/dispatch [:new-story/submit]) ; TODO move into route controller
-                           (rf/dispatch [:page/active :page/story])
-                           (. (.-history js/window) pushState #js {} "" (routes/url-for :page/story)))}
-      "Explore"]]))
+     [:section.h-stack.spaced
+      [personalities]
+      [:button.rounded.shadow-medium
+       {:disabled blank?
+        :on-pointer-down #(when (not blank?)
+                            (rf/dispatch [:new-story/submit]) ; TODO move into route controller
+                            (rf/dispatch [:page/active :page/story])
+                            (. (.-history js/window) pushState #js {} "" (routes/url-for :page/story)))}
+       "Explore"]]]))
 
 (defn new-story []
   [:main.new-story.v-stack
