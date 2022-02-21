@@ -66,11 +66,9 @@
    " a literary space."])
 
 (defn library []
-  [:div.app-container.v-stack.overlay
-   [header [:p.title.title-library "LIBRARY"]]
-   [:main.library.v-stack.gap-double.pad-half
-    (if @(rf/subscribe [:db/stories])
-      [:<>
-       [library-items]
-       [library-toggles]]
-      [empty-library])]])
+  [:main.library.v-stack.gap-double.pad-half
+   (if @(rf/subscribe [:db/stories])
+     [:<>
+      [library-items]
+      [library-toggles]]
+     [empty-library])])

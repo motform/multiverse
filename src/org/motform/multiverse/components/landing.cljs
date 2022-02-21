@@ -43,7 +43,6 @@
    [:p "The system is requires an " [:a {:href "https://openai.com/api/" :target "_blank"} "OpenAI API key"] " to run. You will have to provide your own unless otherwise specified. All data is stored locally."]])
 
 (defn landing []
-  [:section.landing.v-stack.overlay
-   [:div.landing-container.h-stack.gap-double
-    [landing-blurb]
-    [key-input]]])
+  [:div.landing-container.h-stack.gap-double
+   [landing-blurb]
+   [key-input]])

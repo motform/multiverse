@@ -419,9 +419,6 @@ textarea:focus {
     100%  { opacity: 0; transform: translate(0, 10px)}
 }
 
-.icon {
-}
-
 .icon:hover {
     fill: var(--accent-20);
     stroke: var(--accent-20);

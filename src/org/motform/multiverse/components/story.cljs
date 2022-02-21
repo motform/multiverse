@@ -84,7 +84,7 @@
        (for [s (distinct (util/conj? paragraph prospect-path))]
          ^{:key (:sentence/id s)} [sentence s paragraph prospect-path])])}))
 
-(defn story []
+(defn multiverse []
   (let [active-sentence @(rf/subscribe [:sentence/active])
         request?        @(rf/subscribe [:open-ai/pending-request?])
         prospect-path   @(rf/subscribe [:story/prospect-path])
@@ -118,12 +118,3 @@
        [:section.children.h-equal-3.gap-double.pad-full
         (for [{:sentence/keys [id text children personality]} children]
           ^{:key id} [child-selector text id (seq children) personality])])]))
-
-;;; Header
-
-;;; Main
-
-(defn multiverse []
-  [:div.app-container.v-stack.overlay
-   [header]
-   [story]])

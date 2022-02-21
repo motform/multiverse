@@ -1,5 +1,6 @@
 (ns org.motform.multiverse.components.app
   (:require [re-frame.core :as rf]
+            [org.motform.multiverse.components.header :refer [header]]
             [org.motform.multiverse.components.landing   :refer [landing]]
             [org.motform.multiverse.components.library   :refer [library]]
             [org.motform.multiverse.components.new-story :refer [new-story]]
@@ -15,4 +16,6 @@
 (defn app []
   (let [page @(rf/subscribe [:page/active])
         view (active-page page)]
-    [view]))
+    [:div.app-container.v-stack
+     (when-not (= page :page/landing) [header])
+     [view]]))
