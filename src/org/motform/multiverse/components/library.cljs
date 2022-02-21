@@ -18,20 +18,10 @@
       [:p (str (count sentences) " sentences")]
       [:p "Last explored " (util/format-date updated)]]]))
 
-(defn new-story-item []
-  [:section.library-item-new-story-card.v-stack.centered
-   [:a.library-item-new-story.shadow-large.tooltip-container
-    {:href (routes/url-for :page/new-story)
-     :on-pointer-down #(do (rf/dispatch [:page/active :page/new-story])
-                           (. (.-history js/window) pushState #js {} "" (routes/url-for :page/new-story)))} ; routing schmouting
-    "+"
-    [:span.tooltip.rounded {:style {:margin-top "30px"}} "New Story"]]])
-
 (defn library-items []
   [:section.library-items
    (for [story @(rf/subscribe [:db/stories])]
-     ^{:key (get-in story [:story/meta :story/id])} [library-item story])
-   [new-story-item]])
+     ^{:key (get-in story [:story/meta :story/id])} [library-item story])])
 
 (defn export-library
   "SOURCE: https://gist.github.com/zoren/cc74758198b503b1755b75d1a6b376e7"

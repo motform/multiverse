@@ -15,7 +15,10 @@
 
 (defn app []
   (let [page @(rf/subscribe [:page/active])
-        view (active-page page)]
+        view (active-page page)] 
     [:div.app-container.v-stack
+     {:class (str (when (= page :page/story)
+                    (str "background-" (name @(rf/subscribe [:personality/active])))) " "
+                  (when @(rf/subscribe [:open-ai/pending-request?]) "fast"))}
      (when-not (= page :page/landing) [header])
      [view]]))

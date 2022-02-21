@@ -14,14 +14,15 @@
 (defn prompt []
   (let [prompt @(rf/subscribe [:new-story/prompt])
         blank? (str/blank? prompt)]
-    [:section.prompt.v-stack.gap-half.rounded-large.shadow-large.blurred.border.pad-half
-     [:textarea.textarea-large.rounded.shadow-large.pad-half
+    [:section.prompt.v-stack.gap-half.rounded-large.shadow-large.pad-half
+     {:class (str "prompt-" (name @(rf/subscribe [:personality/active])))}
+     [:textarea#prompt-textarea.textarea-large.rounded.shadow-large.pad-half.blurred
       {:value prompt
        :auto-focus true
        :on-change #(rf/dispatch [:new-story/update-prompt (.. % -target -value)])}]
      [:section.h-stack.spaced
       [personalities]
-      [:button.rounded.shadow-medium
+      [:button.rounded.shadow-medium.tab.prompt-button-submit.blurred
        {:disabled blank?
         :on-pointer-down #(when (not blank?)
                             (rf/dispatch [:new-story/submit]) ; TODO move into route controller
@@ -35,5 +36,5 @@
     [:div.gap-half.landing-blurb.v-stack
      [:h2.prompt-title "Prompt the network"]
      [:p "to enter a literary space. Language models, despite trained on massive data sets of text, always require something to instagate the generative process."]
-     [:p "Try experimenting with points of view, actions and names. Two to three sentences are often enought to get it going."]]
+     [:p "You can control the tone of the story by changing the literary inclination of the model, controlled by the colored circles. Experiment with points of view, actions and names. Two to three sentences are often enought to get it going."]]
     [prompt]]])

@@ -39,22 +39,8 @@
     --accent-37: #f3f3f3;
     --accent-38: #f9f9f9;
     --accent-39: #ffffff;
-
-    --fg: #fff;
-
-    --err: red;
-    --ok: #529167;
-    --highlight: var(--accent-30);
-
-    --bg-transparent-1: #0B1418;
-    --bg-transparent-2: #8b8f9133;
-
-    --spinner-fill: var(--accent-35);
-
-    --personality-neutral-inactive: linear-gradient(-46deg, var(--accent-6), var(--accent-7), var(--accent-8), var(--accent-9));
-    --personality-neutral-active:   linear-gradient(-46deg, var(--accent-30), var(--accent-31), var(--accent-32), var(--accent-33));
-
-
+    --neutral-background: linear-gradient(90deg, #0b1418, #0c1519, #0e171b, #0f181c, #111a1e);
+    --neutral-gradient: linear-gradient(90deg, #172024, #182125, #1a2326, #1b2427, #1d2629);
 
     --fantasy-0: #001410;
     --fantasy-1: #002d26;
@@ -65,6 +51,8 @@
     --fantasy-6: #027e6a;
     --fantasy-7: #03977f;
     --fantasy-8: #03b094;
+    --fantasy-background: linear-gradient(90deg, #0b1418, #081416, #051414, #021412, #001410);
+    --fantasy-gradient:   linear-gradient(90deg, #002d26, #00322a, #00372e, #003c32, #014237);
 
     --sf-0: #1a1601;
     --sf-1: #332b01;
@@ -74,6 +62,8 @@
     --sf-5: #977f03;
     --sf-6: #b09403;
     --sf-7: #c9a903;
+    --sf-background: linear-gradient(90deg, #0b1418, #0e1412, #12150c, #161506, #1a1601);
+    --sf-gradient:   linear-gradient(90deg, #332b01, #393001, #3f3501, #453a01, #4c4002);
 
     --poetic-0: #01111a;
     --poetic-1: #012233;
@@ -83,15 +73,17 @@
     --poetic-5: #036697;
     --poetic-6: #0377b0;
     --poetic-7: #0388c9;
-
-    /* --personality-fantasy-inactive: linear-gradient(-46deg, var(--fantasy-0), var(--fantasy-1), var(--fantasy-2), var(--fantasy-3)); */
-    /* --personality-fantasy-active:   linear-gradient(-46deg, var(--fantasy-4), var(--fantasy-5), var(--fantasy-6), var(--fantasy-7)); */
-
-    /* --personality-sf-inactive:      linear-gradient(-46deg, var(--sf-0), var(--sf-1), var(--sf-2), var(--sf-3)); */
-    /* --personality-sf-active:        linear-gradient(-46deg, var(--sf-4), var(--sf-5), var(--sf-6), var(--sf-7)); */
-
-    /* --personality-poetic-inactive:  linear-gradient(-46deg, var(--poetic-0), var(--poetic-1), var(--poetic-2), var(--poetic-3)); */
-    /* --personality-poetic-active:    linear-gradient(-46deg, var(--poetic-4), var(--poetic-5), var(--poetic-6), var(--poetic-7)); */
+    --poetic-background: linear-gradient(90deg, #0b1418, #08131c, #061220, #031124, #011128);
+    --poetic-gradient:   linear-gradient(90deg, #012233, #012639, #012a3f, #012e45, #02334c);
 
     --bg: #0B1418;
+    --fg: #fff;
+    --err: red;
+    --ok: #529167;
+    --highlight: var(--accent-30);
+    --spinner-fill: var(--accent-35);
+
+    --blurred-0: #c8cacb22;
+    --blurred-1: #c8cacb35;
+    --blurred-2: #c8cacb44;
 }

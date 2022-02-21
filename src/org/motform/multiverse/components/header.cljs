@@ -13,7 +13,7 @@
    (when tooltip [:p tooltip])])
 
 (defn tab [{:story/keys [title id]} active-story-id active-page]
-  [:div.tab.shadow-medium.tooltip-container
+  [:div.tab.shadow-medium.tooltip-container.blurred
    {:class (when (and (= active-page :page/story)
                       (= active-story-id id)) "tab-active")
     :on-pointer-over #(rf/dispatch [:tab/highlight id])
@@ -24,7 +24,8 @@
    [:<>
     [:p title]
     (when (= id @(rf/subscribe [:tab/highlight]))
-      [:div.tab-map.rounded.shadow-large [map/radial-map :source/header id]])]])
+      [:div.tab-map.rounded.shadow-large
+       [map/radial-map :source/header id]])]])
 
 (defn tabs []
   (let [active-story-id @(rf/subscribe [:story/active])
