@@ -127,6 +127,20 @@ button:disabled {
     justify-content: flex-end;
 }
 
+.button-secondary {
+    padding: 10px 18px;
+    background: var(--bg);
+    border: 1px solid var(--accent-10);
+    color: var(--accent-25);
+    font: 600 12px/1 "Obviously", "Verdana", sans-serif;
+    height: 40px;
+}
+
+.button-secondary:hover {
+    color: var(--bg);
+    border-color: var(--accent-30);
+}
+
 textarea {
     resize: none;
     overflow: hidden;
@@ -254,20 +268,17 @@ textarea:focus {
 /* tooltips */
 
 .tooltip {
-    color: var(--fg);
-    font: 500 10px/1.4 "Obviously", sans-serif;
+    color: var(--bg);
+    font: 600 12px/1.4 "Obviously", sans-serif;
     letter-spacing: 1px;
     text-transform: uppercase;
     opacity: 0%;
-    background-color: var(--accent-10);
-    backdrop-filter: blur(5px);
-    text-align: center;
-    padding: 8px 12px;
+    background-color: var(--accent-30);
+    padding: 9px 12px;
     position: absolute;
     z-index: 1;
     top: 90%;
     left: 50%;
-    border: 1px solid var(--accent-4);
     border-radius: 8px;
 }
 
@@ -311,15 +322,27 @@ textarea:focus {
     border-radius: 6px;
     font-family: "Obviously", "Verdana", sans-serif;
     font-weight: 600;
-    color: var(--fg);
+    color: var(--accent-25);
     font-size: 12px;
     height: 40px;
 }
+
 
 .tab:hover {
     background: var(--accent-25);
     color: var(--bg);
     cursor: pointer;
+}
+
+.tab-secondary {
+    padding: 11px 18px 9px 18px;
+    background: var(--bg);
+    border: 1px solid var(--accent-10);
+    color: var(--accent-25);
+}
+
+.tab-secondary:hover {
+    border: 1px solid var(--accent-25);
 }
 
 .tab-active {
@@ -404,7 +427,6 @@ textarea:focus {
 .prompt {
     background-color: var(--accent-1);
     margin: 0 -40px;
-    padding: var(--space-3-4) var(--space-full);
 }
 
 .prompt-title {
@@ -477,19 +499,19 @@ textarea:focus {
     background: var(--accent-20);
 }
 
-.personality-neutral-inactive       { background-color: var(--accent-10); }
+.personality-neutral-inactive       { background-color: var(--accent-5); }
 .personality-neutral-inactive:hover { background-color: var(--accent-15);   }
 .personality-neutral-active         { background-color: var(--accent-30);   }
 
-.personality-fantasy-inactive       { background-color: var(--fantasy-3); }
+.personality-fantasy-inactive       { background-color: var(--fantasy-1); }
 .personality-fantasy-inactive:hover { background-color: var(--fantasy-5);   }
 .personality-fantasy-active         { background-color: var(--fantasy-7);   }
 
-.personality-sf-inactive            { background-color: var(--sf-2);      }
+.personality-sf-inactive            { background-color: var(--sf-1);      }
 .personality-sf-inactive:hover      { background-color: var(--sf-4);        }
 .personality-sf-active              { background-color: var(--sf-6);        }
 
-.personality-poetic-inactive       { background-color: var(--poetic-3);   }
+.personality-poetic-inactive       { background-color: var(--poetic-1);   }
 .personality-poetic-inactive:hover { background-color: var(--poetic-5);     }
 .personality-poetic-active         { background-color: var(--poetic-7);     }
 
@@ -593,107 +615,99 @@ textarea:focus {
     text-align: left;
     padding: var(--space-half);
     max-width: 100%;
-
     border-radius: 15px;
-    border: 1px dashed var(--accent-4);
-    background-color: var(--accent-0);
-    font-variation-settings: "CASL" 0, "CRSV" 0;
 }
 
-.child.visited {
-    border-style: solid;
-    background-color: var(--accent-4);
-    color: var(--accent-30);
-}
-
-.child.visited.inactive {
-    color: var(--accent-15);
-}
-
-.child:hover {
-    color: var(--fg);
-    border-style: solid;
-    background-color: var(--accent-15);
-    border-color: var(--accent-15);
-    font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
-}
+/* Poetic */
 
 .child.poetic-visited {
     border-style: solid;
-    background-color: var(--poetic-2);
-    border-color: var(--poetic-2);
+    background-color: var(--poetic-1);
+    border-color: var(--poetic-1);
     color: var(--poetic-7);
 }
 
-.child.poetic-visited.inactive {
-    color: var(--poetic-5);
+.child.poetic-unvisited {
+    border: 1px dashed var(--poetic-6);
+    background-color: var(--poetic-0);
+    color: var(--poetic-6);
+    font-variation-settings: "CASL" 1, "CRSV" 0, "slnt" -15;
 }
 
-.child.poetic-visited:hover {
+.child.poetic-unvisited.inactive,
+.child.poetic-visited.inactive {
+    color: var(--poetic-3);
+    border-color: var(--poetic-3);
+}
+
+.child.poetic-visited:hover,
+.child.poetic-unvisited:hover,
+.child.poetic-unvisited.active {
     color: var(--fg);
     border-style: solid;
-    background-color: var(--poetic-4);
-    border-color: var(--poetic-4);
+    background-color: var(--poetic-5);
+    border-color: var(--poetic-5);
     font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
 }
 
-.child.poetic-unvisited {
-    border-radius: 15px;
-    border: 1px dashed var(--poetic-3);
-    background-color: var(--poetic-0);
-    color: var(--poetic-4);
-}
-
-.child.poetic-unvisited:hover {
-    border: 1px dashed var(--poetic-5);
-    background-color: var(--poetic-5);
-    color: var(--fg);
-}
+/* SF */
 
 .child.sf-visited {
     border-style: solid;
-    background-color: var(--sf-2);
-    border-color: var(--sf-2);
+    background-color: var(--sf-1);
+    border-color: var(--sf-1);
     color: var(--sf-7);
-}
-
-.child.sf-visited.inactive {
-    color: var(--sf-5);
-}
-
-.child.sf-visited:hover {
-    color: var(--fg);
-    border-style: solid;
-    background-color: var(--sf-4);
-    border-color: var(--sf-4);
-    font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
 }
 
 .child.sf-unvisited {
     border-radius: 15px;
-    border: 1px dashed var(--sf-3);
+    border: 1px dashed var(--sf-6);
     background-color: var(--sf-0);
-    color: var(--sf-4);
+    color: var(--sf-6);
+    font-variation-settings: "CASL" 1, "CRSV" 0, "slnt" -15;
 }
 
-.child.sf-unvisited:hover {
-    border: 1px dashed var(--sf-5);
-    background-color: var(--sf-5);
-    color: var(--fg);
+.child.sf-unvisited.inactive,
+.child.sf-visited.inactive {
+    color: var(--sf-3);
+    border-color: var(--sf-3);
 }
+
+.child.sf-visited:hover,
+.child.sf-unvisited:hover,
+.child.sf-unvisited.active {
+    color: var(--fg);
+    border-style: solid;
+    background-color: var(--sf-5);
+    border-color: var(--sf-5);
+    font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
+}
+
+/* Fantasy */
 
 .child.fantasy-visited {
     border-style: solid;
-    background-color: var(--fantasy-2);
-    border-color: var(--fantasy-2);
-    color: var(--fantasy-7);
+    background-color: var(--fantasy-1);
+    border-color: var(--fantasy-1);
+    color: var(--fantasy-8);
 }
 
+.child.fantasy-unvisited {
+    border: 1px dashed var(--fantasy-6);
+    background-color: var(--fantasy-0);
+    color: var(--fantasy-6);
+    font-variation-settings: "CASL" 1, "CRSV" 0, "slnt" -15;
+}
+
+.child.fantasy-unvisited.inactive,
 .child.fantasy-visited.inactive {
-    color: var(--fantasy-5);
+    color: var(--fantasy-3);
+    border-color: var(--fantasy-3);
 }
 
-.child.fantasy-visited:hover {
+.child.fantasy-visited:hover,
+.child.fantasy-unvisited:hover,
+.child.fantasy-unvisited.active {
     color: var(--fg);
     border-style: solid;
     background-color: var(--fantasy-5);
@@ -701,62 +715,39 @@ textarea:focus {
     font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
 }
 
-.child.fantasy-unvisited {
-    border-radius: 15px;
-    border: 1px dashed var(--fantasy-2);
-    background-color: var(--fantasy-0);
-    color: var(--fantasy-5);
-}
-
-.child.fantasy-unvisited:hover {
-    border: 1px dashed var(--fantasy-5);
-    background-color: var(--fantasy-5);
-    color: var(--fg);
-}
+/* Neutral */
 
 .child.neutral-visited {
     border-style: solid;
-    background-color: var(--accent-10);
+    background-color: var(--accent-8);
+    border-color: var(--accent-8);
+    color: var(--accent-30);
+}
+
+.child.neutral-unvisited {
+    border: 1px dashed var(--accent-20);
+    background-color: var(--accent-0);
+    color: var(--accent-20);
+    font-variation-settings: "CASL" 1, "CRSV" 1, "slnt" -15;
+}
+
+.child.neutral-unvisited.inactive,
+.child.neutral-visited.inactive {
+    color: var(--accent-10);
     border-color: var(--accent-10);
-    color: var(--accent-25);
 }
 
 .child.neutral-visited.inactive {
     color: var(--accent-15);
 }
 
-.child.neutral-visited:hover {
-    color: var(--bg); /* NOTE: A bit jaaring in context! */
+.child.neutral-visited:hover,
+.child.neutral-unvisited:hover,
+.child.neutral-unvisited.active {
+    color: var(--bg);
     border-style: solid;
     background-color: var(--accent-30);
     border-color: var(--accent-30);
-    font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
-}
-
-.child.neutral-unvisited {
-    border-radius: 15px;
-    border: 1px dashed var(--accent-10);
-    background-color: var(--accent-2);
-    color: var(--accent-20);
-}
-
-.child.neutral-unvisited:hover {
-    border: 1px dashed var(--accent-30);
-    background-color: var(--accent-30);
-    color: var(--bg);
-}
-
-.unvisited {
-    font-variation-settings: "CASL" 1, "CRSV" 0, "slnt" -15;
-    color: var(--accent-25);
-}
-
-.inactive {
-    color: var(--accent-15);
-}
-
-.active {
-    color: var(--fg);
     font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
 }
 
@@ -830,17 +821,6 @@ h1 {
     height: 85vh;
 }
 
-.library-button {
-    background: var(--accent-5);
-    border: none;
-    padding: 10px 18px;
-    border-radius: 8px;
-    font-family: "Obviously", "Verdana", sans-serif;
-    font-weight: 600;
-    color: var(--accent-25);
-    font-size: 12px;
-    height: 40px;
-}
 
 
 .library-button:hover {

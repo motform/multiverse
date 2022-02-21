@@ -52,11 +52,11 @@
    [:p>a.source-code {:href "https://github.com/motform/multiverse" :target "_bank"}
     "Source code avalible on GitHub"]
    [:section.h-stack.gap-half
-    [:button.library-button.shadow-medium
+    [:button.shadow-medium.button-secondary.rounded
      {:on-pointer-down #(when (.confirm js/window "Do you really want to clear the library? This can not be undone!")
                           (rf/dispatch [:library/clear]))}
      "empty library"]
-    [:button.library-button.rounded.shadow-medium
+    [:button.button-secondary.rounded.shadow-medium
      {:on-pointer-down #(export-library)}
      "export library"]]])
 

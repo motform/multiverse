@@ -7,7 +7,7 @@
 (defn prompt []
   (let [prompt @(rf/subscribe [:new-story/prompt])
         blank? (str/blank? prompt)]
-    [:section.prompt.v-stack.gap-half.v-stack.gap-half.rounded-large.shadow-large.blurred.border
+    [:section.prompt.v-stack.gap-half.rounded-large.shadow-large.blurred.border.pad-half
      [:textarea.textarea-large.rounded.shadow-large.pad-half
       {:value prompt
        :auto-focus true

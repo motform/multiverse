@@ -10,7 +10,7 @@
     (let [target-id (.. link -target -data -name)
           source-id (.. link -source -data -name)
           has-children? (seq (.. link -target -data -children))
-          personality (.. link -target -data -personality)]
+          ^string personality (.. link -target -data -personality)]
       (str personality "-"
            (cond (active-path target-id) "tree-map-link-active"
                  has-children?           "tree-map-link"
@@ -26,7 +26,7 @@
   (fn [node]
     (let [id (.. node  -data -name)
           parent-id (.. node -data -info)
-          personality (.. node -data -personality)]
+          ^string personality (.. node -data -personality)]
       (str personality "-"
            (cond (= active-sentence id) (cond (not highlight)               "tree-map-node-current"
                                               (= highlight active-sentence) "tree-map-node-current"
@@ -104,9 +104,9 @@
 
 (defn radial-map []
   (fn []
-    [radial-map-d3 {:sentence-tree   @(rf/subscribe [:story/sentence-tree])
-                    :active-path     @(rf/subscribe [:story/active-path])
-                    :active-sentence @(rf/subscribe [:sentence/active])
-                    :highlight       @(rf/subscribe [:sentence/highlight])
-                    :prospective-child?  (->> @(rf/subscribe [:sentence/children @(rf/subscribe [:sentence/active])]) (map :sentence/id) set)
-                    :root-sentence   @(rf/subscribe [:story/root-sentence])}]))
+    [radial-map-d3 {:sentence-tree      @(rf/subscribe [:story/sentence-tree])
+                    :active-path        @(rf/subscribe [:story/active-path])
+                    :active-sentence    @(rf/subscribe [:sentence/active])
+                    :highlight          @(rf/subscribe [:sentence/highlight])
+                    :prospective-child? (->> @(rf/subscribe [:sentence/children @(rf/subscribe [:sentence/active])]) (map :sentence/id) set)
+                    :root-sentence      @(rf/subscribe [:story/root-sentence])}]))

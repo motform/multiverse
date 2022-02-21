@@ -5,7 +5,7 @@
 
 (defn item [label key active-page tooltip type]
   [:a.hitem.tab.shadow-medium
-   {:class (str (case type :library "tab" :new-story " tab-new-story")
+   {:class (str (case type :library "tab tab-secondary" :new-story " tab-new-story")
                 (when (= key active-page) " tab-active"))
     :href (routes/url-for key)}
    (when-not (= type :library) label)

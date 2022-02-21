@@ -6,7 +6,8 @@
                 :asset-path "/js"
                 :modules {:main {:entries [org.motform.multiverse.main]
                                  :init-fn org.motform.multiverse.main/mount}}
-                :compiler-options {:closure-defines {"re_frame.trace.trace_enabled_QMARK_"  true
+                :compiler-options {:infer-externs   true
+                                   :closure-defines {"re_frame.trace.trace_enabled_QMARK_"  true
                                                      "day8.re-frame.tracing.trace-enabled?" true
                                                      "goog.DEBUG" true}}
                 :devtools {:http-root "resources/public"
