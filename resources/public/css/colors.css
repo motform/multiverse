@@ -76,6 +76,8 @@
     --poetic-background: linear-gradient(90deg, #0b1418, #08131c, #061220, #031124, #011128);
     --poetic-gradient:   linear-gradient(90deg, #012233, #012639, #012a3f, #012e45, #02334c);
 
+    --background-mixed: linear-gradient(90deg, #01111a, #031315, #091614, #12170f, #1a1601);
+
     --bg: #0B1418;
     --fg: #fff;
     --err: red;

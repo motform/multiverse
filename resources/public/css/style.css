@@ -99,25 +99,25 @@ button {
     font-weight: 600;
     text-transform: Capitalize;
     font-size: 3rem;
-    color: var(--bg);
-    background-color: var(--accent-25);
+    color: var(--fg);
+    background-color: var(--blurred-1);
     width: auto;
     padding: 2.8rem 4rem 3.2rem 4rem;
-    border: 1px solid var(--accent-27);
+    border: 1px solid var(--blurred-1);
     cursor: pointer;
 }
 
 button:hover {
-    background-color: var(--accent-30);
+    background-color: var(--blurred-2);
 }
 
 button:disabled:hover {
-    background-color: var(--accent-5);
+    background-color: var(--blurred-0);
 }
 
 button:disabled {
-    background-color: var(--accent-5);
-    border-color: var(--accent-6);
+    background-color: var(--blurred-0);
+    border-color: var(--blurred-0);
     color: var(--accent-15);
     cursor: not-allowed;
 }
@@ -145,19 +145,20 @@ textarea {
     resize: none;
     overflow: hidden;
     color: var(--fg);
-    background-color: var(--accent-2);
-    border: 1px solid var(--accent-10);
+    background-color: var(--blurred-0);
+    border: 1px solid var(--blurred-0);
     padding: 3rem;
     font-size: 16px;
 }
 
 textarea:hover {
-    background-color: var(--accent-3);
+    background-color: var(--blurred-1);
+    border-color: var(--blurred-1);
 }
 
 textarea:focus {
-    background-color: var(--accent-3);
-    border-color: var(--accent-15);
+    background-color: var(--blurred-2);
+    border-color: var(--blurred-2);
 }
 
 .textarea-small {
@@ -265,6 +266,7 @@ textarea:focus {
 .background-sf	    { background: var(--sf-background);      background-size: 400%; }
 .background-fantasy { background: var(--fantasy-background); background-size: 400%; }
 .background-poetic  { background: var(--poetic-background);  background-size: 400%; }
+.background-landing { background: var(--background-mixed);   background-size: 400%; }
 
 /* tooltips */
 
@@ -873,10 +875,8 @@ h1 {
     min-width: 400px;
     max-width: 600px;
     margin-top: 80px;
-    background-color: var(--accent-1);
-}
-
-.key-input {
+    background-color: var(--blurred-0);
+    backdrop-filter: blur(10px);
 }
 
 .key-valid {

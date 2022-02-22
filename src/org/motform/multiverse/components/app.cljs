@@ -13,12 +13,17 @@
     :page/new-story new-story
     :page/story     multiverse))
 
+(defn background-class [page]
+  (case page
+    :page/landing "background-landing"
+    :page/story (str "background-" (name @(rf/subscribe [:personality/active]))
+                     (when @(rf/subscribe [:open-ai/pending-request?]) " fast"))
+    "background-other"))
+
 (defn app []
   (let [page @(rf/subscribe [:page/active])
         view (active-page page)] 
     [:div.app-container.v-stack
-     {:class (str (when (= page :page/story)
-                    (str "background-" (name @(rf/subscribe [:personality/active])))) " "
-                  (when @(rf/subscribe [:open-ai/pending-request?]) "fast"))}
+     {:class (background-class page)}
      (when-not (= page :page/landing) [header])
      [view]]))
