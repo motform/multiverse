@@ -5,13 +5,14 @@
 
 (def titles
   {:page/new-story "New story"
-   :story     "Story"
+   :page/story     "Story"
    :page/library   "Library"})
 
-(def routes ["/" {""          :page/landing
-                  "story"     :page/story
-                  "new-story" :page/new-story
-                  "library"   :page/library}])
+(def routes
+  ["/" {""          :page/landing
+        "story"     :page/story
+        "new-story" :page/new-story
+        "library"   :page/library}])
 
 (defn- parse-url [url]
   (bidi/match-route routes url))

@@ -303,19 +303,8 @@ textarea:focus {
 
 .header {
     width: 100%;
-    align-items: center;
     margin-bottom: var(--space-half);
 }
-
-.header-wordmark  {
-    font-family: "Obviously Wide", "Verdana", sans-serif;
-    text-transform: uppercase;
-}
-
-.header-icons {
-    align-items: center;
-}
-
 
 .tab {
     padding: 12px 18px 8px 18px;
@@ -326,7 +315,6 @@ textarea:focus {
     font-size: 12px;
     height: 40px;
 }
-
 
 .tab:hover {
     background-color: var(--blurred-2);
@@ -400,21 +388,15 @@ textarea:focus {
     letter-spacing: 1px;
 }
 
-.hitem {
-    align-items: center;
-}
-
 .tab-map {
     color: var(--bg);
     border: 5px solid var(--blurred-2);
     position: absolute;
-    z-index: 2;
+    z-index: 5;
     left: 0px;
     top: calc(var(--space-full) + var(--space-quarter));
     border-radius: 8px;
-
-    backdrop-filter: blur(20px);
-    background: var(--blurred-0);
+    background: var(--accent-1);
 }
 
 .tab-active .tab-map {
@@ -567,11 +549,41 @@ textarea:focus {
     border-radius: 9999px;
     background: var(--accent-8);
     cursor: pointer;
+    z-index: 0;
+    align-items: center;
+    justify-content: center;
+    color: var(--bg);
+    transition: transform 0.5s;
+}
+
+.personality:hover > svg {
+    transform: rotate(180deg);
 }
 
 .personality-active {
     background: var(--accent-20);
 }
+
+.personality-replace {
+    box-shadow:
+	0px 0px 2.3px rgba(255, 255, 255, 0.07),
+	0px 0px 6.8px rgba(255, 255, 255, 0.101),
+	0px 0px 14.7px rgba(255, 255, 255, 0.125),
+	0px 0px 28.7px rgba(255, 255, 255, 0.149),
+	0px 0px 49px rgba(255, 255, 255, 0.18),
+	0px 0px 65px rgba(255, 255, 255, 0.25) ;
+}
+
+.personality-replace:hover {
+    box-shadow:
+	0px 0px 2.3px  rgba(255, 255, 255, 0.101),
+	0px 0px 6.8px  rgba(255, 255, 255, 0.145),
+	0px 0px 14.7px rgba(255, 255, 255, 0.18),
+	0px 0px 28.7px rgba(255, 255, 255, 0.215),
+	0px 0px 49px   rgba(255, 255, 255, 0.259),
+	0px 0px 65px   rgba(255, 255, 255, 0.36) ;
+}
+
 
 .personality-neutral-inactive       { background-color: var(--accent-5);	}
 .personality-neutral-inactive:hover { background-color: var(--accent-15);	}
