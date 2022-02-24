@@ -40,7 +40,7 @@
       [:span (subs text 0 @*i)])))
 
 (defn branch-marks [id personality]
-  (let [count-branches @(rf/subscribe [:story/count-realized-children id])
+  (let [count-branches @(rf/subscribe [:sentence/count-realized-children id])
         child-personality (or (first @(rf/subscribe [:sentence/child-personalities id]))
                               personality)]
     [:span.branch-marks
@@ -110,7 +110,7 @@
     [:main.story
      (when paragraphs
        [:<>
-        [personalities]
+        [personalities :page/story]
         [paragraph paragraphs prospect-path]
         [map/radial-map :source/story]])
      (if request?

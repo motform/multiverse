@@ -85,7 +85,9 @@
     --highlight: var(--accent-30);
     --spinner-fill: var(--accent-35);
 
+    --blurred-broder: #c8cacb10;
     --blurred-0: #c8cacb22;
+    --blurred-0: #bbbbbb10;
     --blurred-1: #c8cacb35;
     --blurred-2: #c8cacb44;
 }

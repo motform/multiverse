@@ -96,7 +96,7 @@ label {
 
 button {
     font-family: "Obviously", sans-serif;
-    font-weight: 600;
+    font-weight: 500;
     text-transform: Capitalize;
     font-size: 3rem;
     color: var(--fg);
@@ -447,8 +447,8 @@ textarea:focus {
 
 .prompt {
     margin: 0 -40px;
-    border: 1px solid var(--fg);
-    animation: gradient 10s ease infinite;
+    border: 1px solid var(--blurred-border);
+    background: var(--blurred-0);
 }
 
 @keyframes gradient {
@@ -456,11 +456,6 @@ textarea:focus {
     50%  { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
-
-.prompt-neutral	{ background: var(--neutral-background); border-color: var(--accent-1);  background-size: 400%; }
-.prompt-sf	{ background: var(--sf-background);      border-color: var(--sf-1);      background-size: 400%; }
-.prompt-fantasy { background: var(--fantasy-background); border-color: var(--fantasy-1); background-size: 400%; }
-.prompt-poetic	{ background: var(--poetic-background);  border-color: var(--poetic-1);  background-size: 400%; }
 
 .prompt .personality {
     border: 1px solid var(--blurred-0);

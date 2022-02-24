@@ -3,7 +3,6 @@
             [re-frame.core :as rf]
             [nano-id.core :refer [nano-id]]
             [org.motform.multiverse.routes :as routes]
-            [org.motform.multiverse.components.header :refer [header]]
             [org.motform.multiverse.util :as util]))
 
 (defn library-item [{:story/keys [meta sentences]}]

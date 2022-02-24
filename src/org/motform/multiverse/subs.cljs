@@ -1,5 +1,6 @@
 (ns org.motform.multiverse.subs
-  (:require [re-frame.core :as rf :refer [reg-sub]]))
+  (:require [re-frame.core :as rf :refer [reg-sub]]
+            [org.motform.multiverse.util :as util]))
 
 ;;; Prompt
 
@@ -25,8 +26,8 @@
 (reg-sub
  :sentence/active
  (fn [db [_ story-id]]
-   (let [story (or story-id (get-in db [:db/state :story/active]))]
-     (get-in db [:db/stories story :story/meta :sentence/active]))))
+   (let [story-id (or story-id (get-in db [:db/state :story/active]))]
+     (get-in db [:db/stories story-id :story/meta :sentence/active]))))
 
 (reg-sub
  :sentence/highlight
@@ -55,10 +56,7 @@
 (reg-sub
  :sentence/children
  (fn [db [_ parent-id story-id]]
-   (let [story-id (or story-id (get-in db [:db/state :story/active]))
-         sentences (get-in db [:db/stories story-id :story/sentences])
-         child-ids (get-in db [:db/stories story-id :story/sentences parent-id :sentence/children])]
-     (vals (select-keys sentences child-ids)))))
+   (vals (util/children db parent-id story-id))))
 
 ;;; Library
 
@@ -94,12 +92,8 @@
 
 (reg-sub
  :sentence/paragraph
- (fn [db [_ id]]
-   (let [story (get-in db [:db/state :story/active])
-         path (get-in db [:db/stories story :story/sentences id :sentence/path])]
-     (reduce (fn [sentences id]
-               (conj sentences (get-in db [:db/stories story :story/sentences id])))
-             [] path))))
+ (fn [db [_ sentence-id]]
+   (util/paragraph db (get-in db [:db/state :story/active]) sentence-id)))
 
 
 (defn sentence-tree-level [sentences sentence-id active-sentence-id parent-id]
@@ -128,7 +122,7 @@
      (-> sentences keys first sentences :sentence/path first))))
 
 (reg-sub
- :story/count-realized-children
+ :sentence/count-realized-children
  (fn [_ [_ parent-id]]
    (->> @(rf/subscribe [:sentence/children parent-id])
         (remove #(empty? (:sentence/children %)))

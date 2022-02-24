@@ -20,7 +20,7 @@
 
 (defn key-input []
   (let [{:open-ai/keys [api-key validated?]} @(rf/subscribe [:open-ai/key])]
-    [:article.key-input-container.v-stack.gap-half.rounded-large.shadow-large.blurred.pad-3-4.border
+    [:article.key-input-container.v-stack.gap-quarter.rounded-large.shadow-large.blurred.pad-3-4.border
      [:div.v-stack.gap-quarter
       [:label.offset-label "OpenAI API key"]
       [:div.h-stack.gap-half

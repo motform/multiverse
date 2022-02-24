@@ -15,9 +15,11 @@
 
 (defn background-class [page]
   (case page
-    :page/landing "background-landing"
-    :page/story (str "background-" (name @(rf/subscribe [:personality/active]))
-                     (when @(rf/subscribe [:open-ai/pending-request?]) " fast"))
+    :page/landing
+    "background-landing"
+    (:page/new-story :page/story)
+    (str "background-" (name @(rf/subscribe [:personality/active]))
+         (when @(rf/subscribe [:open-ai/pending-request?]) " fast"))
     "background-other"))
 
 (defn app []

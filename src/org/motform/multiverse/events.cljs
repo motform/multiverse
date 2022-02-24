@@ -160,17 +160,17 @@
 (defn- open-ai-texts [completions]
   (map :text (:choices completions)))
 
-(reg-event-fx
+(reg-event-fx ; NOTE not sure why this would need to be an -fx
  :open-ai/handle-children
  [local-storage-interceptor]
- (fn [{:keys [db]} [_ story parent completions]]
-   (let [parent-path (get-in db [:db/stories story :story/sentences parent :sentence/path])
+ (fn [{:keys [db]} [_ story-id parent-id completions]]
+   (let [parent-path (get-in db [:db/stories story-id :story/sentences parent-id :sentence/path])
          child-ids (repeatedly 3 #(nano-id 10))
          children (->children parent-path child-ids (open-ai-texts completions) (get-in db [:db/state :personality/active]))]
      {:db (-> db
-              (update-in [:db/stories story :story/sentences] merge children)
-              (assoc-in  [:db/stories story :story/sentences parent :sentence/children] child-ids)
-              (assoc-in  [:db/stories story :story/meta :story/updated] (js/Date.))
+              (update-in [:db/stories story-id :story/sentences] merge children)
+              (assoc-in  [:db/stories story-id :story/sentences parent-id :sentence/children] child-ids)
+              (assoc-in  [:db/stories story-id :story/meta :story/updated] (js/Date.))
               (assoc-in  [:db/state :open-ai/pending-request?] false))})))
 
 (reg-event-db
@@ -217,7 +217,7 @@
                    :params  params
                    :format  (ajax/json-request-format)
                    :response-format (ajax/json-response-format {:keywords? true})
-                   :on-success [:open-ai/handle-children story-id parent-id] ; TODO
+                   :on-success [:open-ai/handle-children story-id parent-id]
                    :on-failure [:open-ai/failure]}})))
 
 (reg-event-fx
@@ -241,6 +241,45 @@
                    :on-failure      [:open-ai/failure]}})))
 
 (reg-event-db
+ :open-ai/replace-children
+ (fn [db [_ story-id parent-id unrealized-child-ids completions]]
+   (let [original-children (util/children db parent-id story-id)
+         realized-children (select-keys original-children
+                                        (->> original-children vals (map :sentence/id) (remove unrealized-child-ids)))
+         new-child-ids (repeatedly (count unrealized-child-ids) #(nano-id 10))
+         parent-path (get-in db [:db/stories story-id :story/sentences parent-id :sentence/path])
+         new-children (->children parent-path new-child-ids (open-ai-texts completions) (get-in db [:db/state :personality/active]))
+         combined-children (merge realized-children new-children)]
+     (-> db (update-in [:db/stories story-id :story/sentences] merge new-children)
+            (assoc-in  [:db/stories story-id :story/sentences parent-id :sentence/children] (keys combined-children))
+            (assoc-in  [:db/stories story-id :story/meta :story/updated] (js/Date.))
+            (assoc-in  [:db/state :open-ai/pending-request?] false)))))
+
+(reg-event-fx
+ :open-ai/replace-completions
+ (fn [{:keys [db]} [_ new-personality]]
+   (let [{:keys [story-id parent-id api-key]} (util/completion-data db)
+         unrealized-children (->> (util/children db parent-id)
+                                  vals
+                                  (filter #(empty? (:sentence/children %))))
+         n-unrealized-children (count unrealized-children)]
+     (when-not (zero? n-unrealized-children)
+       (let [prompt (open-ai/format-prompt (util/paragraph db story-id parent-id))
+             {:keys [uri params]} (open-ai/completion-with :text-davinci-001
+                                    {:prompt prompt :n n-unrealized-children})]
+         {:db (-> db (assoc-in [:db/state :personality/active] new-personality)
+                     (assoc-in [:db/state :open-ai/pending-request?] true))
+          :http-xhrio {:method  :post
+                       :uri     uri
+                       :headers {"Authorization" (str "Bearer " api-key)}
+                       :params  params
+                       :format  (ajax/json-request-format)
+                       :response-format (ajax/json-response-format {:keywords? true})
+                       :on-success [:open-ai/replace-children story-id parent-id (->> unrealized-children (map :sentence/id) set)]
+                       :on-failure [:open-ai/failure]}})))))
+
+(reg-event-db
  :open-ai/failure
  (fn [db [_ result]]
    (assoc-in db [:db/state :open-ai/failure] result)))
+

@@ -42,4 +42,4 @@
         [tabs]
         [item util/icon-plus :page/new-story active-page nil :new-story]]
        [:nav.header-icons.v-stack
-        [item util/icon-library :page/library active-page "Library" :library]]])))
+        [item nil :page/library active-page "Library" :library]]])))

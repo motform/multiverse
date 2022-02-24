@@ -8,7 +8,7 @@
   (let [active-personality @(rf/subscribe [:personality/active])]
     [:section.prompt-personalities.h-stack.gap-half
      (for [personality @(rf/subscribe [:personality/personalities])]
-       [personalities/personality-toggle personality active-personality
+       [personalities/personality-toggle personality active-personality :page/new-story
                                   {:top "120%" :left "0%"}])]))
 
 (defn prompt []
