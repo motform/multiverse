@@ -1,7 +1,8 @@
 (ns org.motform.multiverse.components.landing
   (:require [clojure.string :as str]
             [re-frame.core :as rf]
-            [org.motform.multiverse.routes :as routes]))
+            [org.motform.multiverse.routes :as routes]
+            [org.motform.multiverse.util :as util]))
 
 (defn elide [s n dots]
   (apply str (concat (take n s) (repeat dots ".") (drop (- (count s) n) s))))
@@ -28,7 +29,9 @@
        [:button.open-ai-key-dispatch.rounded.shadow-small
         {:disabled (str/blank? api-key)
          :on-pointer-down #(when-not validated? (rf/dispatch [:open-ai/validate-api-key]))}
-        "Check"]]] 
+        (if @(rf/subscribe [:open-ai/pending-request?])
+          [util/spinner-small]
+          "Check")]]] 
      [:a {:href (when validated?
                   (routes/url-for (if (empty? @(rf/subscribe [:db/stories])) :page/new-story :page/library)))}
       [:button.open-ai-key-dispatch.rounded.shadow-small
