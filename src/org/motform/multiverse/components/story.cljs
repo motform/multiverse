@@ -92,7 +92,7 @@
                            (rf/dispatch [:story/mode :mode/explore]))}
     [:p (for [{:sentence/keys [text id personality]} sentences]
           ^{:key id} [:span text [branch-marks id personality]])]
-    [map/radial-map :source/collection @(rf/subscribe [:story/active])
+    [map/radial-map :source/compare @(rf/subscribe [:story/active])
      {:active-sentence leaf-id
       :active-path (->> sentences last :sentence/path set)
       :highlight nil

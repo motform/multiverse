@@ -15,7 +15,7 @@
            (cond (active-path target-id) "tree-map-link-active"
                  has-children?           "tree-map-link"
                  (= highlight source-id) "tree-map-link-prospective"
-                 (and (= source :source/collection) (= active-sentence source-id)) "hidden"
+                 (and (= source :source/compare) (= active-sentence source-id)) "hidden"
                  (and (= active-sentence source-id) (prospective-child? highlight)) "tree-map-link-prospective"
                  (and highlight (prospective-child? target-id)) "hidden"
                  (prospective-child? target-id) "tree-map-link-prospective"
@@ -26,7 +26,7 @@
 (defn node-size [root active source]
   (fn [node]
     (let [id (.. node  -data -name)
-          scale (if (= source :source/story) 4 2)]
+          scale (case source :source/story 4 :source/compare 3 2)]
       (if (or (= root id) (= active id))
         (* scale 2)
         scale))))
@@ -48,7 +48,7 @@
                  (seq (.. node -data -children)) "tree-map-node-inactive"
                  (and (= active-sentence highlight) (prospective-child? id))        "tree-map-node-prospective" ; hover on child
                  (and (= active-sentence parent-id) (prospective-child? highlight)) "tree-map-node-prospective" ; hover on parent
-                 (and (= source :source/collection) (= active-sentence parent-id))  "hidden"
+                 (and (= source :source/compare) (= active-sentence parent-id))  "hidden"
                  (and highlight (prospective-child? id)) "hidden"
                  (or (= parent-id highlight) (prospective-child? id)) "tree-map-node-prospective"
                  :else "hidden")))))
