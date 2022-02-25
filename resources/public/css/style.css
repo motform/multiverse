@@ -543,8 +543,8 @@ textarea:focus {
 .comparsion-paragraph {
     background-color: var(--blurred-0);
     border: 1px solid var(--blurred-0);
-    line-height: 1.6;
-    font-size: 16px;
+    line-height: 1.5;
+    font-size: 14px;
 }
 
 .comparsion-paragraph:hover {
@@ -1092,7 +1092,7 @@ h1 {
 }
 
 .neutral-tree-map-node-prospective {
-    fill: var(--accent-3);
+    fill: none;
     stroke: var(--accent-20);
     stroke-dasharray: 4;
     cursor: pointer;
@@ -1155,7 +1155,7 @@ h1 {
 }
 
 .fantasy-tree-map-node-prospective {
-    fill: var(--bg);
+    fill: none;
     stroke: var(--fantasy-5);
     stroke-dasharray: 4;
     cursor: pointer;
@@ -1212,7 +1212,7 @@ h1 {
 }
 
 .sf-tree-map-node-prospective {
-    fill: var(--bg);
+    fill: node;
     stroke: var(--sf-5);
     stroke-dasharray: 4;
     cursor: pointer;
@@ -1269,7 +1269,7 @@ h1 {
 }
 
 .poetic-tree-map-node-prospective {
-    fill: var(--bg);
+    fill: node;
     stroke: var(--poetic-5);
     stroke-dasharray: 4;
     cursor: pointer;
