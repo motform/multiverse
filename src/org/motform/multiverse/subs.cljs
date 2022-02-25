@@ -26,7 +26,7 @@
 (reg-sub
  :sentence/active
  (fn [db [_ story-id]]
-   (let [story-id (or story-id (get-in db [:db/state :story/active]))]
+   (let [story-id (or story-id @(rf/subscribe [:story/active]))]
      (get-in db [:db/stories story-id :story/meta :sentence/active]))))
 
 (reg-sub
@@ -92,9 +92,10 @@
 
 (reg-sub
  :sentence/paragraph
- (fn [db [_ sentence-id]]
-   (util/paragraph db (get-in db [:db/state :story/active]) sentence-id)))
-
+ (fn [db [_ sentence-id story-id]]
+   (let [story-id (or story-id @(rf/subscribe [:story/active]))
+         sentence-id (or sentence-id @(rf/subscribe [:sentence/active story-id]))]
+     (util/paragraph db story-id sentence-id))))
 
 (defn sentence-tree-level [sentences sentence-id active-sentence-id parent-id]
   (let [{:sentence/keys [personality children]} (sentences sentence-id)]

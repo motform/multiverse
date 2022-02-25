@@ -206,8 +206,7 @@
 (reg-event-fx
  :open-ai/completions
  (fn [{:keys [db]} [_ parent-id prompt]]
-   (let [story-id  (get-in db [:db/state :story/active])
-         api-key   (get-in db [:db/state :open-ai/key :open-ai/api-key])
+   (let [{:keys [story-id api-key]} (util/completion-data db)
          {:keys [uri params]} (open-ai/completion-with #_:ada :text-davinci-001
                                 {:prompt prompt})]
      {:db (assoc-in db [:db/state :open-ai/pending-request?] true)
@@ -223,8 +222,7 @@
 (reg-event-fx
  :open-ai/title
  (fn [{:keys [db]} _]
-   (let [api-key   (get-in db [:db/state :open-ai/key :open-ai/api-key])
-         story-id  (get-in db [:db/state :story/active])
+   (let [{:keys [story-id api-key]} (util/completion-data db)
          story     (vals (get-in db [:db/stories story-id :story/sentences]))
          {:keys [uri params]} (open-ai/completion-with :text-davinci-001
                                 {:prompt (open-ai/format-title story)
