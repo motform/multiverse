@@ -14,7 +14,7 @@
                              (not active?) (case page
                                              :page/story     #(rf/dispatch [:open-ai/replace-completions personality])
                                              :page/new-story #(rf/dispatch [:personality/active personality])))}
-     [:span.tooltip.rounded
+     [:span.tooltip.rounded.shadow-small
       {:style (merge tooltip-position (when replacement-avalible? {:width "256px"}))}
       (if replacement-avalible? 
         "Replace unxeplored paths"

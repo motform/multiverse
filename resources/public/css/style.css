@@ -272,17 +272,17 @@ textarea:focus {
 
 .tooltip {
     color: var(--bg);
-    font: 600 12px/1.4 "Obviously", sans-serif;
+    font: 600 10px/1.4 "Obviously", sans-serif;
     letter-spacing: 1px;
     text-transform: uppercase;
     opacity: 0%;
-    background-color: var(--accent-30);
-    padding: 9px 12px;
+    background-color: var(--fg);
+    padding: 4px 9px 6px 9px;
     position: absolute;
     z-index: 1;
     top: 90%;
     left: 50%;
-    border-radius: 8px;
+    border-radius: 4px;
 }
 
 .tooltip-large {
@@ -396,6 +396,8 @@ textarea:focus {
     top: calc(var(--space-full) + var(--space-quarter));
     border-radius: 8px;
     background: var(--accent-1);
+    width: 400px;
+    height: 250px;
 }
 
 .tab-active .tab-map {
@@ -414,6 +416,38 @@ textarea:focus {
 .icon:hover {
     fill: var(--accent-20);
     stroke: var(--accent-20);
+}
+
+.mode-toggles {
+    align-self: flex-end;
+}
+
+.mode-toggle {
+    border-radius: 9999px;
+    background-color: var(--blurred-0);
+    color: var(--blurred-2);
+    padding: 8px 10px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mode-toggle:hover {
+    color: var(--fg);
+    background-color: var(--blurred-1);
+    cursor: pointer;
+}
+
+.mode-toggle-active {
+    color: var(--bg);
+    background-color: var(--fg);
+}
+
+.mode-toggle-active:hover {
+    color: var(--bg);
+    background-color: var(--fg);
 }
 
 /* new-story */
@@ -492,36 +526,16 @@ textarea:focus {
 
 /* reader */
 
-.mode-toggles {
-    align-self: flex-end;
-}
-
-.mode-toggle {
-    border-radius: 9999px;
+.reader {
+    max-width: 800px;
+    margin-top: var(--space-half);
     background-color: var(--blurred-0);
-    color: var(--blurred-2);
-    padding: 8px 10px;
-    width: 45px;
-    height: 45px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border: 1px solid var(--blurred-0);
+    line-height: 1.4;
 }
 
-.mode-toggle:hover {
-    color: var(--fg);
-    background-color: var(--blurred-1);
-    cursor: pointer;
-}
-
-.mode-toggle-active {
-    color: var(--bg);
-    background-color: var(--fg);
-}
-
-.mode-toggle-active:hover {
-    color: var(--bg);
-    background-color: var(--fg);
+.reader h2 {
+    font: 70px/80px "Obviously Narrow", "Arial Narrow", sans-serif;
 }
 
 /* map */
@@ -660,7 +674,7 @@ textarea:focus {
 .paragraph {
     overflow: scroll;
     height: 100%;
-    width: 50vw;
+    width: 45vw;
     max-width: 900px;
     max-height: 100%;
     font-size: 16px;

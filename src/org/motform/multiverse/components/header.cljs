@@ -25,7 +25,7 @@
     [:p title]
     (when (= id @(rf/subscribe [:tab/highlight]))
       [:div.tab-map.rounded.shadow-large
-       [map/radial-map :source/header id]])]])
+       [map/radial-map :source/header id {:w 400 :h 250}]])]])
 
 (defn tabs []
   (let [active-story-id @(rf/subscribe [:story/active])
@@ -41,6 +41,5 @@
        [:section.header-content.h-stack.gap-half
         [tabs]
         [item :page/new-story active-page :new-story util/icon-plus]]
-       [reader/toggles]
-       #_[:nav.header-icons.v-stack
-        [item :page/library active-page :library "Library"]]])))
+       (when (= @(rf/subscribe [:page/active]) :page/story)
+           [reader/toggles])])))

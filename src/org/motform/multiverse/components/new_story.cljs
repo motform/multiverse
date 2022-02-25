@@ -27,6 +27,7 @@
         :on-pointer-down #(when (not blank?)
                             (rf/dispatch [:new-story/submit]) ; TODO move into route controller
                             (rf/dispatch [:page/active :page/story])
+                            (rf/dispatch [:story/mode :mode/explore])
                             (. (.-history js/window) pushState #js {} "" (routes/url-for :page/story)))}
        "Explore"]]]))
 

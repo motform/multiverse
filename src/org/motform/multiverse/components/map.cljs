@@ -52,14 +52,14 @@
                  :else "hidden")))))
 
 (defn draw-radial-map
-  "Based on:  https://medium.com/analytics-vidhya/creating-a-radial-tree-using-d3-js-for-javascript-be943e23b74e"
-  [node {:keys [sentence-tree active-sentence root-sentence source] :as props} map-id]
+  "Based on: https://medium.com/analytics-vidhya/creating-a-radial-tree-using-d3-js-for-javascript-be943e23b74e"
+  [node {:keys [sentence-tree active-sentence root-sentence source dimensions] :as props} map-id]
   (.. js/d3 (select (str "#g-" map-id)) remove) ; clear old image
   (let [link-class (link-class props)
         node-class (node-class props)
 
-        w (.-clientWidth node)
-        h (.-clientHeight node)
+        w (:w dimensions (.-clientWidth node))
+        h (:h dimensions (.-clientHeight node))
 
         svg (.. js/d3 (select (str "#" map-id))
                 (attr "width" w)
@@ -113,9 +113,10 @@
                               [:section.radial-map
                                [:svg {:id map-id}]])})))
 
-(defn radial-map [source story-id]
+(defn radial-map [source story-id dimensions]
   (fn []
-    [radial-map-d3 {:sentence-tree      @(rf/subscribe [:story/sentence-tree story-id])
+    [radial-map-d3 {:dimensions         dimensions
+                    :sentence-tree      @(rf/subscribe [:story/sentence-tree story-id])
                     :active-path        @(rf/subscribe [:story/active-path story-id])
                     :active-sentence    @(rf/subscribe [:sentence/active story-id])
                     :highlight          @(rf/subscribe [:sentence/highlight])

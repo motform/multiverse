@@ -107,13 +107,23 @@
       (rf/dispatch [:open-ai/completions active-sentence (open-ai/format-prompt paragraphs)]))
 
     [:main.h-stack.story
-     (when paragraphs
-       [:section.h-stack.gap-half.story-views
-        [personality/toggles :page/story]
-        [paragraph paragraphs prospect-path]
-        [map/radial-map :source/story]])
-     (if request?
-       [:section.children.pad-full [util/spinner]]
-       [:section.children.h-equal-3.gap-double.pad-full
-        (for [{:sentence/keys [id text children personality]} children]
-          ^{:key id} [child-selector text id (seq children) personality])])]))
+     (case @(rf/subscribe [:story/mode])
+
+       :mode/reader
+       [reader/literary paragraphs]
+
+       :mode/compare
+       [:div]
+
+       :mode/explore
+       [:<>
+        (when paragraphs
+          [:section.h-stack.gap-half.story-views
+           [personality/toggles :page/story]
+           [paragraph paragraphs prospect-path]
+           [map/radial-map :source/story]])
+        (if request?
+          [:section.children.pad-full [util/spinner]]
+          [:section.children.h-equal-3.gap-double.pad-full
+           (for [{:sentence/keys [id text children personality]} children]
+             ^{:key id} [child-selector text id (seq children) personality])])])]))
