@@ -2,7 +2,7 @@
   (:require [re-frame.core :as rf]))
 
 (defn personality-class [personality active-personality]
-(str "personality-" (name personality) "-" (when-not (= personality active-personality) "in") "active"))
+  (str "personality-" (name personality) "-" (when-not (= personality active-personality) "in") "active"))
 
 (defn personality-toggle [personality active-personality page children-to-replace? tooltip-position]
   (let [active? (= personality active-personality)
@@ -15,8 +15,10 @@
                                              :page/story     #(rf/dispatch [:open-ai/replace-completions personality])
                                              :page/new-story #(rf/dispatch [:personality/active personality])))}
      [:span.tooltip.rounded
-      {:style tooltip-position}
-      (name personality)]]))
+      {:style (merge tooltip-position (when replacement-avalible? {:width "256px"}))}
+      (if replacement-avalible? 
+        "Replace unxeplored paths"
+        (name personality))]]))
 
 (defn personalities [page]
   (let [active-personality @(rf/subscribe [:personality/active])
