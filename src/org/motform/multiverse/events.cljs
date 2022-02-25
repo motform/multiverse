@@ -49,6 +49,11 @@
        (update-in [:db/state :story/recent] conj story-id))))
 
 (reg-event-db
+ :story/mode
+ (fn [db [_ mode]]
+   (assoc-in db [:db/state :story/mode] mode)))
+
+(reg-event-db
  :sentence/active
  (fn [db [_ id]]
    (let [story (get-in db [:db/state :story/active])]

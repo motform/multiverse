@@ -5,11 +5,11 @@
             [re-frame.core :as rf]
             [reagent.core :as r]
             [reagent.dom :as rdom]
-            [org.motform.multiverse.components.header :refer [header]]
             [org.motform.multiverse.components.map :as map]
-            [org.motform.multiverse.components.personalities :refer [personalities]]
+            [org.motform.multiverse.components.personality :as personality]
             [org.motform.multiverse.open-ai :as open-ai]
-            [org.motform.multiverse.util :as util]))
+            [org.motform.multiverse.util :as util]
+            [org.motform.multiverse.components.reader :as reader]))
 
 (defn highlight? [id]
   (when-let [{highlight :id} @(rf/subscribe [:sentence/highlight])]
@@ -88,8 +88,7 @@
   (let [active-sentence @(rf/subscribe [:sentence/active])
         request?        @(rf/subscribe [:open-ai/pending-request?])
         prospect-path   @(rf/subscribe [:story/prospect-path])
-        {highlight :id
-         highlight-source :source} @(rf/subscribe [:sentence/highlight])
+        {highlight :id highlight-source :source} @(rf/subscribe [:sentence/highlight])
 
         children            (if (and (= :source/map highlight-source) @(rf/subscribe [:story/prospect-path-has-children?]))
                               @(rf/subscribe [:sentence/children (:sentence/id prospect-path)])
@@ -103,14 +102,14 @@
                      @(rf/subscribe [:sentence/paragraph highlight])
                      @(rf/subscribe [:sentence/paragraph active-sentence]))]
 
-    ;; First, see if we have to request any new completions
+    ;; Do we have to request any new completions
     (when (not-any? identity [children request? @(rf/subscribe [:sentence/preview?])])
       (rf/dispatch [:open-ai/completions active-sentence (open-ai/format-prompt paragraphs)]))
 
-    [:main.story
+    [:main.h-stack.story
      (when paragraphs
-       [:<>
-        [personalities :page/story]
+       [:section.h-stack.gap-half.story-views
+        [personality/toggles :page/story]
         [paragraph paragraphs prospect-path]
         [map/radial-map :source/story]])
      (if request?

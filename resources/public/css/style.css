@@ -303,7 +303,6 @@ textarea:focus {
 
 .header {
     width: 100%;
-    margin-bottom: var(--space-half);
 }
 
 .tab {
@@ -490,6 +489,41 @@ textarea:focus {
     color: var(--fg);
 }
 
+
+/* reader */
+
+.mode-toggles {
+    align-self: flex-end;
+}
+
+.mode-toggle {
+    border-radius: 9999px;
+    background-color: var(--blurred-0);
+    color: var(--blurred-2);
+    padding: 8px 10px;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.mode-toggle:hover {
+    color: var(--fg);
+    background-color: var(--blurred-1);
+    cursor: pointer;
+}
+
+.mode-toggle-active {
+    color: var(--bg);
+    background-color: var(--fg);
+}
+
+.mode-toggle-active:hover {
+    color: var(--bg);
+    background-color: var(--fg);
+}
+
 /* map */
 
 .map {
@@ -537,10 +571,6 @@ textarea:focus {
 
 .personalities {
     grid-row: span 1;
-    /* border: 1px solid var(--accent-5); */
-    /* margin: var(--space-half); */
-    /* margin-left: var(--space-double); */
-    /* background-color: #111f25; */
 }
 
 .personality {
@@ -616,15 +646,21 @@ textarea:focus {
     height: 94vh;
     display: grid;
     grid-template-rows: 60% 40%;
-    grid-template-columns: 8% 40% 52%;
     align-items: start;
     justify-items: center;
+    width: 100%;
+}
+
+.story-views {
+    width: 100%;
+    height: 100%;
+    padding: 0 calc(var(--space-full) - 5px);
 }
 
 .paragraph {
     overflow: scroll;
     height: 100%;
-    width: 100%;
+    width: 50vw;
     max-width: 900px;
     max-height: 100%;
     font-size: 16px;
@@ -964,8 +1000,8 @@ h1 {
 /* radial map */
 
 .radial-map {
+    width: 45vw;
     height: 100%;
-    width: 100%;
 }
 
 .neutral-tree-map-node-root {

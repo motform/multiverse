@@ -35,6 +35,11 @@
    (get-in db [:db/state :sentence/highlight])))
 
 (reg-sub
+ :story/mode
+ (fn [db _]
+   (get-in db [:db/state :story/mode])))
+
+(reg-sub
  :story/active
  (fn [db _]
    (get-in db [:db/state :story/active])))

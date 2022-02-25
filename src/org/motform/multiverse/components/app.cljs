@@ -4,14 +4,16 @@
             [org.motform.multiverse.components.landing   :refer [landing]]
             [org.motform.multiverse.components.library   :refer [library]]
             [org.motform.multiverse.components.new-story :refer [new-story]]
-            [org.motform.multiverse.components.story     :refer [multiverse]]))
+            [org.motform.multiverse.components.story     :refer [multiverse]]
+            [org.motform.multiverse.components.reader    :refer [reader]]))
 
 (defn active-page [page]
   (case page
     :page/landing   landing
     :page/library   library
     :page/new-story new-story
-    :page/story     multiverse))
+    :page/story     multiverse
+    :page/reader    reader))
 
 (defn background-class [page]
   (case page

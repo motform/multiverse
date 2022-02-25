@@ -2,13 +2,13 @@
   (:require [clojure.string :as str]
             [re-frame.core :as rf]
             [org.motform.multiverse.routes :as routes]
-            [org.motform.multiverse.components.personalities :as personalities]))
+            [org.motform.multiverse.components.personality :as personality]))
 
 (defn personalities []
   (let [active-personality @(rf/subscribe [:personality/active])]
     [:section.prompt-personalities.h-stack.gap-half
      (for [personality @(rf/subscribe [:personality/personalities])]
-       [personalities/personality-toggle personality active-personality :page/new-story
+       ^{:key personality} [personality/toggle personality active-personality :page/new-story nil
                                   {:top "120%" :left "0%"}])]))
 
 (defn prompt []

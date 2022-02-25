@@ -2,15 +2,15 @@
   (:require [org.motform.multiverse.routes :as routes]
             [org.motform.multiverse.util :as util]
             [org.motform.multiverse.components.map :as map]
-            [re-frame.core :as rf]))
+            [re-frame.core :as rf]
+            [org.motform.multiverse.components.reader :as reader]))
 
-(defn item [label key active-page tooltip type]
+(defn item [key active-page type label]
   [:a.hitem.tab.shadow-medium
    {:class (str (case type :library "tab tab-secondary" :new-story " tab-new-story")
                 (when (= key active-page) " tab-active"))
     :href (routes/url-for key)}
-   (when-not (= type :library) label)
-   (when tooltip [:p tooltip])])
+   label])
 
 (defn tab [{:story/keys [title id]} active-story-id active-page]
   [:div.tab.shadow-medium.tooltip-container.blurred
@@ -40,6 +40,7 @@
       [:header.header.h-stack.spaced.pad-3-4
        [:section.header-content.h-stack.gap-half
         [tabs]
-        [item util/icon-plus :page/new-story active-page nil :new-story]]
-       [:nav.header-icons.v-stack
-        [item nil :page/library active-page "Library" :library]]])))
+        [item :page/new-story active-page :new-story util/icon-plus]]
+       [reader/toggles]
+       #_[:nav.header-icons.v-stack
+        [item :page/library active-page :library "Library"]]])))
