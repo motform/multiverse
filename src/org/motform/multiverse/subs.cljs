@@ -48,8 +48,8 @@
  :story/prospect-path
  (fn [db _]
    (let [{prospect-sentence-id :id} (get-in db [:db/state :sentence/highlight])
-         story (get-in db [:db/state :story/active])
-         sentences (get-in db [:db/stories story :story/sentences])
+         story-id (get-in db [:db/state :story/active])
+         sentences (get-in db [:db/stories story-id :story/sentences])
          prospect-sentence (sentences prospect-sentence-id)]
      prospect-sentence)))
 
@@ -110,7 +110,6 @@
      :children    (for [child-id children]
                     (sentence-tree-level sentences child-id active-sentence-id sentence-id))}))
 
-
 (reg-sub
  :story/sentence-tree
  (fn [db [_ story-id]]
@@ -146,6 +145,22 @@
    (let [recent  (get-in db [:db/state :story/recent])
          stories (-> db :db/stories (select-keys recent) vals)]
      (map :story/meta stories))))
+
+(defn not-realized? [sentence]
+  (->> sentence :sentence/children empty?))
+
+(defn leaf? [db]
+  (fn [sentence]
+    (and (->> sentence :sentence/children seq)
+         (->> sentence (util/children db) (remove not-realized?) count zero?))))
+
+(reg-sub
+ :story/leafs
+ (fn [db [_ story-id]]
+   (let [story-id (or story-id @(rf/subscribe [:story/active]))]
+     (->> (get-in db [:db/stories story-id :story/sentences])
+          vals
+          (filter (leaf? db))))))
 
 ;;; Personalites 
 

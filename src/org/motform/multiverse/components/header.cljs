@@ -25,7 +25,7 @@
     [:p title]
     (when (= id @(rf/subscribe [:tab/highlight]))
       [:div.tab-map.rounded.shadow-large
-       [map/radial-map :source/header id {:w 400 :h 250}]])]])
+       [map/radial-map :source/header id {} {:w 400 :h 250}]])]])
 
 (defn tabs []
   (let [active-story-id @(rf/subscribe [:story/active])

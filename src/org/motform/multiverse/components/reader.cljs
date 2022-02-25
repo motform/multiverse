@@ -14,9 +14,9 @@
 
 (defn toggles []
   [:section.mode-toggles.h-stack.gap-quarter
-   [toggle util/icon-tree   :mode/explore "Explore"]
-   [toggle util/icon-text :mode/reader  "Read"]
-   [toggle util/icon-collection  :mode/compare "Compare"]])
+   [toggle util/icon-tree       :mode/explore "Explore"]
+   [toggle util/icon-collection :mode/compare "Compare"]
+   [toggle util/icon-text       :mode/reader  "Read"]])
 
 ;; TODO use OpenAI to detech paragraphs
 ;; https://andrewmayneblog.wordpress.com/2020/06/13/openai-api-alchemy-smart-formatting-and-code-creation/
@@ -33,3 +33,6 @@
    [:h2 (:story/title @(rf/subscribe [:story/meta]))]
    (for [paragraph (format-story paragraphs)]
      [:p paragraph])])
+
+(comment
+  )

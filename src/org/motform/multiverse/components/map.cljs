@@ -113,15 +113,16 @@
                               [:section.radial-map
                                [:svg {:id map-id}]])})))
 
-(defn radial-map [source story-id dimensions]
+(defn radial-map [source story-id settings dimensions]
   (fn []
-    [radial-map-d3 {:dimensions         dimensions
-                    :sentence-tree      @(rf/subscribe [:story/sentence-tree story-id])
-                    :active-path        @(rf/subscribe [:story/active-path story-id])
-                    :active-sentence    @(rf/subscribe [:sentence/active story-id])
-                    :highlight          @(rf/subscribe [:sentence/highlight])
-                    :source             source
-                    :prospective-child? (->> @(rf/subscribe [:sentence/children @(rf/subscribe [:sentence/active story-id]) story-id])
-                                             (map :sentence/id)
-                                             set)
-                    :root-sentence      @(rf/subscribe [:story/root-sentence story-id])}]))
+    [radial-map-d3 (merge {:dimensions         dimensions
+                           :sentence-tree      @(rf/subscribe [:story/sentence-tree story-id])
+                           :active-path        @(rf/subscribe [:story/active-path story-id])
+                           :active-sentence    @(rf/subscribe [:sentence/active story-id])
+                           :highlight          @(rf/subscribe [:sentence/highlight])
+                           :source             source
+                           :prospective-child? (->> @(rf/subscribe [:sentence/children @(rf/subscribe [:sentence/active story-id]) story-id])
+                                                    (map :sentence/id)
+                                                    set)
+                           :root-sentence      @(rf/subscribe [:story/root-sentence story-id])}
+                          settings)]))

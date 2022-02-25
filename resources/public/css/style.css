@@ -420,18 +420,22 @@ textarea:focus {
 
 .mode-toggles {
     align-self: flex-end;
+    background: var(--blurred-0);
+    border-radius: 9999px;
+    padding: 0 10px;
 }
 
 .mode-toggle {
     border-radius: 9999px;
-    background-color: var(--blurred-0);
-    color: var(--blurred-2);
+    background-color: transparent;
+    color: var(--accent-20);
     padding: 8px 10px;
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
+    transform: scale(110%);
 }
 
 .mode-toggle:hover {
@@ -523,6 +527,31 @@ textarea:focus {
     color: var(--fg);
 }
 
+/* comparsion */
+
+.comparsion {
+    padding: 0px 0px 0px var(--space-3-4);
+    width: 100vw;
+    overflow: scroll;
+
+    display: grid;
+    grid-gap: 40px;
+    grid-auto-flow: column;
+    height: 95vh;
+}
+
+.comparsion-paragraph {
+    background-color: var(--blurred-0);
+    border: 1px solid var(--blurred-0);
+    line-height: 1.6;
+    font-size: 16px;
+}
+
+.comparsion-paragraph:hover {
+    cursor: pointer;
+    background-color: var(--blurred-1);
+    border-color: var(--blurred-0);
+}
 
 /* reader */
 

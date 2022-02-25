@@ -136,6 +136,7 @@
      {:db (-> db
               (assoc-in  [:db/stories story-id] (->story story-id sentence-id prompt active-personality))
               (assoc-in  [:db/state :story/active] story-id)
+              (assoc-in  [:db/state :sentence/active] sentence-id)
               (update-in [:db/state :story/recent] conj story-id))
       :dispatch [:open-ai/title]})))
 
@@ -187,14 +188,13 @@
        (assoc-in [:db/stories story-id :story/meta :story/title]
                  (-> title :choices first :text)))))
 
-
 (reg-event-db
  :open-ai/handle-validate-api-key
  [local-storage-interceptor]
  (fn [db _]
    (-> db
        (assoc-in [:db/state :open-ai/key :open-ai/validated?] true)
-       (assoc-in [:db/state :open-ai/pending-request?] false)))) 
+       (assoc-in [:db/state :open-ai/pending-request?] false))))
 
 (reg-event-fx
  :open-ai/validate-api-key
@@ -212,8 +212,8 @@
  :open-ai/completions
  (fn [{:keys [db]} [_ parent-id prompt]]
    (let [{:keys [story-id api-key]} (util/completion-data db)
-         {:keys [uri params]} (open-ai/completion-with #_:ada :text-davinci-001
-                                {:prompt prompt})]
+         {:keys [uri params]} (open-ai/completion-with :ada #_:text-davinci-001
+                                                       {:prompt prompt})]
      {:db (assoc-in db [:db/state :open-ai/pending-request?] true)
       :http-xhrio {:method  :post
                    :uri     uri
@@ -229,11 +229,11 @@
  (fn [{:keys [db]} _]
    (let [{:keys [story-id api-key]} (util/completion-data db)
          story     (vals (get-in db [:db/stories story-id :story/sentences]))
-         {:keys [uri params]} (open-ai/completion-with :text-davinci-001
-                                {:prompt (open-ai/format-title story)
-                                 :n           1
-                                 :max_tokens  15
-                                 :stop ["\"\"\""]})]
+         {:keys [uri params]} (open-ai/completion-with :ada #_:text-davinci-001
+                                                       {:prompt (open-ai/format-title story)
+                                                        :n           1
+                                                        :max_tokens  15
+                                                        :stop ["\"\"\""]})]
      {:http-xhrio {:method          :post
                    :uri             uri
                    :headers         {"Authorization" (str "Bearer " api-key)}
@@ -243,20 +243,22 @@
                    :on-success      [:open-ai/handle-title story-id]
                    :on-failure      [:open-ai/failure]}})))
 
+;; TODO verify that this works
 (reg-event-db
  :open-ai/replace-children
  (fn [db [_ story-id parent-id unrealized-child-ids completions]]
+   (println story-id parent-id unrealized-child-ids completions)
    (let [original-children (util/children db parent-id story-id)
-         realized-children (select-keys original-children
-                                        (->> original-children vals (map :sentence/id) (remove unrealized-child-ids)))
+         realized-children (select-keys original-children (->> original-children vals (map :sentence/id) (remove unrealized-child-ids)))
          new-child-ids (repeatedly (count unrealized-child-ids) #(nano-id 10))
          parent-path (get-in db [:db/stories story-id :story/sentences parent-id :sentence/path])
-         new-children (->children parent-path new-child-ids (open-ai-texts completions) (get-in db [:db/state :personality/active]))
-         combined-children (merge realized-children new-children)]
-     (-> db (update-in [:db/stories story-id :story/sentences] merge new-children)
-            (assoc-in  [:db/stories story-id :story/sentences parent-id :sentence/children] (keys combined-children))
-            (assoc-in  [:db/stories story-id :story/meta :story/updated] (js/Date.))
-            (assoc-in  [:db/state :open-ai/pending-request?] false)))))
+         new-children (->children parent-path new-child-ids (open-ai-texts completions) (get-in db [:db/state :personality/active]))]
+     (-> db
+         (update-in [:db/stories story-id :story/sentences] #(apply dissoc % unrealized-child-ids))
+         (update-in [:db/stories story-id :story/sentences] merge new-children)
+         (assoc-in [:db/stories story-id :story/sentences parent-id :sentence/children] (keys (merge realized-children new-children)))
+         (assoc-in [:db/stories story-id :story/meta :story/updated] (js/Date.))
+         (assoc-in [:db/state :open-ai/pending-request?] false)))))
 
 (reg-event-fx
  :open-ai/replace-completions
@@ -268,10 +270,9 @@
          n-unrealized-children (count unrealized-children)]
      (when-not (zero? n-unrealized-children)
        (let [prompt (open-ai/format-prompt (util/paragraph db story-id parent-id))
-             {:keys [uri params]} (open-ai/completion-with :text-davinci-001
-                                    {:prompt prompt :n n-unrealized-children})]
+             {:keys [uri params]} (open-ai/completion-with :ada #_:text-davinci-001 {:prompt prompt :n n-unrealized-children})]
          {:db (-> db (assoc-in [:db/state :personality/active] new-personality)
-                     (assoc-in [:db/state :open-ai/pending-request?] true))
+                  (assoc-in [:db/state :open-ai/pending-request?] true))
           :http-xhrio {:method  :post
                        :uri     uri
                        :headers {"Authorization" (str "Bearer " api-key)}
