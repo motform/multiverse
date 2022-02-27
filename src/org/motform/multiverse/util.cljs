@@ -70,11 +70,11 @@
 
 (defn spinner-small []
   [:div.v-stack.centered
-   [:svg {:height 23
+   [:svg {:height 21
           :width 54}
-    [:circle.spinner-1 {:cx 6  :cy 8 :r 6 :fill "var(--spinner-fill)"}]
-    [:circle.spinner-2 {:cx 26 :cy 8 :r 6 :fill "var(--spinner-fill)"}]
-    [:circle.spinner-3 {:cx 46 :cy 8 :r 6 :fill "var(--spinner-fill)"}]]])
+    [:circle.spinner-1 {:cx 6  :cy 6 :r 5 :fill "var(--spinner-fill)"}]
+    [:circle.spinner-2 {:cx 26 :cy 6 :r 5 :fill "var(--spinner-fill)"}]
+    [:circle.spinner-3 {:cx 46 :cy 6 :r 5 :fill "var(--spinner-fill)"}]]])
 
 (def icon-plus
   [:svg {:view-box "0 0 18 18",

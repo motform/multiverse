@@ -175,13 +175,12 @@
    (-> db :db/personalities)))
 
 (reg-sub
- :personality/childern-to-replace?
- (fn [_ [_ personality sentence-id]]
+ :personality/dominant-personality
+ (fn [_ [_ sentence-id]]
    (->> @(rf/subscribe [:sentence/children (or sentence-id @(rf/subscribe [:sentence/active]))])
         (filter #(empty? (:sentence/children %)))
         first ; the invariant states that all unrealized children are from the same personality
-        :sentence/personality
-        (not= personality))))
+        :sentence/personality)))
 
 (reg-sub
  :sentence/child-personalities

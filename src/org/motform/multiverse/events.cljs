@@ -247,7 +247,6 @@
 (reg-event-db
  :open-ai/replace-children
  (fn [db [_ story-id parent-id unrealized-child-ids completions]]
-   (println story-id parent-id unrealized-child-ids completions)
    (let [original-children (util/children db parent-id story-id)
          realized-children (select-keys original-children (->> original-children vals (map :sentence/id) (remove unrealized-child-ids)))
          new-child-ids (repeatedly (count unrealized-child-ids) #(nano-id 10))
@@ -268,7 +267,7 @@
                                   vals
                                   (filter #(empty? (:sentence/children %))))
          n-unrealized-children (count unrealized-children)]
-     (when-not (zero? n-unrealized-children)
+     (when-not (or (zero? n-unrealized-children) (= new-personality (-> unrealized-children first :sentence/personality)))
        (let [prompt (open-ai/format-prompt (util/paragraph db story-id parent-id))
              {:keys [uri params]} (open-ai/completion-with :ada #_:text-davinci-001 {:prompt prompt :n n-unrealized-children})]
          {:db (-> db (assoc-in [:db/state :personality/active] new-personality)

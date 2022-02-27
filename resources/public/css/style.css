@@ -404,9 +404,9 @@ textarea:focus {
     display: none;
 }
 
-.spinner-1 { animation: fade 1.5s ease infinite alternate; }
-.spinner-2 { animation: fade 1.5s ease infinite alternate; animation-delay: 0.5s;}
-.spinner-3 { animation: fade 1.5s ease infinite alternate; animation-delay: 1s;}
+.spinner-1 { animation: fade 1.75s ease infinite alternate; }
+.spinner-2 { animation: fade 1.75s ease infinite alternate; animation-delay: 0.5s;}
+.spinner-3 { animation: fade 1.75s ease infinite alternate; animation-delay: 1s;}
 
 @keyframes fade {
     0%   { opacity: 100; }
@@ -958,8 +958,7 @@ h1 {
 /* key input */
 
 .key-input-container {
-    min-width: 400px;
-    max-width: 600px;
+    width: 425px;
     margin-top: 80px;
     background-color: var(--blurred-0);
     backdrop-filter: blur(10px);
