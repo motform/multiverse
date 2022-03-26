@@ -222,6 +222,7 @@ textarea:focus {
 .gap-eight   { gap: var(--space-eight);   }
 .gap-quarter { gap: var(--space-quarter); }
 .gap-half    { gap: var(--space-half);    }
+.gap-3-4     { gap: var(--space-3-4);    }
 .gap-full    { gap: var(--space-full);    }
 .gap-double  { gap: var(--space-double);  }
 
@@ -263,7 +264,7 @@ textarea:focus {
 }
 
 .background-neutral { background: var(--neutral-background); background-size: 400%; }
-.background-sf	    { background: var(--sf-background);      background-size: 400%; }
+.background-sci-fi	    { background: var(--sci-fi-background);      background-size: 400%; }
 .background-fantasy { background: var(--fantasy-background); background-size: 400%; }
 .background-poetic  { background: var(--poetic-background);  background-size: 400%; }
 .background-landing { background: var(--background-mixed);   background-size: 400%; }
@@ -408,9 +409,18 @@ textarea:focus {
 .spinner-2 { animation: fade 1.75s ease infinite alternate; animation-delay: 0.5s;}
 .spinner-3 { animation: fade 1.75s ease infinite alternate; animation-delay: 1s;}
 
+.spinner-small-1 { animation: fade 1.75s ease infinite alternate; }
+.spinner-small-2 { animation: fade 1.75s ease infinite alternate; animation-delay: 0.5s;}
+.spinner-small-3 { animation: fade 1.75s ease infinite alternate; animation-delay: 1s;}
+
 @keyframes fade {
     0%   { opacity: 100; }
     100%  { opacity: 0; transform: translate(0, 10px)}
+}
+
+@keyframes move {
+    0%    { transform: translate(0); }
+    100%  { transform: translate(0, 10px)}
 }
 
 .icon:hover {
@@ -461,11 +471,14 @@ textarea:focus {
 }
 
 .new-story-container {
-    padding: var(--space-full) var(--space-double);
+    /* padding: var(--space-full) var(--space-double); */
 }
 
-.prompt {
-    margin: 0 -40px;
+.prompt-background {
+    margin: 0 40px;
+	max-width: 750px;
+	width: 100%;
+
     border: 1px solid var(--blurred-border);
     background: var(--blurred-0);
 }
@@ -478,6 +491,37 @@ textarea:focus {
 
 .prompt .personality {
     border: 1px solid var(--blurred-0);
+}
+
+.prompt-personalities {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.prompt-personality-toggle {
+	cursor: pointer;
+}
+.prompt-personality-toggle label {
+	cursor: pointer;
+}
+
+.prompt-personality-toggle:hover {
+	background-color: var(--blurred-0);
+}
+
+.prompt-personality-toggle-active {
+	background-color: var(--blurred-0);
+}
+
+.personality-label {
+	font-size: 10px;
+	color: var(--fg);
+	font-weight: 600;
+}
+
+.prompt-description {
+	font-size: 11px;
+	color: var(--accent-20);
 }
 
 #prompt-textarea {
@@ -659,19 +703,19 @@ textarea:focus {
 
 
 .personality-neutral-inactive       { background-color: var(--accent-5);	}
-.personality-neutral-inactive:hover { background-color: var(--accent-15);	}
+.personality-neutral-inactive:hover, .prompt-personality-toggle:hover > .personality-neutral-inactive { background-color: var(--accent-15);	}
 .personality-neutral-active         { background-color: var(--accent-30);	}
 
 .personality-fantasy-inactive       { background-color: var(--fantasy-1);	}
-.personality-fantasy-inactive:hover { background-color: var(--fantasy-5);	}
+.personality-fantasy-inactive:hover, .prompt-personality-toggle:hover > .personality-fantasy-inactive { background-color: var(--fantasy-5);	}
 .personality-fantasy-active         { background-color: var(--fantasy-7);	}
 
-.personality-sf-inactive            { background-color: var(--sf-1);		}
-.personality-sf-inactive:hover      { background-color: var(--sf-4);		}
-.personality-sf-active              { background-color: var(--sf-6);		}
+.personality-sci-fi-inactive            { background-color: var(--sci-fi-1);		}
+.personality-sci-fi-inactive:hover, .prompt-personality-toggle:hover > .personality-sci-fi-inactive { background-color: var(--sci-fi-4); }
+.personality-sci-fi-active              { background-color: var(--sci-fi-6);		}
 
 .personality-poetic-inactive       { background-color: var(--poetic-1);		}
-.personality-poetic-inactive:hover { background-color: var(--poetic-5);		}
+.personality-poetic-inactive:hover, .prompt-personality-toggle:hover > .personality-poetic-inactive  { background-color: var(--poetic-5); }
 .personality-poetic-active         { background-color: var(--poetic-7);		}
 
 @keyframes gradient {
@@ -745,8 +789,8 @@ textarea:focus {
 .branch-mark.fantasy-branch-mark      { border-color: var(--fantasy-6); }
 .weak-branch-mark.fantasy-branch-mark { border-color: var(--fantasy-3); }
 
-.branch-mark.sf-branch-mark      { border-color: var(--sf-6); }
-.weak-branch-mark.sf-branch-mark { border-color: var(--sf-3); }
+.branch-mark.sci-fi-branch-mark      { border-color: var(--sci-fi-6); }
+.weak-branch-mark.sci-fi-branch-mark { border-color: var(--sci-fi-3); }
 
 .branch-mark.poetic-branch-mark      { border-color: var(--poetic-6); }
 .weak-branch-mark.poetic-branch-mark { border-color: var(--poetic-3); }
@@ -818,36 +862,36 @@ textarea:focus {
     font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
 }
 
-/* SF */
+/* SCI-FI */
 
-.child.sf-visited {
+.child.sci-fi-visited {
     border-style: solid;
-    background-color: var(--sf-1);
-    border-color: var(--sf-1);
-    color: var(--sf-7);
+    background-color: var(--sci-fi-1);
+    border-color: var(--sci-fi-1);
+    color: var(--sci-fi-7);
 }
 
-.child.sf-unvisited {
+.child.sci-fi-unvisited {
     border-radius: 15px;
-    border: 1px dashed var(--sf-6);
-    background-color: var(--sf-0);
-    color: var(--sf-6);
+    border: 1px dashed var(--sci-fi-6);
+    background-color: var(--sci-fi-0);
+    color: var(--sci-fi-6);
     font-variation-settings: "CASL" 1, "CRSV" 0, "slnt" -15;
 }
 
-.child.sf-unvisited.inactive,
-.child.sf-visited.inactive {
-    color: var(--sf-3);
-    border-color: var(--sf-3);
+.child.sci-fi-unvisited.inactive,
+.child.sci-fi-visited.inactive {
+    color: var(--sci-fi-3);
+    border-color: var(--sci-fi-3);
 }
 
-.child.sf-visited:hover,
-.child.sf-unvisited:hover,
-.child.sf-unvisited.active {
+.child.sci-fi-visited:hover,
+.child.sci-fi-unvisited:hover,
+.child.sci-fi-unvisited.active {
     color: var(--fg);
     border-style: solid;
-    background-color: var(--sf-5);
-    border-color: var(--sf-5);
+    background-color: var(--sci-fi-5);
+    border-color: var(--sci-fi-5);
     font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
 }
 
@@ -945,9 +989,8 @@ h1 {
 }
 
 .landing-blurb {
-    margin-top: 15px;
-    max-width: 600px;
-    font-size: 20px;
+    max-width: 700px;
+    font-size: 18px;
 }
 
 .landing-blurb > p {
@@ -1105,7 +1148,7 @@ h1 {
 .hidden {display: none;}
 .neutral-hidden {display: none;}
 .fantasy-hidden {display: none;}
-.sf-hidden      {display: none;}
+.sci-fi-hidden      {display: none;}
 .poetic-hidden  {display: none;}
 
 .fantasy-tree-map-node-root {
@@ -1165,60 +1208,60 @@ h1 {
     cursor: pointer;
 }
 
-.sf-tree-map-node-root {
-    fill: var(--sf-6);
-    stroke: var(--sf-6);
+.sci-fi-tree-map-node-root {
+    fill: var(--sci-fi-6);
+    stroke: var(--sci-fi-6);
     stroke-width: 3px;
     cursor: pointer;
 }
 
-.sf-tree-map-node-current {
+.sci-fi-tree-map-node-current {
     cursor: pointer;
-    fill: var(--sf-4);
-    stroke: var(--sf-6);
+    fill: var(--sci-fi-4);
+    stroke: var(--sci-fi-6);
     stroke-width: 3px;
 }
 
-.sf-tree-map-node-current-dim {
-    fill: var(--sf-3);
-    stroke: var(--sf-3);
+.sci-fi-tree-map-node-current-dim {
+    fill: var(--sci-fi-3);
+    stroke: var(--sci-fi-3);
     stroke-width: 3px;
     cursor: pointer;
 }
 
-.sf-tree-map-node-current-superseded {
-    fill: var(--sf-6);
-    stroke: var(--sf-6);
+.sci-fi-tree-map-node-current-superseded {
+    fill: var(--sci-fi-6);
+    stroke: var(--sci-fi-6);
     cursor: pointer;
     stroke-width: 3px;
 }
 
-.sf-tree-map-node-highlight {
+.sci-fi-tree-map-node-highlight {
     cursor: pointer;
-    fill: var(--sf-6);
-    stroke: var(--sf-6);
+    fill: var(--sci-fi-6);
+    stroke: var(--sci-fi-6);
     stroke-width: 3px;
 }
 
-.sf-tree-map-node-active {
-    fill: var(--sf-6);
+.sci-fi-tree-map-node-active {
+    fill: var(--sci-fi-6);
     cursor: pointer;
 }
 
-.sf-tree-map-node-inactive {
-    fill: var(--sf-3);
+.sci-fi-tree-map-node-inactive {
+    fill: var(--sci-fi-3);
     cursor: pointer;
 }
 
-.sf-tree-map-node-prospective {
+.sci-fi-tree-map-node-prospective {
     fill: node;
-    stroke: var(--sf-5);
+    stroke: var(--sci-fi-5);
     stroke-dasharray: 4;
     cursor: pointer;
 }
 
-.sf-tree-map-node-active:hover, .sf-tree-map-node-root:hover, .sf-tree-map-node-current:hover, .sf-tree-map-node-inactive:hover  {
-    fill: var(--sf-7);
+.sci-fi-tree-map-node-active:hover, .sci-fi-tree-map-node-root:hover, .sci-fi-tree-map-node-current:hover, .sci-fi-tree-map-node-inactive:hover  {
+    fill: var(--sci-fi-7);
     cursor: pointer;
 }
 
@@ -1317,21 +1360,21 @@ h1 {
     stroke-dasharray: 4;
 }
 
-.sf-tree-map-link {
+.sci-fi-tree-map-link {
     fill: none;
-    stroke: var(--sf-3);
+    stroke: var(--sci-fi-3);
     stroke-width: 1px;
 }
 
-.sf-tree-map-link-active {
+.sci-fi-tree-map-link-active {
     fill: none;
-    stroke: var(--sf-6);
+    stroke: var(--sci-fi-6);
     stroke-width: 2px;
 }
 
-.sf-tree-map-link-prospective {
+.sci-fi-tree-map-link-prospective {
     fill: none;
-    stroke: var(--sf-6);
+    stroke: var(--sci-fi-6);
     stroke-width: 1px;
     stroke-dasharray: 4;
 }

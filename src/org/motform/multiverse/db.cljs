@@ -30,7 +30,7 @@
               :open-ai/pending-request? false
               :open-ai/key              #:open-ai{:api-key "" :validated? false}}
 
-   :db/personalities [:personality/neutral :personality/sf :personality/fantasy :personality/poetic]
+   :db/personalities [:personality/neutral :personality/sci-fi :personality/fantasy :personality/poetic]
 
    :db/stories {}})
 

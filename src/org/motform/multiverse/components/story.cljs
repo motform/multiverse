@@ -140,7 +140,7 @@
            [paragraph paragraphs prospect-path]
            [map/radial-map :source/story]])
         (if request?
-          [:section.children.pad-full #_[util/spinner]]
+          [:section.children.pad-full [util/spinner]]
           [:section.children.h-equal-3.gap-double.pad-full
            (for [{:sentence/keys [id text children personality]} children]
              ^{:key id} [child-selector text id (seq children) personality])])])]))

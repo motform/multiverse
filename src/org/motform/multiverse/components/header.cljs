@@ -36,10 +36,9 @@
 
 (defn header []
   (let [active-page @(rf/subscribe [:page/active])]
-    (when @(rf/subscribe [:db/stories])
-      [:header.header.h-stack.spaced.pad-3-4
-       [:section.header-content.h-stack.gap-half
-        [tabs]
-        [item :page/new-story active-page :new-story util/icon-plus]]
-       (when (= @(rf/subscribe [:page/active]) :page/story)
-           [reader/toggles])])))
+    [:header.header.h-stack.spaced.pad-3-4
+     [:section.header-content.h-stack.gap-half
+      [tabs]
+      [item :page/new-story active-page :new-story util/icon-plus]]
+     (when (= @(rf/subscribe [:page/active]) :page/story)
+       [reader/toggles])]))

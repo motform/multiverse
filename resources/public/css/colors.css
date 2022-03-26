@@ -54,16 +54,16 @@
     --fantasy-background: linear-gradient(90deg, #0b1418, #081416, #051414, #021412, #001410);
     --fantasy-gradient:   linear-gradient(90deg, #002d26, #00322a, #00372e, #003c32, #014237);
 
-    --sf-0: #1a1601;
-    --sf-1: #332b01;
-    --sf-2: #4c4002;
-    --sf-3: #655502;
-    --sf-4: #7e6a02;
-    --sf-5: #977f03;
-    --sf-6: #b09403;
-    --sf-7: #c9a903;
-    --sf-background: linear-gradient(90deg, #0b1418, #0e1412, #12150c, #161506, #1a1601);
-    --sf-gradient:   linear-gradient(90deg, #332b01, #393001, #3f3501, #453a01, #4c4002);
+    --sci-fi-0: #1a1601;
+    --sci-fi-1: #332b01;
+    --sci-fi-2: #4c4002;
+    --sci-fi-3: #655502;
+    --sci-fi-4: #7e6a02;
+    --sci-fi-5: #977f03;
+    --sci-fi-6: #b09403;
+    --sci-fi-7: #c9a903;
+    --sci-fi-background: linear-gradient(90deg, #0b1418, #0e1412, #12150c, #161506, #1a1601);
+    --sci-fi-gradient:   linear-gradient(90deg, #332b01, #393001, #3f3501, #453a01, #4c4002);
 
     --poetic-0: #01111a;
     --poetic-1: #012233;
