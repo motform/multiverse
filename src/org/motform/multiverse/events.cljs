@@ -49,11 +49,6 @@
        (update-in [:db/state :story/recent] conj story-id))))
 
 (reg-event-db
- :story/mode
- (fn [db [_ mode]]
-   (assoc-in db [:db/state :story/mode] mode)))
-
-(reg-event-db
  :sentence/active
  (fn [db [_ id]]
    (let [story (get-in db [:db/state :story/active])]
@@ -152,6 +147,7 @@
               (assoc-in  [:db/stories story-id] (->story story-id sentence-id prompt active-personality))
               (assoc-in  [:db/state :story/active] story-id)
               (assoc-in  [:db/state :sentence/active] sentence-id)
+              (assoc-in  [:db/state :sentence/highlight] {:id sentence-id :source :page/new-story})
               (update-in [:db/state :story/recent] conj story-id))
       :dispatch [:open-ai/title]})))
 

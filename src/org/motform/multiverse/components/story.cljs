@@ -84,28 +84,6 @@
        (for [s (distinct (util/conj? paragraph prospect-path))]
          ^{:key (:sentence/id s)} [sentence s paragraph prospect-path])])}))
 
-(defn comparative-paragraph [{:sentence/keys [id]}]
-  (let [sentences @(rf/subscribe [:sentence/paragraph id])
-        leaf-id (->> sentences last :sentence/id)]
-   [:div>div.comparsion-paragraph.shadow-large.pad-half.rounded.v-stack.gap-full
-    {:on-pointer-down #(do (rf/dispatch [:sentence/active leaf-id])
-                           (rf/dispatch [:story/mode :mode/explore]))}
-    [:p (for [{:sentence/keys [text id personality]} sentences]
-          ^{:key id} [:span text [branch-marks id personality]])]
-    [map/radial-map :source/compare @(rf/subscribe [:story/active])
-     {:active-sentence leaf-id
-      :active-path (->> sentences last :sentence/path set)
-      :highlight nil
-      :prospective-child? #{}}
-     {:h 250 :w 460}]]))
-
-(defn comparsion []
-  (let [leaves @(rf/subscribe [:story/leafs])]
-    [:section.comparsion.gap-full
-     {:style {:grid-template-columns (str "repeat(" (count leaves) ", 500px)")}}
-     (for [leaf leaves]
-       ^{:key (:sentence/id leaf)} [comparative-paragraph leaf])]))
-
 (defn multiverse []
   (let [active-sentence @(rf/subscribe [:sentence/active])
         request?        @(rf/subscribe [:open-ai/pending-request?])
@@ -129,18 +107,14 @@
       (rf/dispatch [:open-ai/completions active-sentence (open-ai/format-prompt paragraphs)]))
 
     [:main.h-stack.story
-     (case @(rf/subscribe [:story/mode])
-       :mode/reader [reader/literary paragraphs]
-       :mode/compare [comparsion]
-       :mode/explore
-       [:<>
-        (when paragraphs
-          [:section.h-stack.gap-half.story-views
-           [personality/toggles :page/story]
-           [paragraph paragraphs prospect-path]
-           [map/radial-map :source/story]])
-        (if request?
-          [:section.children.pad-full [util/spinner]]
-          [:section.children.h-equal-3.gap-double.pad-full
-           (for [{:sentence/keys [id text children personality]} children]
-             ^{:key id} [child-selector text id (seq children) personality])])])]))
+     [:<>
+      (when paragraphs
+        [:section.h-stack.gap-half.story-views
+         [personality/toggles :page/story]
+         [paragraph paragraphs prospect-path]
+         [map/radial-map :source/story]])
+      (if request?
+        [:section.children.pad-full [util/spinner]]
+        [:section.children.h-equal-3.gap-double.pad-full
+         (for [{:sentence/keys [id text children personality]} children]
+           ^{:key id} [child-selector text id (seq children) personality])])]]))

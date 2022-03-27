@@ -22,7 +22,6 @@
               :new-story/template       :template/blank
               :story/active             nil
               :story/recent             []
-              :story/mode               :mode/explore ; #{:mode/explore :mode/reader :mode/compare}
               :personality/active       :personality/neutral
               :sentence/active          nil
               :sentence/highlight       {:id nil :source nil}
