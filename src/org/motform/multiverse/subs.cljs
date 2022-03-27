@@ -2,26 +2,27 @@
   (:require [re-frame.core :as rf :refer [reg-sub]]
             [org.motform.multiverse.util :as util]))
 
-;;; Prompt
+(defn from-state [k]
+  (fn [db _]
+    (-> db :db/state k)))
 
-(reg-sub
- :new-story/prompt
- (fn [db _]
-   (get-in db [:db/state :new-story/prompt])))
+;;; new-story
 
-;;; Tabs
+(reg-sub :new-story/prompt (from-state :new-story/prompt))
+(reg-sub :new-story/template (from-state :new-story/template))
 
-(reg-sub
- :tab/highlight
- (fn [db _]
-   (get-in db [:db/state :tab/highlight])))
+;;; tabs
 
-;;; State
+(reg-sub :tab/highlight (from-state :tab/highlight))
 
-(reg-sub
- :page/active
- (fn [db _]
-   (get-in db [:db/state :page/active])))
+;;; app
+
+(reg-sub :page/active (from-state :page/active))
+
+;;; scentence
+
+(reg-sub :sentence/highlight (from-state :sentence/highlight))
+(reg-sub :sentence/preview? (from-state :sentence/preview))
 
 (reg-sub
  :sentence/active
@@ -29,20 +30,9 @@
    (let [story-id (or story-id @(rf/subscribe [:story/active]))]
      (get-in db [:db/stories story-id :story/meta :sentence/active]))))
 
-(reg-sub
- :sentence/highlight
- (fn [db _]
-   (get-in db [:db/state :sentence/highlight])))
+;;; story
 
-(reg-sub
- :story/mode
- (fn [db _]
-   (get-in db [:db/state :story/mode])))
-
-(reg-sub
- :story/active
- (fn [db _]
-   (get-in db [:db/state :story/active])))
+(reg-sub :story/active (from-state :story/active))
 
 (reg-sub
  :story/prospect-path
@@ -54,16 +44,11 @@
      prospect-sentence)))
 
 (reg-sub
- :sentence/preview?
- (fn [db _]
-   (get-in db [:db/state :sentence/preview])))
-
-(reg-sub
  :sentence/children
  (fn [db [_ parent-id story-id]]
    (vals (util/children db parent-id story-id))))
 
-;;; Library
+;;; db
 
 (reg-sub
  :db/stories
@@ -164,15 +149,12 @@
 
 ;;; Personalites 
 
-(reg-sub
- :personality/active
- (fn [db _]
-   (get-in db [:db/state :personality/active])))
+(reg-sub :personality/active (from-state :personality/active))
 
 (reg-sub
  :personality/personalities
  (fn [db _]
-   (-> db :db/personalities)))
+   (db :db/personalities)))
 
 (reg-sub
  :personality/dominant-personality
@@ -190,12 +172,5 @@
 
 ;;; OpenAI
 
-(reg-sub
- :open-ai/pending-request?
- (fn [db _]
-   (get-in db [:db/state :open-ai/pending-request?])))
-
-(reg-sub
- :open-ai/key
- (fn [db _]
-   (get-in db [:db/state :open-ai/key])))
+(reg-sub :open-ai/pending-request? (from-state :open-ai/pending-request?))
+(reg-sub :open-ai/key (from-state :open-ai/key))
