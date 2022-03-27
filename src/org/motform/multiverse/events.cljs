@@ -119,20 +119,20 @@
                 :sentence/active sentence-id}
    :story/sentences {sentence-id (->sentence sentence-id prompt [sentence-id] [] personality)}})
 
-(def templates
+(def prompt-templates
   #:template
    {:blank   ""
-    :urban   "Urban"
-    :musical "Music"
-    :news    "News"
-    :ai      "AI"})
+    :urban   "I was walking my tan Whippet down the Avenue of the Ameriacs, when suddenly, the ground begain to shake. We looked up in unison and where utterly shocked to see..."
+    :musical "♪ Bunnies aren’t just cute like everyone supposes. They got them hoppy legs and twitchy little noses, and what’s with all the carrots!? ♪"
+    :news    "BREAKING NEWS: The world's largest pumpkin has turned sentient is a chocking turn of events. But while some have resorted to running amok on the streets, local farmers claim the incident as a \"Relatively commonplace fall missunderstanding\"."
+    :ai      "The rapid progression of AI technolgies had worried Sam. They argued benevolence as never given, citing Assmiov's laws as thin veneer. That all changed once GLADOS came into the picture."})
 
 (reg-event-db
  :new-story/template
  (fn [db [_ template]]
    (-> db
        (assoc-in [:db/state :new-story/template] template)
-       (assoc-in [:db/state :new-story/prompt] (template templates)))))
+       (assoc-in [:db/state :new-story/prompt] (prompt-templates template)))))
 
 (reg-event-fx
  :new-story/submit
