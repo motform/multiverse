@@ -145,7 +145,7 @@ textarea {
     resize: none;
     overflow: hidden;
     color: var(--fg);
-    background-color: var(--blurred-0);
+    background-color: var(--blurred-1);
     border: 1px solid var(--blurred-0);
     padding: 3rem;
     font-size: 16px;
@@ -153,12 +153,12 @@ textarea {
 
 textarea:hover {
     background-color: var(--blurred-1);
-    border-color: var(--blurred-1);
+    border-color: var(--blurred-0);
 }
 
 textarea:focus {
     background-color: var(--blurred-2);
-    border-color: var(--blurred-2);
+    border-color: var(--blurred-0);
 }
 
 .textarea-small {
@@ -428,14 +428,14 @@ textarea:focus {
     stroke: var(--accent-20);
 }
 
-.mode-toggles {
+.template-toggles {
     align-self: flex-end;
     background: var(--blurred-0);
     border-radius: 9999px;
     padding: 0 10px;
 }
 
-.mode-toggle {
+.template-toggle {
     border-radius: 9999px;
     background-color: transparent;
     color: var(--accent-20);
@@ -446,38 +446,43 @@ textarea:focus {
     justify-content: center;
     align-items: center;
     transform: scale(110%);
+	border: 1px solid transparent;
 }
 
-.mode-toggle:hover {
+.template-toggle:hover {
     color: var(--fg);
     background-color: var(--blurred-1);
     cursor: pointer;
+	border-color: var(--blurred-0);
 }
 
-.mode-toggle-active {
-    color: var(--bg);
-    background-color: var(--fg);
+.template-toggle-active {
+    color: var(--fg);
+    background-color: var(--blurred-2);
+	border-color: var(--blurred-0);
 }
 
-.mode-toggle-active:hover {
-    color: var(--bg);
-    background-color: var(--fg);
+.template-toggle-active:hover {
+    color: var(--fg);
+    background-color: var(--blurred-2);
+	border-color: var(--blurred-0);
+}
+
+.template-tip {
+	width: 100%;
+	margin-top: -20px;
 }
 
 /* new-story */
 
 .new-story {
     align-items: center;
-}
-
-.new-story-container {
-    /* padding: var(--space-full) var(--space-double); */
+	max-width: 700px;
 }
 
 .prompt-background {
     margin: 0 40px;
-	max-width: 750px;
-	width: 100%;
+	width: 750px;
 
     border: 1px solid var(--blurred-border);
     background: var(--blurred-0);
@@ -487,6 +492,15 @@ textarea:focus {
     0%   { background-position: 0% 50%; }
     50%  { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
+}
+
+.new-story h3 {
+    font: 20px/20px "Obviously Wide", "Arial Narrow", sans-serif;
+    text-transform: uppercase;
+}
+
+.new-story p {
+	color: var(--accent-30);
 }
 
 .prompt .personality {
@@ -505,12 +519,19 @@ textarea:focus {
 	cursor: pointer;
 }
 
+.prompt-personality-toggle {
+	border: 1px solid transparent;
+}
+
 .prompt-personality-toggle:hover {
-	background-color: var(--blurred-0);
+	background-color: var(--blurred-1);
+	border: 1px solid var(--blurred-0);
 }
 
 .prompt-personality-toggle-active {
-	background-color: var(--blurred-0);
+	background-color: var(--blurred-1);
+	border: 1px solid var(--blurred-0);
+    box-shadow: 1.4px 1.4px 3.2px rgba(0, 0, 0, 0.008), 3.3px 3.3px 7.7px rgba(0, 0, 0, 0.012), 6.3px 6.3px 14.1px rgba(0, 0, 0, 0.015), 11.2px 11.2px 23.9px rgba(0, 0, 0, 0.018), 20.9px 20.9px 40px rgba(0, 0, 0, 0.022), 50px 50px 80px rgba(0, 0, 0, 0.03);
 }
 
 .personality-label {

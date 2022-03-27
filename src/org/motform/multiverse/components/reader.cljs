@@ -3,21 +3,6 @@
             [re-frame.core :as rf]
             [org.motform.multiverse.util :as util]))
 
-(defn toggle [icon mode tooltip]
-  [:div.mode-toggle.tooltip-container
-   {:on-pointer-down #(rf/dispatch [:story/mode mode])
-    :class (when (= @(rf/subscribe [:story/mode]) mode) "mode-toggle-active")}
-   [icon]
-   [:span.tooltip.rounded.shadow-small
-    {:style {:left "0" :top "120%"}}
-    tooltip]])
-
-(defn toggles []
-  [:section.mode-toggles.h-stack.gap-quarter
-   [toggle util/icon-tree       :mode/explore "Explore"]
-   [toggle util/icon-collection :mode/compare "Compare"]
-   [toggle util/icon-text       :mode/reader  "Read"]])
-
 ;; TODO use OpenAI to detech paragraphs
 ;; https://andrewmayneblog.wordpress.com/2020/06/13/openai-api-alchemy-smart-formatting-and-code-creation/
 (defn format-story [paragraphs]

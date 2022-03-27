@@ -19,6 +19,7 @@
 (def default-db
   {:db/state {:page/active              :page/landing
               :new-story/prompt         ""
+              :new-story/template       :template/blank
               :story/active             nil
               :story/recent             []
               :story/mode               :mode/explore ; #{:mode/explore :mode/reader :mode/compare}

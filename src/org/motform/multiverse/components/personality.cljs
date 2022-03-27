@@ -31,7 +31,7 @@
                                                          (rf/dispatch [:open-ai/replace-completions personality])))}
      [:span.tooltip.rounded.shadow-small
       {:style (merge {:top "15%" :left "120%"}
-                     (when replacement-avalible? {:width "215px"}))}
+                     (when replacement-avalible? {:width "174px"}))}
       (if replacement-avalible? "Replace suggestions" (name personality))]]))
 
 (defn toggles [page]
@@ -40,4 +40,4 @@
     [:aside.personalities.v-stack.gap-quarter.centered
      (for [personality @(rf/subscribe [:personality/personalities])]
        ^{:key personality}
-       [toggle-story personality active-personality page dominant-personality])]))
+       [toggle-story personality active-personality dominant-personality])]))

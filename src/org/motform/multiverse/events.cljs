@@ -119,6 +119,21 @@
                 :sentence/active sentence-id}
    :story/sentences {sentence-id (->sentence sentence-id prompt [sentence-id] [] personality)}})
 
+(def templates
+  #:template
+   {:blank   ""
+    :urban   "Urban"
+    :musical "Music"
+    :news    "News"
+    :ai      "AI"})
+
+(reg-event-db
+ :new-story/template
+ (fn [db [_ template]]
+   (-> db
+       (assoc-in [:db/state :new-story/template] template)
+       (assoc-in [:db/state :new-story/prompt] (template templates)))))
+
 (reg-event-fx
  :new-story/submit
  (fn [{:keys [db]} _]

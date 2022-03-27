@@ -3,7 +3,8 @@
             [org.motform.multiverse.util :as util]
             [org.motform.multiverse.components.map :as map]
             [re-frame.core :as rf]
-            [org.motform.multiverse.components.reader :as reader]))
+            [org.motform.multiverse.components.reader :as reader]
+            [org.motform.multiverse.icon :as icon]))
 
 (defn item [key active-page type label]
   [:a.hitem.tab.shadow-medium
@@ -39,6 +40,5 @@
     [:header.header.h-stack.spaced.pad-3-4
      [:section.header-content.h-stack.gap-half
       [tabs]
-      [item :page/new-story active-page :new-story util/icon-plus]]
-     (when (= @(rf/subscribe [:page/active]) :page/story)
-       [reader/toggles])]))
+      [item :page/new-story active-page :new-story icon/plus]]
+     #_[]])) ;; TODO add about dialog

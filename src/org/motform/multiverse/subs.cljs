@@ -19,7 +19,7 @@
 
 (reg-sub :page/active (from-state :page/active))
 
-;;; scentence
+;;; sentence
 
 (reg-sub :sentence/highlight (from-state :sentence/highlight))
 (reg-sub :sentence/preview? (from-state :sentence/preview))
