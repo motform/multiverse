@@ -1,17 +1,24 @@
 (ns org.motform.multiverse.components.header
   (:require [org.motform.multiverse.routes :as routes]
-            [org.motform.multiverse.util :as util]
             [org.motform.multiverse.components.map :as map]
             [re-frame.core :as rf]
-            [org.motform.multiverse.components.reader :as reader]
-            [org.motform.multiverse.icon :as icon]))
+            [org.motform.multiverse.icon :as icon]
+            [reagent.core :as r]))
 
 (defn item [key active-page type label]
-  [:a.hitem.tab.shadow-medium
-   {:class (str (case type :library "tab tab-secondary" :new-story " tab-new-story")
-                (when (= key active-page) " tab-active"))
-    :href (routes/url-for key)}
-   label])
+  (let [*visible? (r/atom false)]
+    (fn [key active-page type label]
+      (let [active? (= key active-page)]
+        [:<>
+         [:a.hitem.tab.shadow-medium
+          {:class (str (case type :library "tab tab-secondary" :new-story " tab-new-story")
+                       (when active? " tab-active"))
+           :href (routes/url-for key)
+           :on-pointer-over #(reset! *visible? true)
+           :on-pointer-out  #(reset! *visible? false)}
+          label]
+         (when (or @*visible? active?)
+           [:label.tab-label "Add literary space"])]))))
 
 (defn tab [{:story/keys [title id]} active-story-id active-page]
   [:div.tab.shadow-medium.tooltip-container.blurred

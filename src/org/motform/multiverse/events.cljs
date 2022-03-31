@@ -5,7 +5,8 @@
             [org.motform.multiverse.db :as db]
             [org.motform.multiverse.open-ai :as open-ai]
             [org.motform.multiverse.routes :as routes]
-            [org.motform.multiverse.util :as util]))
+            [org.motform.multiverse.util :as util]
+            [org.motform.multiverse.components.map :as map]))
 
 ;;; Interceptors
 
@@ -118,7 +119,7 @@
   #:template
    {:blank   ""
     :urban   "I was walking my tan Whippet down the Avenue of the Ameriacs, when suddenly, the ground begain to shake. We looked up in unison and where utterly shocked to see..."
-    :musical "♪ Bunnies aren’t just cute like everyone supposes. They got them hoppy legs and twitchy little noses, and what’s with all the carrots!? ♪"
+    :musical "Lyrics: ♪ Bunnies aren’t just cute like everyone supposes. They got them hoppy legs and twitchy little noses, and what’s with all the carrots!? ♪"
     :news    "BREAKING NEWS: The world's largest pumpkin has turned sentient is a chocking turn of events. But while some have resorted to running amok on the streets, local farmers claim the incident as a \"Relatively commonplace fall missunderstanding\"."
     :ai      "The rapid progression of AI technolgies had worried Sam. They argued benevolence as never given, citing Assmiov's laws as thin veneer. That all changed once GLADOS came into the picture."})
 
@@ -296,4 +297,3 @@
  :open-ai/failure
  (fn [db [_ result]]
    (assoc-in db [:db/state :open-ai/failure] result)))
-

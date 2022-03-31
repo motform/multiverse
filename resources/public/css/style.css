@@ -316,6 +316,13 @@ textarea:focus {
     height: 40px;
 }
 
+.tab-label {
+	font-weight: 700;
+	align-self: center;
+	margin-top: -5px;
+	color: var(--fg);
+}
+
 .tab:hover {
     background-color: var(--blurred-2);
     color: var(--fg);

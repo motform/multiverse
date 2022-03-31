@@ -42,8 +42,8 @@
 (defn landing-blurb []
   [:section.landing-blurb.v-stack.gap-half
    [:h1 "Multiverse"]
-   [:p "A vision of what the future of interactive generative literature might look like. Non-linearly explore a literary space generated on the fly by OpenAI’s GPT family of machine learning langauge models. Read more "[:a {:href "https://motform.org/multiverse" :target "_blank"} "here"] "."]
-   [:p "Requires an " [:a {:href "https://openai.com/api/" :target "_blank"} "OpenAI API key"] ". You will have to provide your own unless otherwise specified. All data is stored locally."]])
+   [:p "A vision of the future of interactive generative literature. Non-linearly explore a literary space generated on the fly by OpenAI’s GPT family of machine learning langauge models. Read more "[:a {:href "https://motform.org/multiverse" :target "_blank"} "here"] "."]
+   [:p "Requires an " [:a {:href "https://openai.com/api/" :target "_blank"} "OpenAI API key"] ". You will have to provide your own unless otherwise specified. Multiverse works best in fullscreen mode with toolbars disabled. All data is stored locally."]])
 
 (defn landing []
   [:div.landing-container.h-stack.gap-double
