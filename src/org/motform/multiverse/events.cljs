@@ -134,7 +134,9 @@
  :new-story/submit
  (fn [{:keys [db]} _]
    (let [prompt (get-in db [:db/state :new-story/prompt])]
-     {:db (assoc-in db [:db/state :new-story/prompt] "")
+     {:db (-> db
+              (assoc-in [:db/state :new-story/prompt] "")
+              (assoc-in [:db/state :new-story/template] :template/blank))
       :dispatch [:story/new prompt]})))
 
 (reg-event-fx

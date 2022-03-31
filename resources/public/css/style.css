@@ -323,6 +323,17 @@ textarea:focus {
 	color: var(--fg);
 }
 
+.tab-label {
+	font-weight: 700;
+	align-self: center;
+	margin-top: -5px;
+	color: var(--fg);
+}
+
+.tab-label-inactive {
+	color: var(--accent-25);
+}
+
 .tab:hover {
     background-color: var(--blurred-2);
     color: var(--fg);
@@ -333,7 +344,7 @@ textarea:focus {
     padding: 11px 18px 9px 18px;
     background-color: transparent;
     border: 1px solid var(--blurred-1);
-    color: var(--accent-25);
+    color: var(--blurred-2);
 }
 
 .tab-secondary:hover {
@@ -694,15 +705,11 @@ textarea:focus {
     border-radius: 9999px;
     background: var(--accent-8);
     cursor: pointer;
-    z-index: 0;
+    /* z-index: 0; */
     align-items: center;
     justify-content: center;
     color: var(--bg);
     transition: transform 0.5s;
-}
-
-.personality:hover > svg {
-    transform: rotate(180deg);
 }
 
 .personality-active {

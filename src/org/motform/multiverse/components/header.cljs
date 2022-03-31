@@ -18,7 +18,9 @@
            :on-pointer-out  #(reset! *visible? false)}
           label]
          (when (or @*visible? active?)
-           [:label.tab-label "Add literary space"])]))))
+           [:label.tab-label
+            {:class (when (and @*visible? (not active?)) "tab-label-inactive")}
+            "Add literary space"])]))))
 
 (defn tab [{:story/keys [title id]} active-story-id active-page]
   [:div.tab.shadow-medium.tooltip-container.blurred

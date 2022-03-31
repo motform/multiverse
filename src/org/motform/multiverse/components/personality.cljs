@@ -14,7 +14,7 @@
   [:div.personality-toggle.prompt-personality-toggle.h-stack.centered.gap-half.rounded.pad-quarter
    {:on-pointer-down #(rf/dispatch [:personality/active personality])
     :class (when (= personality active-personality) "prompt-personality-toggle-active")}
-   [:div.personality.shadow-medium.tooltip-container.h-stack.centered
+   [:div.personality.shadow-medium.h-stack.centered
     {:class (str (toggle-class personality active-personality))}]
    [:div.v-stack.gap-eight
     [:label.personality-label personality]

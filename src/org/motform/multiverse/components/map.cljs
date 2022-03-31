@@ -26,7 +26,7 @@
 (defn node-size [root active source]
   (fn [node]
     (let [id (.. node  -data -name)
-          scale (case source :source/story 4 :source/compare 3 2)]
+          scale (if (= source :source/story) 4 2)]
       (if (or (= root id) (= active id))
         (* scale 2)
         scale))))
