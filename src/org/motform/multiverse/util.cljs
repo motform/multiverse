@@ -61,7 +61,7 @@
 ;;; Graphical elements
 
 (defn spinner []
-  [:div.v-stack.centered
+  [:div.v-stack.centered.spinner-container
    [:svg {:height 30
           :width 80}
     [:circle.spinner-1 {:cx 10 :cy 10 :r 8 :fill "var(--spinner-fill)"}]

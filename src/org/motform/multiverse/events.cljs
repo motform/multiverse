@@ -93,9 +93,16 @@
 
 ;;; Personalites
 
-(reg-event-db
+(def personality-color
+  #:personality {:neutral "#4e5558"
+                 :sci-fi  "#7e6a02"
+                 :fantasy "#01382f"
+                 :poetic  "#02557e"})
+
+(reg-event-db ; TODO make this into a -fx
  :personality/active
  (fn [db [_ personality-id]]
+   (println (.setAttribute (.querySelector js/document "meta[name=\"theme-color\"]") "content" (personality-color personality-id)))
    (assoc-in db [:db/state :personality/active] personality-id)))
 
 ;;; New-story

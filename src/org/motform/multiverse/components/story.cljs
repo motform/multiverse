@@ -8,8 +8,7 @@
             [org.motform.multiverse.components.map :as map]
             [org.motform.multiverse.components.personality :as personality]
             [org.motform.multiverse.open-ai :as open-ai]
-            [org.motform.multiverse.util :as util]
-            [org.motform.multiverse.components.reader :as reader]))
+            [org.motform.multiverse.util :as util]))
 
 (defn highlight? [id]
   (when-let [{highlight :id} @(rf/subscribe [:sentence/highlight])]
@@ -79,7 +78,7 @@
 
     :reagent-render
     (fn [paragraph prospect-path]
-      [:section.paragraph.pad-half
+      [:section.paragraph
        {:on-scroll scroll-indicators}
        (for [s (distinct (util/conj? paragraph prospect-path))]
          ^{:key (:sentence/id s)} [sentence s paragraph prospect-path])])}))
@@ -106,15 +105,16 @@
     (when (not-any? identity [children request? @(rf/subscribe [:sentence/preview?])])
       (rf/dispatch [:open-ai/completions active-sentence (open-ai/format-prompt paragraphs)]))
 
-    [:main.h-stack.story
+    [:main.h-stack.story.gap-full
      [:<>
       (when paragraphs
-        [:section.h-stack.gap-half.story-views
-         [personality/toggles :page/story]
+        [:section.h-stack.gap-double.story-views.spaced
          [paragraph paragraphs prospect-path]
          [map/radial-map :source/story]])
-      (if request?
-        [:section.children.pad-full [util/spinner]]
-        [:section.children.h-equal-3.gap-double.pad-full
-         (for [{:sentence/keys [id text children personality]} children]
-           ^{:key id} [child-selector text id (seq children) personality])])]]))
+      [:section.v-stack.gap-full.pad-full
+       [personality/toggles]
+       (if request?
+         [:section.children.pad-full [util/spinner]]
+         [:section.children.h-equal-3.gap-full
+          (for [{:sentence/keys [id text children personality]} children]
+            ^{:key id} [child-selector text id (seq children) personality])])]]]))

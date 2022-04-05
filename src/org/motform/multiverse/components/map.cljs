@@ -105,7 +105,7 @@
   (fn [this]
     (draw-radial-map (rdom/dom-node this) (r/props this) map-id)))
 
-(defn radial-map-d3 []
+(defn radial-map-d3 [opts]
   (let [map-id (str "mapid-" (random-uuid))]
     (r/create-class
      {:display-name         (str "radial-tree-map-" map-id)
@@ -113,6 +113,7 @@
       :component-did-update (redraw map-id)
       :reagent-render       (fn []
                               [:section.radial-map
+                               {:class (str "radial-map-" (-> opts :source name))}
                                [:svg {:id map-id}]])})))
 
 (defn radial-map [source story-id settings dimensions]

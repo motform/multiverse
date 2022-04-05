@@ -118,7 +118,7 @@ button:disabled:hover {
 button:disabled {
     background-color: var(--blurred-0);
     border-color: var(--blurred-0);
-    color: var(--accent-15);
+    color: var(--blurred-2);
     cursor: not-allowed;
 }
 
@@ -431,6 +431,10 @@ textarea:focus {
 .spinner-small-2 { animation: fade 1.75s ease infinite alternate; animation-delay: 0.5s;}
 .spinner-small-3 { animation: fade 1.75s ease infinite alternate; animation-delay: 1s;}
 
+.spinner-container {
+	width: 100%;
+}
+
 @keyframes fade {
     0%   { opacity: 100; }
     100%  { opacity: 0; transform: translate(0, 10px)}
@@ -577,7 +581,6 @@ textarea:focus {
     border-color: var(--blurred-2);
 }
 
-
 .prompt-title {
     font: 24px/24px "Obviously Wide", "Arial Narrow", sans-serif;
     text-transform: uppercase;
@@ -608,46 +611,6 @@ textarea:focus {
 .prompt-button-submit:hover {
     background-color: var(--blurred-2);
     color: var(--fg);
-}
-
-/* comparsion */
-
-.comparsion {
-    padding: 0px 0px 0px var(--space-3-4);
-    width: 100vw;
-    overflow: scroll;
-
-    display: grid;
-    grid-gap: 40px;
-    grid-auto-flow: column;
-    height: 95vh;
-}
-
-.comparsion-paragraph {
-    background-color: var(--blurred-0);
-    border: 1px solid var(--blurred-0);
-    line-height: 1.5;
-    font-size: 14px;
-}
-
-.comparsion-paragraph:hover {
-    cursor: pointer;
-    background-color: var(--blurred-1);
-    border-color: var(--blurred-0);
-}
-
-/* reader */
-
-.reader {
-    max-width: 800px;
-    margin-top: var(--space-half);
-    background-color: var(--blurred-0);
-    border: 1px solid var(--blurred-0);
-    line-height: 1.4;
-}
-
-.reader h2 {
-    font: 70px/80px "Obviously Narrow", "Arial Narrow", sans-serif;
 }
 
 /* map */
@@ -702,7 +665,7 @@ textarea:focus {
 .personality {
     height: 45px;
     width: 45px;
-    border-radius: 9999px;
+    border-radius: 50%;
     background: var(--accent-8);
     cursor: pointer;
     /* z-index: 0; */
@@ -710,6 +673,7 @@ textarea:focus {
     justify-content: center;
     color: var(--bg);
     transition: transform 0.5s;
+	border: 1px solid var(--blurred-0);
 }
 
 .personality-active {
@@ -737,21 +701,21 @@ textarea:focus {
 }
 
 
-.personality-neutral-inactive       { background-color: var(--accent-5);	}
-.personality-neutral-inactive:hover, .prompt-personality-toggle:hover > .personality-neutral-inactive { background-color: var(--accent-15);	}
-.personality-neutral-active         { background-color: var(--accent-30);	}
+.personality-neutral-inactive																			{ background-color: var(--accent-10);	}
+.personality-neutral-inactive:hover, .prompt-personality-toggle:hover > .personality-neutral-inactive	{ background-color: var(--accent-30);	}
+.personality-neutral-active																				{ background-color: var(--accent-30);	}
 
-.personality-fantasy-inactive       { background-color: var(--fantasy-1);	}
-.personality-fantasy-inactive:hover, .prompt-personality-toggle:hover > .personality-fantasy-inactive { background-color: var(--fantasy-5);	}
-.personality-fantasy-active         { background-color: var(--fantasy-7);	}
+.personality-fantasy-inactive																			{ background-color: var(--fantasy-5);	}
+.personality-fantasy-inactive:hover, .prompt-personality-toggle:hover > .personality-fantasy-inactive	{ background-color: var(--fantasy-7);	}
+.personality-fantasy-active																				{ background-color: var(--fantasy-7);	}
 
-.personality-sci-fi-inactive            { background-color: var(--sci-fi-1);		}
-.personality-sci-fi-inactive:hover, .prompt-personality-toggle:hover > .personality-sci-fi-inactive { background-color: var(--sci-fi-4); }
-.personality-sci-fi-active              { background-color: var(--sci-fi-6);		}
+.personality-sci-fi-inactive																			{ background-color: var(--sci-fi-3);		}
+.personality-sci-fi-inactive:hover, .prompt-personality-toggle:hover > .personality-sci-fi-inactive		{ background-color: var(--sci-fi-7); }
+.personality-sci-fi-active																				{ background-color: var(--sci-fi-7);		}
 
-.personality-poetic-inactive       { background-color: var(--poetic-1);		}
-.personality-poetic-inactive:hover, .prompt-personality-toggle:hover > .personality-poetic-inactive  { background-color: var(--poetic-5); }
-.personality-poetic-active         { background-color: var(--poetic-7);		}
+.personality-poetic-inactive																		{ background-color: var(--poetic-4);		}
+.personality-poetic-inactive:hover, .prompt-personality-toggle:hover > .personality-poetic-inactive { background-color: var(--poetic-7); }
+.personality-poetic-active																			{ background-color: var(--poetic-7);		}
 
 @keyframes gradient {
     0%   { background-position: 0% 50%; }
@@ -765,9 +729,9 @@ textarea:focus {
 .story {
     font-size: 20px;
     line-height: 1;
-    height: 94vh;
+    height: 85vh;
     display: grid;
-    grid-template-rows: 60% 40%;
+    grid-template-rows: 50% 50%;
     align-items: start;
     justify-items: center;
     width: 100%;
@@ -776,7 +740,7 @@ textarea:focus {
 .story-views {
     width: 100%;
     height: 100%;
-    padding: 0 calc(var(--space-full) - 5px);
+    padding: 0 var(--space-full);
 }
 
 .paragraph {
@@ -849,6 +813,7 @@ textarea:focus {
     grid-column: span 3;
     cursor: pointer;
     width: 100%;
+	height: 100vh;
 }
 
 .parent {
@@ -1120,8 +1085,14 @@ h1 {
 /* radial map */
 
 .radial-map {
-    width: 45vw;
     height: 100%;
+}
+
+.radial-map-story {
+	background-color: var(--blurred--0);
+	border: 1px solid var(--blurred-0);
+	border-radius: 20px;
+	width: 40vw;
 }
 
 .neutral-tree-map-node-root {
@@ -1201,8 +1172,8 @@ h1 {
 }
 
 .fantasy-tree-map-node-current-dim {
-    fill: var(--fantasy-3);
-    stroke: var(--fantasy-3);
+    fill: var(--fantasy-4);
+    stroke: var(--fantasy-4);
     stroke-width: 3px;
     cursor: pointer;
 }
@@ -1227,7 +1198,7 @@ h1 {
 }
 
 .fantasy-tree-map-node-inactive {
-    fill: var(--fantasy-3);
+    fill: var(--fantasy-4);
     cursor: pointer;
 }
 
@@ -1258,8 +1229,8 @@ h1 {
 }
 
 .sci-fi-tree-map-node-current-dim {
-    fill: var(--sci-fi-3);
-    stroke: var(--sci-fi-3);
+    fill: var(--sci-fi-4);
+    stroke: var(--sci-fi-4);
     stroke-width: 3px;
     cursor: pointer;
 }
@@ -1284,7 +1255,7 @@ h1 {
 }
 
 .sci-fi-tree-map-node-inactive {
-    fill: var(--sci-fi-3);
+    fill: var(--sci-fi-4);
     cursor: pointer;
 }
 
@@ -1315,8 +1286,8 @@ h1 {
 }
 
 .poetic-tree-map-node-current-dim {
-    fill: var(--poetic-3);
-    stroke: var(--poetic-3);
+    fill: var(--poetic-4);
+    stroke: var(--poetic-4);
     stroke-width: 3px;
     cursor: pointer;
 }
@@ -1341,7 +1312,7 @@ h1 {
 }
 
 .poetic-tree-map-node-inactive {
-    fill: var(--poetic-3);
+    fill: var(--poetic-4);
     cursor: pointer;
 }
 
@@ -1378,7 +1349,7 @@ h1 {
 
 .fantasy-tree-map-link {
     fill: none;
-    stroke: var(--fantasy-3);
+    stroke: var(--fantasy-4);
     stroke-width: 1px;
 }
 
@@ -1397,7 +1368,7 @@ h1 {
 
 .sci-fi-tree-map-link {
     fill: none;
-    stroke: var(--sci-fi-3);
+    stroke: var(--sci-fi-4);
     stroke-width: 1px;
 }
 
@@ -1416,7 +1387,7 @@ h1 {
 
 .poetic-tree-map-link {
     fill: none;
-    stroke: var(--poetic-3);
+    stroke: var(--poetic-4);
     stroke-width: 1px;
 }
 

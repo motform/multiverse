@@ -23,21 +23,21 @@
 (defn toggle-story [personality active-personality dominant-personality]
   (let [active? (= personality active-personality)
         replacement-avalible? (and active? (not= personality dominant-personality))]
-    [:div.personality.shadow-medium.tooltip-container.h-stack.centered
+    [:div.personality.shadow-medium.h-stack.centered.tooltip-container
      {:class (str (toggle-class personality active-personality)
                   (when replacement-avalible? " personality-replace"))
       :on-pointer-down (cond replacement-avalible?  #(rf/dispatch [:open-ai/replace-completions personality])
                              (not active?)          #(do (rf/dispatch [:personality/active personality])
                                                          (rf/dispatch [:open-ai/replace-completions personality])))}
      [:span.tooltip.rounded.shadow-small
-      {:style (merge {:top "15%" :left "120%"}
+      {:style (merge {:top "125%" :left "50%"}
                      (when replacement-avalible? {:width "174px"}))}
       (if replacement-avalible? "Replace suggestions" (name personality))]]))
 
-(defn toggles [page]
+(defn toggles []
   (let [active-personality   @(rf/subscribe [:personality/active])
         dominant-personality @(rf/subscribe [:personality/dominant-personality])]
-    [:aside.personalities.v-stack.gap-quarter.centered
+    [:aside.personalities.h-stack.gap-quarter.centered
      (for [personality @(rf/subscribe [:personality/personalities])]
        ^{:key personality}
        [toggle-story personality active-personality dominant-personality])]))
