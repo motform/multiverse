@@ -8,7 +8,7 @@
     :ada
     :babbage
     :curie   :curie-instruct-beta
-    :davinci :text-davinci-001})
+    :davinci :text-davinci-001 :text-davinci-002})
 
 (def valid-params
   #{:logit_bias :frequency_penalty :presence_penalty
@@ -19,9 +19,8 @@
 
 (def param-defaults
   {:max_tokens  64
-   :temperature 0.8
-   :n           3
-   :top_p       1})
+   :temperature 0.9
+   :n           3})
 
 (defn- request [engine task params]
   {:uri    (str "https://api.openai.com/v1/engines/" engine "/" task)

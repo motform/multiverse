@@ -233,7 +233,7 @@
  :open-ai/completions
  (fn [{:keys [db]} [_ parent-id prompt]]
    (let [{:keys [story-id api-key]} (util/completion-data db)
-         {:keys [uri params]} (open-ai/completion-with #_:ada :text-davinci-001
+         {:keys [uri params]} (open-ai/completion-with #_:ada :text-davinci-002
                                                        {:prompt prompt})]
      {:db (assoc-in db [:db/state :open-ai/pending-request?] true)
       :http-xhrio {:method  :post
@@ -250,7 +250,7 @@
  (fn [{:keys [db]} _]
    (let [{:keys [story-id api-key]} (util/completion-data db)
          story     (vals (get-in db [:db/stories story-id :story/sentences]))
-         {:keys [uri params]} (open-ai/completion-with #_:ada :text-davinci-001
+         {:keys [uri params]} (open-ai/completion-with #_:ada :text-davinci-002
                                                        {:prompt (open-ai/format-title story)
                                                         :n           1
                                                         :max_tokens  15
@@ -290,7 +290,7 @@
          n-unrealized-children (count unrealized-children)]
      (when-not (or (zero? n-unrealized-children) (= new-personality (-> unrealized-children first :sentence/personality)))
        (let [prompt (open-ai/format-prompt (util/paragraph db story-id parent-id))
-             {:keys [uri params]} (open-ai/completion-with #_:ada :text-davinci-001 {:prompt prompt :n n-unrealized-children})]
+             {:keys [uri params]} (open-ai/completion-with #_:ada :text-davinci-002 {:prompt prompt :n n-unrealized-children})]
          {:db (-> db (assoc-in [:db/state :personality/active] new-personality)
                   (assoc-in [:db/state :open-ai/pending-request?] true))
           :http-xhrio {:method  :post
@@ -299,7 +299,7 @@
                        :params  params
                        :format  (ajax/json-request-format)
                        :response-format (ajax/json-response-format {:keywords? true})
-                       :on-success [:open-ai/replace-children story-id parent-id (->> unrealized-children (map :sentence/id) set)]
+                       :on-success [:open-ai/replace-children story-id parent-id (set (map :sentence/id unrealized-children))]
                        :on-failure [:open-ai/failure]}})))))
 
 (reg-event-db

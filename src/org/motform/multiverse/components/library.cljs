@@ -31,9 +31,7 @@
         anchor    (doto (js/document.createElement "a")
                     (-> .-href (set! edn-url))
                     (-> .-download (set! file-name)))]
-    (.appendChild (.-body js/document) anchor)
     (.click anchor)
-    (.removeChild (.body js/document) anchor)
     (js/URL.revokeObjectURL edn-url)))
 
 (defn library-toggles []
