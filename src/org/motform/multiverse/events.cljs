@@ -174,6 +174,14 @@
  (fn [db _]
    (assoc db :db/stories {})))
 
+(reg-event-db
+ :story/delete
+ [local-storage-interceptor]
+ (fn [db [_ story-id]]
+   (-> db
+       (update :db/stories dissoc story-id)
+       (assoc-in [:db/state :story/active] nil))))
+
 ;;; OpenAI
 
 (defn ->children

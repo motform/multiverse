@@ -453,7 +453,7 @@ textarea:focus {
 .template-toggles {
     align-self: flex-end;
     background: var(--blurred-0);
-    border-radius: 9999px;
+    border-radius: 99999px;
     padding: 0 10px;
 }
 
@@ -1022,14 +1022,16 @@ h1 {
 
 /* library */
 
+.library-icon {
+    padding-top: 10px;
+}
+
 .library {
     margin: var(--space-full) auto;
     max-width: 1200px;
     overflow: auto;
-    height: 85vh;
+    height: 90vh;
 }
-
-
 
 .library-button:hover {
     background: var(--accent-25);
@@ -1076,6 +1078,17 @@ h1 {
 .library-item-new-story-card {
     align-items: center;
     justify-content: center;
+}
+
+.library-delete-story {
+	background-color: darkred;
+	color: var(--fg);
+	padding: 6px 8px;
+	border-radius: 4px;
+}
+
+.library-delete-story:hover {
+	background-color: #9f0000;
 }
 
 .source-code {

@@ -11,13 +11,14 @@
       (let [active? (= key active-page)]
         [:<>
          [:a.hitem.tab.shadow-medium
-          {:class (str (case type :library "tab tab-secondary" :new-story " tab-new-story")
+          {:class (str (case type :library "tab tab-secondary library-icon" :new-story " tab-new-story")
                        (when active? " tab-active"))
            :href (routes/url-for key)
            :on-pointer-over #(reset! *visible? true)
            :on-pointer-out  #(reset! *visible? false)}
           label]
-         (when (or @*visible? active?)
+         (when (and (= type :new-story)
+                    (or @*visible? active?))
            [:label.tab-label
             {:class (when (and @*visible? (not active?)) "tab-label-inactive")}
             "Add literary space"])]))))
@@ -39,9 +40,10 @@
 
 (defn tabs []
   (let [active-story-id @(rf/subscribe [:story/active])
-        active-page @(rf/subscribe [:page/active])]
+        active-page @(rf/subscribe [:page/active])
+        stories (->> @(rf/subscribe [:story/recent]) reverse (take 3))]
     [:nav.tabs.h-stack.gap-half
-     (for [{:story/keys [id] :as story} @(rf/subscribe [:story/recent])]
+     (for [{:story/keys [id] :as story} stories]
        ^{:key id} [tab story active-story-id active-page])]))
 
 (defn header []
@@ -50,4 +52,5 @@
      [:section.header-content.h-stack.gap-half
       [tabs]
       [item :page/new-story active-page :new-story icon/plus]]
-     #_[]])) ;; TODO add about dialog
+     [item :page/library active-page :library (count @(rf/subscribe [:story/recent]))]]))
+

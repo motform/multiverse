@@ -8,18 +8,21 @@
 (defn library-item [{:story/keys [meta sentences]}]
   (let [{:story/keys [updated title id]} meta]
     [:a.library-item.v-stack.spaced.gap-full.rounded.shadow-large.pad-half.border
-     {:href (routes/url-for :story)
-      :on-pointer-down #(do (rf/dispatch [:story/active id])
-                            (rf/dispatch [:page/active :page/story])
-                            (. (.-history js/window) pushState #js {} "" (routes/url-for :page/story)))}
-     [:h2 (if-not (str/blank? title) (util/title-case title) "Generating title...")]
-     [:section.h-stack.spaced.library-item-meta
+     [:div 
+      {:href (routes/url-for :story)
+       :on-pointer-down #(do (rf/dispatch [:story/active id])
+                             (rf/dispatch [:page/active :page/story])
+                             (. (.-history js/window) pushState #js {} "" (routes/url-for :page/story)))}
+      [:h2 (if-not (str/blank? title) (util/title-case title) "Generating title...")]]
+     [:section.h-stack.spaced.library-item-meta.centered
       [:p (str (count sentences) " sentences")]
-      [:p "Last explored " (util/format-date updated)]]]))
+      [:p.library-delete-story
+       {:on-pointer-down #(rf/dispatch [:story/delete id])}
+       "Delete Story"]]]))
 
 (defn library-items []
   [:section.library-items
-   (for [story @(rf/subscribe [:db/stories])]
+   (for [story (reverse @(rf/subscribe [:db/stories]))]
      ^{:key (get-in story [:story/meta :story/id])} [library-item story])])
 
 (defn export-library
