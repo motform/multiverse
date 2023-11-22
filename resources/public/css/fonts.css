@@ -1,43 +1,42 @@
 @font-face {
-    font-family: "Obviously Narrow";
-    src: url("/fonts/o/Obviously-Condensed.woff2") format("woff2");
-    font-weight: normal;
-    font-style: normal;
+  font-family: "Obviously Narrow";
+  src: url("/fonts/Obviously-Condensed.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: "Obviously";
-    src: url("/fonts/o/Obviously-Regular.woff2") format("woff2");
-    font-weight: normal;
-    font-style: normal;
+  font-family: "Obviously";
+  src: url("/fonts/Obviously-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: "Obviously";
-    src: url("/fonts/o/Obviously-Medium.woff2") format("woff2");
-    font-weight: bold;
-    font-style: normal;
-}
-
-
-@font-face {
-    font-family: "Obviously Wide";
-    src: url("/fonts/o/Obviously-Wide_Medium.woff2") format("woff2");
-    font-weight: bold;
-    font-style: normal;
+  font-family: "Obviously";
+  src: url("/fonts/Obviously-Medium.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: "Obviously Wide Light";
-    src: url("/fonts/o/Obviously-Wide_Light.woff2") format("woff2");
-    font-weight: normal;
-    font-style: normal;
+  font-family: "Obviously Wide";
+  src: url("/fonts/Obviously-Wide_Medium.woff2") format("woff2");
+  font-weight: bold;
+  font-style: normal;
 }
 
 @font-face {
-    font-family: "Recursive";
-    font-style: oblique 0deg 15deg;
-    font-weight: 300 1000;
-    font-display: swap;
-    src: url('/fonts/Recursive_VF_1.078.woff2') format('woff2');
+  font-family: "Obviously Wide Light";
+  src: url("/fonts/Obviously-Wide_Light.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Recursive";
+  font-style: oblique 0deg 15deg;
+  font-weight: 300 1000;
+  font-display: swap;
+  src: url("/fonts/Recursive_VF_1.085.woff2") format("woff2");
 }

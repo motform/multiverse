@@ -14,9 +14,8 @@
   "license": "ISC",
   "dependencies": {
     "d3": "^7.3.0",
-    "highlight.js": "10.7.2",
+    "highlight.js": "11.1.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "three": "^0.137.5"
+    "react-dom": "^17.0.2"
   }
 }

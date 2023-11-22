@@ -1,11 +1,15 @@
 (ns org.motform.multiverse.components.landing
-  (:require [clojure.string :as str]
-            [re-frame.core :as rf]
-            [org.motform.multiverse.routes :as routes]
-            [org.motform.multiverse.util :as util]))
+  (:require
+    [clojure.string :as str]
+    [re-frame.core :as rf]
+    [org.motform.multiverse.routes :as routes]
+    [org.motform.multiverse.util :as util]))
 
 (defn elide [s n dots]
-  (apply str (concat (take n s) (repeat dots ".") (drop (- (count s) n) s))))
+  (apply str (concat
+               (take n s)
+               (repeat dots ".")
+               (drop (- (count s) n) s))))
 
 (defn key-input-textarea [api-key validated?]
   [:textarea.key-input.shadow-medium.textarea-small.rounded.mono
