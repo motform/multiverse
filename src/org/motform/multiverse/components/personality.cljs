@@ -37,7 +37,7 @@
 (defn toggles []
   (let [active-personality   @(rf/subscribe [:personality/active])
         dominant-personality @(rf/subscribe [:personality/dominant-personality])]
-    [:aside.personalities.h-stack.gap-quarter.centered
+    [:aside.personalities.h-stack.gap-quarter.center-flex
      (for [personality @(rf/subscribe [:personality/personalities])]
        ^{:key personality}
        [toggle-story personality active-personality dominant-personality])]))

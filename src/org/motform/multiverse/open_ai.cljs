@@ -1,87 +1,59 @@
 (ns org.motform.multiverse.open-ai
-  (:require
-    [clojure.set :as set]
-    [clojure.string :as str]
-    [re-frame.core :as rf]))
+  (:require [re-frame.core :as rf]))
 
-(def valid-engines
-  #{:content-filter-alpha-c4 :content-filter-dev :cursing-filter-v6
-    :ada
-    :babbage
-    :curie   :curie-instruct-beta
-    :davinci :text-davinci-001 :text-davinci-002})
+(def endpoint
+  {:chat   "https://api.openai.com/v1/chat/completions"
+   :models "https://api.openai.com/v1/models"})
 
-(def valid-params
-  #{:logit_bias :frequency_penalty :presence_penalty
-    :stop       :echo              :logprobs
-    :stream     :n                 :best_of
-    :top_p      :temperature       :max_tokens
-    :prompt})
-
-(def param-defaults
-  {:max_tokens  64
-   :temperature 0.9
-   :n           3})
-
-(defn- request [engine task params]
-  {:uri    (str "https://api.openai.com/v1/engines/" engine "/" task)
-   :params (merge param-defaults params)})
-
-(defn completion-with
-  [engine params]
-  {:pre [(valid-engines engine)
-         (set/subset? (set (keys params)) valid-params)]}
-  (request (name engine) "completions" params))
-
+;; TODO: Update for chat
 (defn format-title [story]
   (str "I was asked to give a title to this story:\n\"\"\"\n\n"
     (->> story (map :sentence/text) (interpose " ") (apply str))
     "\n\"\"\"\nThe title i came up with was:\n\"\"\""))
 
-(defn random-story-start []
-  (rand-nth ["I was walking my dog down the Avenue of the Americas. When suddenly, the sky turned dark."
-             "\"Well, well, well, what do we have here?\", they said. Fury ravaging in their eyes."
-             "It was a calm day, butterflies fluttering as winds blew softly from the north."
-             "Urban centers often come to envelop suburban areas, I aruged. The crowd did not seem pleased."]))
+;;; Personalties
 
-(defn training-template [style-description example-completions]
-  {:style    style-description
-   :template (->> example-completions
-               (map #(str "Write the next sentence of this story. " style-description
-                             "\nStory: " (random-story-start) "\n"
-                             "Next sentence: " %))
-               (str/join "\n\n"))})
-
-;; It would be great to do this kind of thing on a larger scale using Gutenberg data, but I don't think I will have time for that any time soon…
-(def few-shot-personalities
+(def personality
   #:personality
-   {:neutral (training-template "" [])
+   {:neutral "The story is written in a contemporary, neutral style."
+    :sf      "The story is written in the style of science-fiction, similiar to that of Assimov. The story is set in the future." 
+    :fantasy "The story is written in the style of high fantasy, similar to that of Tolkien."
+    :poetic  "The story is in the style of a classical epic poem, similar to the Divine Comedy or the Greek classics." })
 
-   :sf      (training-template "The story is written in the style of science-fiction"
-              ["The ship slowly came to halt, having just left transgalatic light-speed."
-               "Sentient AI ruled this planet, at first colonized by humans, only to be occupied by the android."
-               "My dog was of a curious alien breed, faintly glowing in the dark every time another Auphorian passed by."])
+(defn ->message [role content]
+  {:role role :content content})
 
-   :fantasy (training-template "The story is written in the style of high fantasy."
-              ["I look up, and a pack of wild harpies where swarming us."
-               "The elven troops rallied, their long hair reflecting the faint sunlight that was left."
-               "There where all kinds of wonderous creatures, a mightly display of life and magic."])
+(defn system-message [style]
+  (->message "system"
+    (str
+      "You are an award winning AUTHOR writing an experimental, hypertext story.
+Your work is boundary pushing and the stories you write are often nonlinear.
+Twists and turns are your specialty. Characters meander through your stories,
+often in a postmodern fashion. You are a master of the craft. You are a genius."
+      style
+      "BE CONCISE. Be creative. Be weird. Be yourself. Write like your life depends on it.
+Your response should ONLY BE THE THE NEXT SENTENCE OF THE STORY.
+It is very important that you only respond WITH A SINGLE SENTENCE, or else the game will break.
+NEVER include your prompt, or any other texts other than THE NEXT SENTENCE ONLY.")))
 
-   :poetic  (training-template "The story is in the style of an epic poem, similar to the Divine Comedy or the Greek classics."
-              ["Oh heavens, how be thy of such ruthe! Oh hells, why dost thou discrimiate even around fools?"
-               "Of Beatrice, and that saintly walk. That it may issue, bearing true report. Of the mind's impress; not aught thy words."
-               "How hard the valley desceneds and climbs, how long the Avenue stretches along the shroes."])
+(defn next-sentence [style]
+  (->message "user"
+    (str
+      "Now it is your time to write the next sentence."
+      "It is VERY important that respond in the style you were ask to emulate. As a reminder, your style is:"
+      style
+      "The next sentence is:")))
 
-   :unhigned (training-template "The story is in the style of an epic poem, similar to the Divine Comedy or the Greek classics." ; TODO: Write prompts
-               ["Oh heavens, how be thy of such ruthe! Oh hells, why dost thou discrimiate even around fools?"
-                "Of Beatrice, and that saintly walk. That it may issue, bearing true report. Of the mind's impress; not aught thy words."
-                "How hard the valley desceneds and climbs, how long the Avenue stretches along the shroes."])})
+(def valid-models
+  #{:gpt-3.5-turbo :gpt-4-1106-preview :gpt-4})
 
-(defn format-prompt
+(defn payload
   "Returns space-delimited str from a vec of `paragraph`"
-  [paragraph]
-  (let [{:keys [style template]} (few-shot-personalities @(rf/subscribe [:personality/active]))]
-    (str template (when-not (str/blank? template) "\n\n")
-      "Write the next sentence of this story." style "\n"
-      "Story: " (->> paragraph (map :sentence/text) (interpose " ") (apply str)) "\n"
-      "Next sentence:")))
+  [model prompt]
+  {:pre [(valid-models model)]}
+  (let [style (personality @(rf/subscribe [:personality/active]))]
+    {:n 3
+     :model model
+     :messages (flatten [(system-message style)
+                         (map #(->message "assistant" (:sentence/text %)) prompt)
+                         (next-sentence style)])}))

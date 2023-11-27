@@ -21,19 +21,12 @@
   (let [stop-words #{"the" "a" "an" "for" "but" "not" "yet"
                      "so" "at" "around" "by" "of" "from" "on"
                      "with" "to" "without" "after" "and" "how"}]
-    (as-> title <>
-      (str/trim <>)
-      (str/split <> #" ")
-      (mapv #(if-not (stop-words %) (str/capitalize %) %) <>)
-      (update <> 0 str/capitalize) ; always capitalize the leading word
-      (str/join " " <>))))
-
-(defn two-digitize [x]
-  (if (> 10 x) (str "0" x) x))
-
-(defn format-date [date]
-  (str (two-digitize (.getHours date)) ":" (two-digitize (.getMinutes date)) ", "
-       (.getFullYear date) "–" (two-digitize (.getMonth date)) "–"  (two-digitize (.getDay date))))
+    (as-> title $
+      (str/trim $)
+      (str/split $ #" ")
+      (mapv #(if-not (stop-words %) (str/capitalize %) %) $)
+      (update $ 0 str/capitalize) ; always capitalize the leading word
+      (str/join " " $))))
 
 ;;; DB helpers
 

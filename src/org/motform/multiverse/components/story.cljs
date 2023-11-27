@@ -46,7 +46,8 @@
      (if (zero? count-branches)
        [:span.weak-branch-mark {:class (str (name child-personality) "-branch-mark")}]
        (for [i (range count-branches)]
-         ^{:key i} [:span.branch-mark {:class (str (name child-personality) "-branch-mark")}]))]))
+         ^{:key i}
+          [:span.branch-mark {:class (str (name child-personality) "-branch-mark")}]))]))
 
 (defn sentence [{:sentence/keys [id text personality]} sentences prospect-path]
   (let [sentence-not-in-story? (and (not (contains? (set sentences) prospect-path))
@@ -103,7 +104,7 @@
 
     ;; Do we have to request any new completions
     (when (not-any? identity [children request? @(rf/subscribe [:sentence/preview?])])
-      (rf/dispatch [:open-ai/completions active-sentence (open-ai/format-prompt paragraphs)]))
+      (rf/dispatch [:open-ai/completions active-sentence paragraphs]))
 
     [:main.h-stack.story.gap-full
      [:<>
