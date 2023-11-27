@@ -1,1418 +1,1647 @@
 :root {
-    --space-full: 40px;
-    --space-3-4: 30px;
-    --space-double: calc(var(--space-full) * 2);
-    --space-half: calc(var(--space-full) / 2);
-    --space-quarter: calc(var(--space-full) / 4);
-    --space-eight: calc(var(--space-full) / 8);
+  --space-full: 40px;
+  --space-3-4: 30px;
+  --space-double: calc(var(--space-full) * 2);
+  --space-half: calc(var(--space-full) / 2);
+  --space-quarter: calc(var(--space-full) / 4);
+  --space-eight: calc(var(--space-full) / 8);
 }
 
 /* Global */
 
-*, *::before, *::after  {
-    box-sizing: border-box;
-    transition: all 0.20s;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  transition:
+    color 100ms,
+    background-color 100ms,
+    border-color 100ms,
+    font-weight 100ms,
+    font-style 100ms;
 }
 
-input, button, textarea, select {
-    font: inherit;
+input,
+button,
+textarea,
+select {
+  font: inherit;
 }
 
 html,
 body {
-    height: 100%;
-    margin: 0;
-    overflow: hidden;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
 }
 
 html {
-    background-color: var(--bg);
-    font-size: 5px;
-    -webkit-font-smoothing: antialiased;
+  background-color: var(--bg);
+  font-size: 5px;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-    color: var(--fg);
-    font: 400 15px/1.4 "Recursive", sans-serif;
+  color: var(--fg);
+  font:
+    400 15px/1.4 "Recursive",
+    sans-serif;
 
-    background: var(--bg);
-    /* background-size: 400% 400%; */
-    /* animation: gradient 15s ease infinite; */
+  background: var(--bg);
+  /* background-size: 400% 400%; */
+  /* animation: gradient 15s ease infinite; */
 }
 
 @keyframes gradient {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 a {
-    color: var(--fg);
-    text-decoration: none;
+  color: var(--fg);
+  text-decoration: none;
 }
 
 a:hover {
-    cursor: pointer;
-    color: var(--fg);
+  cursor: pointer;
+  color: var(--fg);
 }
 
 p a {
-    color: var(--fg);
-    text-decoration: none;
-    padding-bottom: 2px;
-    border: 1px solid var(--accent-12);
-    border-width: 0 0 1px 0;
+  color: var(--fg);
+  text-decoration: none;
+  padding-bottom: 2px;
+  border: 1px solid var(--accent-12);
+  border-width: 0 0 1px 0;
 }
 
 p a:hover {
-    border-color: var(--fg)
+  border-color: var(--fg);
 }
 
 #mount {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
 }
 
 main {
-    width: 100%;
+  width: 100%;
 }
 
 /* input elements */
 
 label {
-    font: 12px/1 "Obviously", sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--accent-30);
+  font:
+    12px/1 "Obviously",
+    sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--accent-30);
 }
 
 .offset-label {
-    margin-left: 7px;
+  margin-left: 7px;
 }
 
 button {
-    font-family: "Obviously", sans-serif;
-    font-weight: 500;
-    text-transform: Capitalize;
-    font-size: 3rem;
-    color: var(--fg);
-    background-color: var(--blurred-1);
-    width: auto;
-    padding: 2.8rem 4rem 3.2rem 4rem;
-    border: 1px solid var(--blurred-1);
-    cursor: pointer;
+  font-family: "Obviously", sans-serif;
+  font-weight: 500;
+  text-transform: Capitalize;
+  font-size: 3rem;
+  color: var(--fg);
+  background-color: var(--blurred-1);
+  width: auto;
+  padding: 2.8rem 4rem 3.2rem 4rem;
+  border: 1px solid var(--blurred-1);
+  cursor: pointer;
 }
 
 button:hover {
-    background-color: var(--blurred-2);
+  background-color: var(--blurred-2);
 }
 
 button:disabled:hover {
-    background-color: var(--blurred-0);
+  background-color: var(--blurred-0);
 }
 
 button:disabled {
-    background-color: var(--blurred-0);
-    border-color: var(--blurred-0);
-    color: var(--blurred-2);
-    cursor: not-allowed;
+  background-color: var(--blurred-0);
+  border-color: var(--blurred-0);
+  color: var(--blurred-2);
+  cursor: not-allowed;
 }
 
 .button-container {
-    display: flex;
-    justify-content: flex-end;
+  display: flex;
+  justify-content: flex-end;
 }
 
 .button-secondary {
-    padding: 10px 18px;
-    background: var(--bg);
-    border: 1px solid var(--accent-10);
-    color: var(--accent-25);
-    font: 600 12px/1 "Obviously", "Verdana", sans-serif;
-    height: 40px;
+  padding: 10px 18px;
+  background: var(--bg);
+  border: 1px solid var(--accent-10);
+  color: var(--accent-25);
+  font:
+    600 12px/1 "Obviously",
+    "Verdana",
+    sans-serif;
+  height: 40px;
 }
 
 .button-secondary:hover {
-    color: var(--bg);
-    border-color: var(--accent-30);
+  color: var(--bg);
+  border-color: var(--accent-30);
 }
 
 textarea {
-    resize: none;
-    overflow: hidden;
-    color: var(--fg);
-    background-color: var(--blurred-1);
-    border: 1px solid var(--blurred-0);
-    padding: 3rem;
-    font-size: 16px;
+  resize: none;
+  overflow: hidden;
+  color: var(--fg);
+  background-color: var(--blurred-1);
+  border: 1px solid var(--blurred-0);
+  padding: 3rem;
+  font-size: 16px;
 }
 
 textarea:hover {
-    background-color: var(--blurred-1);
-    border-color: var(--blurred-0);
+  background-color: var(--blurred-1);
+  border-color: var(--blurred-0);
 }
 
 textarea:focus {
-    background-color: var(--blurred-2);
-    border-color: var(--blurred-0);
+  background-color: var(--blurred-2);
+  border-color: var(--blurred-0);
 }
 
 .textarea-small {
-    height: 55px;
-    width: 100%;
+  height: 55px;
+  width: 100%;
 }
 
 .textarea-large {
-    height: 125px;
-    width: 100%;
-    overflow: scroll;
+  height: 125px;
+  width: 100%;
+  overflow: scroll;
 }
 
 /* utility classes */
 
 .mono {
-    font-variation-settings: "MONO" 1;
-    font-family: "Recursive", monospace;
+  font-variation-settings: "MONO" 1;
+  font-family: "Recursive", monospace;
 }
 
 .v-stack {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .spaced {
-    justify-content: space-between;
+  justify-content: space-between;
 }
 
 .centered {
-    align-items: center;
+  align-items: center;
+}
+
+.center-flex {
+  justify-content: center;
 }
 
 .h-equal-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
 }
 
 .v-equal-3 {
-    display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
 }
 
 .h-equal-3 {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 
 .h-stack {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
-.pad-eight   { padding: var(--space-eight)   }
-.pad-quarter { padding: var(--space-quarter) }
-.pad-half    { padding: var(--space-half)    }
-.pad-3-4    { padding: var(--space-3-4)    }
-.pad-full    { padding: var(--space-full)    }
-.pad-double  { padding: var(--space-double)  }
+.pad-eight {
+  padding: var(--space-eight);
+}
+.pad-quarter {
+  padding: var(--space-quarter);
+}
+.pad-half {
+  padding: var(--space-half);
+}
+.pad-3-4 {
+  padding: var(--space-3-4);
+}
+.pad-full {
+  padding: var(--space-full);
+}
+.pad-double {
+  padding: var(--space-double);
+}
 
-.gap-eight   { gap: var(--space-eight);   }
-.gap-quarter { gap: var(--space-quarter); }
-.gap-half    { gap: var(--space-half);    }
-.gap-3-4     { gap: var(--space-3-4);    }
-.gap-full    { gap: var(--space-full);    }
-.gap-double  { gap: var(--space-double);  }
+.gap-eight {
+  gap: var(--space-eight);
+}
+.gap-quarter {
+  gap: var(--space-quarter);
+}
+.gap-half {
+  gap: var(--space-half);
+}
+.gap-3-4 {
+  gap: var(--space-3-4);
+}
+.gap-full {
+  gap: var(--space-full);
+}
+.gap-double {
+  gap: var(--space-double);
+}
 
-.rounded-large { border-radius: 20px; }
-.rounded       { border-radius: 10px; }
+.rounded-large {
+  border-radius: 20px;
+}
+.rounded {
+  border-radius: 10px;
+}
 
 .border {
-    border: 1px solid var(--accent-3);
+  border: 1px solid var(--accent-3);
 }
 
 .blurred {
-    backdrop-filter: blur(10px);
-    background-color: var(--blurred-0);
+  backdrop-filter: blur(10px);
+  background-color: var(--blurred-0);
 }
 
 .shadow-large {
-    box-shadow: 1px 1px 1.9px rgba(0, 0, 0, 0.019), 2.6px 2.6px 4.8px rgba(0, 0, 0, 0.027), 5.3px 5.3px 9.7px rgba(0, 0, 0, 0.033), 11px 11px 20.1px rgba(0, 0, 0, 0.041), 30px 30px 55px rgba(0, 0, 0, 0.06);
+  box-shadow:
+    1px 1px 1.9px rgba(0, 0, 0, 0.019),
+    2.6px 2.6px 4.8px rgba(0, 0, 0, 0.027),
+    5.3px 5.3px 9.7px rgba(0, 0, 0, 0.033),
+    11px 11px 20.1px rgba(0, 0, 0, 0.041),
+    30px 30px 55px rgba(0, 0, 0, 0.06);
 }
 
 .shadow-medium {
-    box-shadow: 1.4px 1.4px 3.2px rgba(0, 0, 0, 0.008), 3.3px 3.3px 7.7px rgba(0, 0, 0, 0.012), 6.3px 6.3px 14.1px rgba(0, 0, 0, 0.015), 11.2px 11.2px 23.9px rgba(0, 0, 0, 0.018), 20.9px 20.9px 40px rgba(0, 0, 0, 0.022), 50px 50px 80px rgba(0, 0, 0, 0.03);
+  box-shadow:
+    1.4px 1.4px 3.2px rgba(0, 0, 0, 0.008),
+    3.3px 3.3px 7.7px rgba(0, 0, 0, 0.012),
+    6.3px 6.3px 14.1px rgba(0, 0, 0, 0.015),
+    11.2px 11.2px 23.9px rgba(0, 0, 0, 0.018),
+    20.9px 20.9px 40px rgba(0, 0, 0, 0.022),
+    50px 50px 80px rgba(0, 0, 0, 0.03);
 }
 
 .shadow-small {
-    box-shadow: 0.5px 0.5px 4.1px rgba(0, 0, 0, 0.01), 1.3px 1.3px 10.4px rgba(0, 0, 0, 0.015), 3px 3px 25px rgba(0, 0, 0, 0.02), 10px 10px 80px rgba(0, 0, 0, 0.03);
+  box-shadow:
+    0.5px 0.5px 4.1px rgba(0, 0, 0, 0.01),
+    1.3px 1.3px 10.4px rgba(0, 0, 0, 0.015),
+    3px 3px 25px rgba(0, 0, 0, 0.02),
+    10px 10px 80px rgba(0, 0, 0, 0.03);
 }
 
 /* app-layout */
 
 .app-container {
-    width: 100%; 
-    height: 100%;
-    align-items: center;
-    animation: gradient 20s ease infinite;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  animation: gradient 20s ease infinite;
 }
 
 .app-container.fast {
-    animation: gradient 1s ease infinite;
+  animation: gradient 1s ease infinite;
 }
 
-.background-neutral { background: var(--neutral-background); background-size: 400%; }
-.background-sci-fi	    { background: var(--sci-fi-background);      background-size: 400%; }
-.background-fantasy { background: var(--fantasy-background); background-size: 400%; }
-.background-poetic  { background: var(--poetic-background);  background-size: 400%; }
-.background-landing { background: var(--background-mixed);   background-size: 400%; }
+.background-neutral {
+  background: var(--neutral-background);
+  background-size: 400%;
+}
+.background-sci-fi {
+  background: var(--sci-fi-background);
+  background-size: 400%;
+}
+.background-fantasy {
+  background: var(--fantasy-background);
+  background-size: 400%;
+}
+.background-poetic {
+  background: var(--poetic-background);
+  background-size: 400%;
+}
+.background-landing {
+  background: var(--background-mixed);
+  background-size: 400%;
+}
 
 /* tooltips */
 
 .tooltip {
-    color: var(--bg);
-    font: 600 10px/1.4 "Obviously", sans-serif;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    opacity: 0%;
-    background-color: var(--fg);
-    padding: 4px 9px 6px 9px;
-    position: absolute;
-    z-index: 1;
-    top: 90%;
-    left: 50%;
-    border-radius: 4px;
+  color: var(--bg);
+  font:
+    600 10px/1.4 "Obviously",
+    sans-serif;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  opacity: 0%;
+  background-color: var(--fg);
+  padding: 4px 9px 6px 9px;
+  position: absolute;
+  z-index: 1;
+  top: 90%;
+  left: 50%;
+  border-radius: 4px;
 }
 
 .tooltip-large {
-    top: 125%;
-    width: 100px;
-    margin-left: -50px;
+  top: 125%;
+  width: 100px;
+  margin-left: -25px;
 }
 
 .tooltip-container {
-    position: relative;
+  position: relative;
 }
 
 .tooltip-container:hover .tooltip {
-    opacity: 100%;
+  opacity: 100%;
 }
 
 /* header */
 
 .header {
-    width: 100%;
+  width: 100%;
 }
 
 .tab {
-    padding: 12px 18px 8px 18px;
-    border-radius: 6px;
-    font-family: "Obviously", "Verdana", sans-serif;
-    font-weight: 600;
-    color: var(--accent-20);
-    font-size: 12px;
-    height: 40px;
+  padding: 12px 18px 8px 18px;
+  border-radius: 6px;
+  font-family: "Obviously", "Verdana", sans-serif;
+  font-weight: 600;
+  color: var(--accent-20);
+  font-size: 12px;
+  height: 40px;
 }
 
 .tab-label {
-	font-weight: 700;
-	align-self: center;
-	margin-top: -5px;
-	color: var(--fg);
+  font-weight: 700;
+  align-self: center;
+  margin-top: -5px;
+  color: var(--fg);
 }
 
 .tab-label {
-	font-weight: 700;
-	align-self: center;
-	margin-top: -5px;
-	color: var(--fg);
+  font-weight: 700;
+  align-self: center;
+  margin-top: -5px;
+  color: var(--fg);
 }
 
 .tab-label-inactive {
-	color: var(--accent-25);
+  color: var(--accent-25);
 }
 
 .tab:hover {
-    background-color: var(--blurred-2);
-    color: var(--fg);
-    cursor: pointer;
+  background-color: var(--blurred-2);
+  color: var(--fg);
+  cursor: pointer;
 }
 
 .tab-secondary {
-    padding: 11px 18px 9px 18px;
-    background-color: transparent;
-    border: 1px solid var(--blurred-1);
-    color: var(--blurred-2);
+  padding: 11px 18px 9px 18px;
+  background-color: transparent;
+  border: 1px solid var(--blurred-1);
+  color: var(--blurred-2);
 }
 
 .tab-secondary:hover {
-    border-color: transparent;
-    background-color: var(--blurred-2);
-    color: var(--fg);
+  border-color: transparent;
+  background-color: var(--blurred-2);
+  color: var(--fg);
 }
 
 .tab-active {
-    background: var(--accent-35);
-    color: var(--bg);
+  background: var(--accent-35);
+  color: var(--bg);
 }
 
 .tab-active:hover {
-    background: var(--accent-35);
-    color: var(--bg);
+  background: var(--accent-35);
+  color: var(--bg);
 }
 
 .tab-new-story {
-    background: transparent;
-    color: var(--fg);
-    width: 40px;
-    height: 40px;
-    padding: 7px 0 0 7px;
-    border-radius: 9999px
+  background: transparent;
+  color: var(--fg);
+  width: 40px;
+  height: 40px;
+  padding: 7px 0 0 7px;
+  border-radius: 9999px;
 }
 
 .tab-new-story:hover {
-    background: var(--blurred-0);
-    color: var(--bg);
+  background: var(--blurred-0);
+  color: var(--bg);
 }
 
 .tab-active.tab-new-story {
-    background: var(--fg);
-    color: var(--bg);
+  background: var(--fg);
+  color: var(--bg);
 }
 
 .tab-active.tab-new-story:hover {
-    background: var(--fg);
-    color: var(--bg);
+  background: var(--fg);
+  color: var(--bg);
 }
 
 .tab-new-story:hover {
-    background: var(--blurred-2);
-    color: var(--fg);
+  background: var(--blurred-2);
+  color: var(--fg);
 }
 
 .tab-new-story > svg {
-    margin: 0 auto;
+  margin: 0 auto;
 }
 
 .title:hover {
-    color: var(--fg);
-    cursor: pointer;
+  color: var(--fg);
+  cursor: pointer;
 }
 
 .title-library {
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .tab-map {
-    color: var(--bg);
-    border: 5px solid var(--blurred-2);
-    position: absolute;
-    z-index: 5;
-    left: 0px;
-    top: calc(var(--space-full) + var(--space-quarter));
-    border-radius: 8px;
-    background: var(--accent-1);
-    width: 400px;
-    height: 250px;
+  color: var(--bg);
+  border: 5px solid var(--blurred-2);
+  position: absolute;
+  z-index: 5;
+  left: 0px;
+  top: calc(var(--space-full) + var(--space-quarter));
+  border-radius: 8px;
+  background: var(--accent-1);
+  width: 400px;
+  height: 250px;
 }
 
 .tab-active .tab-map {
-    display: none;
+  display: none;
 }
 
-.spinner-1 { animation: fade 1.75s ease infinite alternate; }
-.spinner-2 { animation: fade 1.75s ease infinite alternate; animation-delay: 0.5s;}
-.spinner-3 { animation: fade 1.75s ease infinite alternate; animation-delay: 1s;}
+.spinner-1 {
+  animation: fade 1.75s ease infinite alternate;
+}
+.spinner-2 {
+  animation: fade 1.75s ease infinite alternate;
+  animation-delay: 0.5s;
+}
+.spinner-3 {
+  animation: fade 1.75s ease infinite alternate;
+  animation-delay: 1s;
+}
 
-.spinner-small-1 { animation: fade 1.75s ease infinite alternate; }
-.spinner-small-2 { animation: fade 1.75s ease infinite alternate; animation-delay: 0.5s;}
-.spinner-small-3 { animation: fade 1.75s ease infinite alternate; animation-delay: 1s;}
+.spinner-small-1 {
+  animation: fade 1.75s ease infinite alternate;
+}
+.spinner-small-2 {
+  animation: fade 1.75s ease infinite alternate;
+  animation-delay: 0.5s;
+}
+.spinner-small-3 {
+  animation: fade 1.75s ease infinite alternate;
+  animation-delay: 1s;
+}
 
 .spinner-container {
-	width: 100%;
+  width: 100%;
 }
 
 @keyframes fade {
-    0%   { opacity: 100; }
-    100%  { opacity: 0; transform: translate(0, 10px)}
+  0% {
+    opacity: 100;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(0, 10px);
+  }
 }
 
 @keyframes move {
-    0%    { transform: translate(0); }
-    100%  { transform: translate(0, 10px)}
+  0% {
+    transform: translate(0);
+  }
+  100% {
+    transform: translate(0, 10px);
+  }
 }
 
 .icon:hover {
-    fill: var(--accent-20);
-    stroke: var(--accent-20);
+  fill: var(--accent-20);
+  stroke: var(--accent-20);
 }
 
 .template-toggles {
-    align-self: flex-end;
-    background: var(--blurred-0);
-    border-radius: 99999px;
-    padding: 0 10px;
+  align-self: flex-end;
+  background: var(--blurred-0);
+  border-radius: 99999px;
+  padding: 0 10px;
 }
 
 .template-toggle {
-    border-radius: 9999px;
-    background-color: transparent;
-    color: var(--accent-20);
-    padding: 8px 10px;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: scale(110%);
-	border: 1px solid transparent;
+  border-radius: 9999px;
+  background-color: transparent;
+  color: var(--accent-20);
+  padding: 8px 10px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: scale(110%);
+  border: 1px solid transparent;
 }
 
 .template-toggle:hover {
-    color: var(--fg);
-    background-color: var(--blurred-1);
-    cursor: pointer;
-	border-color: var(--blurred-0);
+  color: var(--fg);
+  background-color: var(--blurred-1);
+  cursor: pointer;
+  border-color: var(--blurred-0);
 }
 
 .template-toggle-active {
-    color: var(--fg);
-    background-color: var(--blurred-2);
-	border-color: var(--blurred-0);
+  color: var(--fg);
+  background-color: var(--blurred-2);
+  border-color: var(--blurred-0);
 }
 
 .template-toggle-active:hover {
-    color: var(--fg);
-    background-color: var(--blurred-2);
-	border-color: var(--blurred-0);
+  color: var(--fg);
+  background-color: var(--blurred-2);
+  border-color: var(--blurred-0);
 }
 
 .template-tip {
-	width: 100%;
-	margin-top: -20px;
+  width: 100%;
+  margin-top: -20px;
 }
 
 /* new-story */
 
 .new-story {
-    align-items: center;
-	max-width: 700px;
+  align-items: center;
+  max-width: 700px;
 }
 
 .prompt-background {
-    margin: 0 40px;
-	width: 750px;
+  margin: 0 40px;
+  width: 750px;
 
-    border: 1px solid var(--blurred-border);
-    background: var(--blurred-0);
+  border: 1px solid var(--blurred-border);
+  background: var(--blurred-0);
 }
 
 @keyframes gradient {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .new-story h3 {
-    font: 20px/20px "Obviously Wide", "Arial Narrow", sans-serif;
-    text-transform: uppercase;
+  font:
+    20px/20px "Obviously Wide",
+    "Arial Narrow",
+    sans-serif;
+  text-transform: uppercase;
 }
 
 .new-story p {
-	color: var(--accent-30);
+  color: var(--accent-30);
 }
 
 .prompt .personality {
-    border: 1px solid var(--blurred-0);
+  border: 1px solid var(--blurred-0);
 }
 
 .prompt-personalities {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .prompt-personality-toggle {
-	cursor: pointer;
+  cursor: pointer;
 }
 .prompt-personality-toggle label {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 .prompt-personality-toggle {
-	border: 1px solid transparent;
+  border: 1px solid transparent;
 }
 
 .prompt-personality-toggle:hover {
-	background-color: var(--blurred-1);
-	border: 1px solid var(--blurred-0);
+  background-color: var(--blurred-1);
+  border: 1px solid var(--blurred-0);
 }
 
 .prompt-personality-toggle-active {
-	background-color: var(--blurred-1);
-	border: 1px solid var(--blurred-0);
-    box-shadow: 1.4px 1.4px 3.2px rgba(0, 0, 0, 0.008), 3.3px 3.3px 7.7px rgba(0, 0, 0, 0.012), 6.3px 6.3px 14.1px rgba(0, 0, 0, 0.015), 11.2px 11.2px 23.9px rgba(0, 0, 0, 0.018), 20.9px 20.9px 40px rgba(0, 0, 0, 0.022), 50px 50px 80px rgba(0, 0, 0, 0.03);
+  background-color: var(--blurred-1);
+  border: 1px solid var(--blurred-0);
+  box-shadow:
+    1.4px 1.4px 3.2px rgba(0, 0, 0, 0.008),
+    3.3px 3.3px 7.7px rgba(0, 0, 0, 0.012),
+    6.3px 6.3px 14.1px rgba(0, 0, 0, 0.015),
+    11.2px 11.2px 23.9px rgba(0, 0, 0, 0.018),
+    20.9px 20.9px 40px rgba(0, 0, 0, 0.022),
+    50px 50px 80px rgba(0, 0, 0, 0.03);
 }
 
 .personality-label {
-	font-size: 10px;
-	color: var(--fg);
-	font-weight: 600;
+  font-size: 10px;
+  color: var(--fg);
+  font-weight: 600;
 }
 
 .prompt-description {
-	font-size: 11px;
-	color: var(--accent-20);
+  font-size: 11px;
+  color: var(--accent-20);
 }
 
 #prompt-textarea {
-    border-color: var(--blurred-0);
+  border-color: var(--blurred-0);
 }
 
 #prompt-textarea:hover {
-    background-color: var(--blurred-1);
-    border-color: var(--blurred-1);
+  background-color: var(--blurred-1);
+  border-color: var(--blurred-1);
 }
 
 #prompt-textarea:focus {
-    background-color: var(--blurred-2);
-    border-color: var(--blurred-2);
+  background-color: var(--blurred-2);
+  border-color: var(--blurred-2);
 }
 
 .prompt-title {
-    font: 24px/24px "Obviously Wide", "Arial Narrow", sans-serif;
-    text-transform: uppercase;
+  font:
+    24px/24px "Obviously Wide",
+    "Arial Narrow",
+    sans-serif;
+  text-transform: uppercase;
 }
 
-
 .prompt-button-submit {
-    border: none;
-    padding: 10px 4rem 10px 4rem;
-    backdrop-filter: blur(10px);
-    background-color: var(--blurred-1);
-    border: 1px solid var(--blurred-1);
-    color: var(--fg);
+  border: none;
+  padding: 10px 4rem 10px 4rem;
+  backdrop-filter: blur(10px);
+  background-color: var(--blurred-1);
+  border: 1px solid var(--blurred-1);
+  color: var(--fg);
 }
 
 .prompt-button-submit:disabled {
-    background-color: var(--blurred-0);
-    border-color: var(--blurred-0);
-    color: var(--blurred-0);
+  background-color: var(--blurred-0);
+  border-color: var(--blurred-0);
+  color: var(--blurred-0);
 }
 
 .prompt-button-submit:disabled:hover {
-    background-color: var(--blurred-0);
-    cursor: not-allowed;
-    color: var(--blurred-0);
+  background-color: var(--blurred-0);
+  cursor: not-allowed;
+  color: var(--blurred-0);
 }
 
 .prompt-button-submit:hover {
-    background-color: var(--blurred-2);
-    color: var(--fg);
+  background-color: var(--blurred-2);
+  color: var(--fg);
 }
 
 /* map */
 
 .map {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 .level {
-    height: 13px;
-    padding: 5px;
+  height: 13px;
+  padding: 5px;
 }
 
 .node {
-    width: 20px;
-    height: 10px;
-    border-radius: 9999px;
+  width: 20px;
+  height: 10px;
+  border-radius: 9999px;
 }
 
 .branch-active > .node {
-    border: 1px solid var(--spinner-fill);
-    background-color: var(--spinner-fill);
+  border: 1px solid var(--spinner-fill);
+  background-color: var(--spinner-fill);
 }
 
 .branch-active:hover > .node {
-    background-color: var(--accent-30);
+  background-color: var(--accent-30);
 }
 
 .branch-inactive > .node {
-    border: 2px solid var(--accent-10);
+  border: 2px solid var(--accent-10);
 }
 
 .leaf-active > .node {
-    background-color: var(--accent-30);
+  background-color: var(--accent-30);
 }
 
 .leaf-active:hover > .node {
-    background-color: var(--accent-30);
+  background-color: var(--accent-30);
 }
 
 .level {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /* personalities */
 
 .personalities {
-    grid-row: span 1;
+  grid-row: span 1;
 }
 
 .personality {
-    height: 45px;
-    width: 45px;
-    border-radius: 50%;
-    background: var(--accent-8);
-    cursor: pointer;
-    /* z-index: 0; */
-    align-items: center;
-    justify-content: center;
-    color: var(--bg);
-    transition: transform 0.5s;
-	border: 1px solid var(--blurred-0);
+  height: 45px;
+  width: 45px;
+  border-radius: 50%;
+  background: var(--accent-8);
+  cursor: pointer;
+  /* z-index: 0; */
+  align-items: center;
+  justify-content: center;
+  color: var(--bg);
+  transition: transform 0.5s;
+  border: 1px solid var(--blurred-0);
 }
 
 .personality-active {
-    background: var(--accent-20);
+  background: var(--accent-20);
 }
 
 .personality-replace {
-    box-shadow:
-	0px 0px 2.3px rgba(255, 255, 255, 0.07),
-	0px 0px 6.8px rgba(255, 255, 255, 0.101),
-	0px 0px 14.7px rgba(255, 255, 255, 0.125),
-	0px 0px 28.7px rgba(255, 255, 255, 0.149),
-	0px 0px 49px rgba(255, 255, 255, 0.18),
-	0px 0px 65px rgba(255, 255, 255, 0.25) ;
+  box-shadow:
+    0px 0px 2.3px rgba(255, 255, 255, 0.07),
+    0px 0px 6.8px rgba(255, 255, 255, 0.101),
+    0px 0px 14.7px rgba(255, 255, 255, 0.125),
+    0px 0px 28.7px rgba(255, 255, 255, 0.149),
+    0px 0px 49px rgba(255, 255, 255, 0.18),
+    0px 0px 65px rgba(255, 255, 255, 0.25);
 }
 
 .personality-replace:hover {
-    box-shadow:
-	0px 0px 2.3px  rgba(255, 255, 255, 0.101),
-	0px 0px 6.8px  rgba(255, 255, 255, 0.145),
-	0px 0px 14.7px rgba(255, 255, 255, 0.18),
-	0px 0px 28.7px rgba(255, 255, 255, 0.215),
-	0px 0px 49px   rgba(255, 255, 255, 0.259),
-	0px 0px 65px   rgba(255, 255, 255, 0.36) ;
+  box-shadow:
+    0px 0px 2.3px rgba(255, 255, 255, 0.101),
+    0px 0px 6.8px rgba(255, 255, 255, 0.145),
+    0px 0px 14.7px rgba(255, 255, 255, 0.18),
+    0px 0px 28.7px rgba(255, 255, 255, 0.215),
+    0px 0px 49px rgba(255, 255, 255, 0.259),
+    0px 0px 65px rgba(255, 255, 255, 0.36);
 }
 
+.personality-neutral-inactive {
+  background-color: var(--accent-10);
+}
+.personality-neutral-inactive:hover,
+.prompt-personality-toggle:hover > .personality-neutral-inactive {
+  background-color: var(--accent-30);
+}
+.personality-neutral-active {
+  background-color: var(--accent-30);
+}
 
-.personality-neutral-inactive																			{ background-color: var(--accent-10);	}
-.personality-neutral-inactive:hover, .prompt-personality-toggle:hover > .personality-neutral-inactive	{ background-color: var(--accent-30);	}
-.personality-neutral-active																				{ background-color: var(--accent-30);	}
+.personality-fantasy-inactive {
+  background-color: var(--fantasy-5);
+}
+.personality-fantasy-inactive:hover,
+.prompt-personality-toggle:hover > .personality-fantasy-inactive {
+  background-color: var(--fantasy-7);
+}
+.personality-fantasy-active {
+  background-color: var(--fantasy-7);
+}
 
-.personality-fantasy-inactive																			{ background-color: var(--fantasy-5);	}
-.personality-fantasy-inactive:hover, .prompt-personality-toggle:hover > .personality-fantasy-inactive	{ background-color: var(--fantasy-7);	}
-.personality-fantasy-active																				{ background-color: var(--fantasy-7);	}
+.personality-sci-fi-inactive {
+  background-color: var(--sci-fi-3);
+}
+.personality-sci-fi-inactive:hover,
+.prompt-personality-toggle:hover > .personality-sci-fi-inactive {
+  background-color: var(--sci-fi-7);
+}
+.personality-sci-fi-active {
+  background-color: var(--sci-fi-7);
+}
 
-.personality-sci-fi-inactive																			{ background-color: var(--sci-fi-3);		}
-.personality-sci-fi-inactive:hover, .prompt-personality-toggle:hover > .personality-sci-fi-inactive		{ background-color: var(--sci-fi-7); }
-.personality-sci-fi-active																				{ background-color: var(--sci-fi-7);		}
-
-.personality-poetic-inactive																		{ background-color: var(--poetic-4);		}
-.personality-poetic-inactive:hover, .prompt-personality-toggle:hover > .personality-poetic-inactive { background-color: var(--poetic-7); }
-.personality-poetic-active																			{ background-color: var(--poetic-7);		}
+.personality-poetic-inactive {
+  background-color: var(--poetic-4);
+}
+.personality-poetic-inactive:hover,
+.prompt-personality-toggle:hover > .personality-poetic-inactive {
+  background-color: var(--poetic-7);
+}
+.personality-poetic-active {
+  background-color: var(--poetic-7);
+}
 
 @keyframes gradient {
-    0%   { background-position: 0% 50%; }
-    50%  { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
-
 
 /* story view */
 
 .story {
-    font-size: 20px;
-    line-height: 1;
-    height: 85vh;
-    display: grid;
-    grid-template-rows: 50% 50%;
-    align-items: start;
-    justify-items: center;
-    width: 100%;
+  font-size: 20px;
+  line-height: 1;
+  height: 85vh;
+  display: grid;
+  grid-template-rows: 50% 50%;
+  align-items: start;
+  justify-items: center;
+  width: 100%;
 }
 
 .story-views {
-    width: 100%;
-    height: 100%;
-    padding: 0 var(--space-full);
+  width: 100%;
+  height: 100%;
+  padding: 0 var(--space-full);
 }
 
 .paragraph {
-    overflow: scroll;
-    height: 100%;
-    width: 45vw;
-    max-width: 900px;
-    max-height: 100%;
-    font-size: 16px;
-    padding-top: 0;
+  overflow: scroll;
+  height: 100%;
+  width: 45vw;
+  max-width: 900px;
+  max-height: 100%;
+  font-size: 16px;
+  padding-top: 0;
 }
 
 .paragraph > span {
-    hyphens: auto;
+  hyphens: auto;
 }
 
 .paragraph > span:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .paragraph > span:last-of-type::after {
 }
 
 .branch-marks {
-    margin-left: 8px;
+  margin-left: 8px;
 }
 
 .branch-mark {
-    border: 1px solid var(--accent-20);
-    border-width: 0 2px 0 0;
-    content: "";
-    margin: 0 2px;
+  border: 1px solid var(--accent-20);
+  border-width: 0 2px 0 0;
+  content: "";
+  margin: 0 2px;
 }
 
 .weak-branch-mark {
-    border: 1px solid var(--accent-10);
-    border-width: 0 2px 0 0;
-    content: "";
-    margin: 0 2px;
+  border: 1px solid var(--accent-10);
+  border-width: 0 2px 0 0;
+  content: "";
+  margin: 0 2px;
 }
 
-.branch-mark.neutral-branch-mark      { border-color: var(--accent-20); }
-.weak-branch-mark.neutral-branch-mark { border-color: var(--accent-10); }
+.branch-mark.neutral-branch-mark {
+  border-color: var(--accent-20);
+}
+.weak-branch-mark.neutral-branch-mark {
+  border-color: var(--accent-10);
+}
 
-.branch-mark.fantasy-branch-mark      { border-color: var(--fantasy-6); }
-.weak-branch-mark.fantasy-branch-mark { border-color: var(--fantasy-3); }
+.branch-mark.fantasy-branch-mark {
+  border-color: var(--fantasy-6);
+}
+.weak-branch-mark.fantasy-branch-mark {
+  border-color: var(--fantasy-3);
+}
 
-.branch-mark.sci-fi-branch-mark      { border-color: var(--sci-fi-6); }
-.weak-branch-mark.sci-fi-branch-mark { border-color: var(--sci-fi-3); }
+.branch-mark.sci-fi-branch-mark {
+  border-color: var(--sci-fi-6);
+}
+.weak-branch-mark.sci-fi-branch-mark {
+  border-color: var(--sci-fi-3);
+}
 
-.branch-mark.poetic-branch-mark      { border-color: var(--poetic-6); }
-.weak-branch-mark.poetic-branch-mark { border-color: var(--poetic-3); }
+.branch-mark.poetic-branch-mark {
+  border-color: var(--poetic-6);
+}
+.weak-branch-mark.poetic-branch-mark {
+  border-color: var(--poetic-3);
+}
 
 .sentence {
-    cursor: pointer;
-    margin-right: 4px;
-    padding: 3px 0 29px 0;
-    line-height: 1.6;
+  cursor: pointer;
+  margin-right: 4px;
+  padding: 3px 0 29px 0;
+  line-height: 1.6;
 }
 
 .sentence.inactive {
-    color: var(--accent-5);
+  color: var(--accent-5);
 }
 
 .highlight {
-    color: var(--highlight);
+  color: var(--highlight);
 }
 
 .children {
-    grid-column: span 3;
-    cursor: pointer;
-    width: 100%;
-	height: 100vh;
+  grid-column: span 3;
+  cursor: pointer;
+  width: 100%;
+  height: 100vh;
 }
 
 .parent {
-    line-height: 1;
-    padding: 10px 0;
+  line-height: 1;
+  padding: 10px 0;
 }
 
 .child {
-    font-size: 18px;
-    line-height: 1.4;
-    text-align: left;
-    padding: var(--space-half);
-    max-width: 100%;
-    border-radius: 15px;
+  font-size: 18px;
+  line-height: 1.4;
+  text-align: left;
+  padding: var(--space-half);
+  max-width: 100%;
+  border-radius: 15px;
 }
 
 /* Poetic */
 
 .child.poetic-visited {
-    border-style: solid;
-    background-color: var(--poetic-1);
-    border-color: var(--poetic-1);
-    color: var(--poetic-7);
+  border-style: solid;
+  background-color: var(--poetic-1);
+  border-color: var(--poetic-1);
+  color: var(--poetic-7);
 }
 
 .child.poetic-unvisited {
-    border: 1px dashed var(--poetic-6);
-    background-color: var(--poetic-0);
-    color: var(--poetic-6);
-    font-variation-settings: "CASL" 1, "CRSV" 0, "slnt" -15;
+  border: 1px dashed var(--poetic-6);
+  background-color: var(--poetic-0);
+  color: var(--poetic-6);
+  font-variation-settings:
+    "CASL" 1,
+    "CRSV" 0,
+    "slnt" -15;
 }
 
 .child.poetic-unvisited.inactive,
 .child.poetic-visited.inactive {
-    color: var(--poetic-3);
-    border-color: var(--poetic-3);
+  color: var(--poetic-3);
+  border-color: var(--poetic-3);
 }
 
 .child.poetic-visited:hover,
 .child.poetic-unvisited:hover,
 .child.poetic-unvisited.active {
-    color: var(--fg);
-    border-style: solid;
-    background-color: var(--poetic-5);
-    border-color: var(--poetic-5);
-    font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
+  color: var(--fg);
+  border-style: solid;
+  background-color: var(--poetic-5);
+  border-color: var(--poetic-5);
+  font-variation-settings:
+    "CASL" 0,
+    "CRSV" 0,
+    "slnt" 0;
 }
 
 /* SCI-FI */
 
 .child.sci-fi-visited {
-    border-style: solid;
-    background-color: var(--sci-fi-1);
-    border-color: var(--sci-fi-1);
-    color: var(--sci-fi-7);
+  border-style: solid;
+  background-color: var(--sci-fi-1);
+  border-color: var(--sci-fi-1);
+  color: var(--sci-fi-7);
 }
 
 .child.sci-fi-unvisited {
-    border-radius: 15px;
-    border: 1px dashed var(--sci-fi-6);
-    background-color: var(--sci-fi-0);
-    color: var(--sci-fi-6);
-    font-variation-settings: "CASL" 1, "CRSV" 0, "slnt" -15;
+  border-radius: 15px;
+  border: 1px dashed var(--sci-fi-6);
+  background-color: var(--sci-fi-0);
+  color: var(--sci-fi-6);
+  font-variation-settings:
+    "CASL" 1,
+    "CRSV" 0,
+    "slnt" -15;
 }
 
 .child.sci-fi-unvisited.inactive,
 .child.sci-fi-visited.inactive {
-    color: var(--sci-fi-3);
-    border-color: var(--sci-fi-3);
+  color: var(--sci-fi-3);
+  border-color: var(--sci-fi-3);
 }
 
 .child.sci-fi-visited:hover,
 .child.sci-fi-unvisited:hover,
 .child.sci-fi-unvisited.active {
-    color: var(--fg);
-    border-style: solid;
-    background-color: var(--sci-fi-5);
-    border-color: var(--sci-fi-5);
-    font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
+  color: var(--fg);
+  border-style: solid;
+  background-color: var(--sci-fi-5);
+  border-color: var(--sci-fi-5);
+  font-variation-settings:
+    "CASL" 0,
+    "CRSV" 0,
+    "slnt" 0;
 }
 
 /* Fantasy */
 
 .child.fantasy-visited {
-    border-style: solid;
-    background-color: var(--fantasy-1);
-    border-color: var(--fantasy-1);
-    color: var(--fantasy-8);
+  border-style: solid;
+  background-color: var(--fantasy-1);
+  border-color: var(--fantasy-1);
+  color: var(--fantasy-8);
 }
 
 .child.fantasy-unvisited {
-    border: 1px dashed var(--fantasy-6);
-    background-color: var(--fantasy-0);
-    color: var(--fantasy-6);
-    font-variation-settings: "CASL" 1, "CRSV" 0, "slnt" -15;
+  border: 1px dashed var(--fantasy-6);
+  background-color: var(--fantasy-0);
+  color: var(--fantasy-6);
+  font-variation-settings:
+    "CASL" 1,
+    "CRSV" 0,
+    "slnt" -15;
 }
 
 .child.fantasy-unvisited.inactive,
 .child.fantasy-visited.inactive {
-    color: var(--fantasy-3);
-    border-color: var(--fantasy-3);
+  color: var(--fantasy-3);
+  border-color: var(--fantasy-3);
 }
 
 .child.fantasy-visited:hover,
 .child.fantasy-unvisited:hover,
 .child.fantasy-unvisited.active {
-    color: var(--fg);
-    border-style: solid;
-    background-color: var(--fantasy-5);
-    border-color: var(--fantasy-5);
-    font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
+  color: var(--fg);
+  border-style: solid;
+  background-color: var(--fantasy-5);
+  border-color: var(--fantasy-5);
+  font-variation-settings:
+    "CASL" 0,
+    "CRSV" 0,
+    "slnt" 0;
 }
 
 /* Neutral */
 
 .child.neutral-visited {
-    border-style: solid;
-    background-color: var(--accent-8);
-    border-color: var(--accent-8);
-    color: var(--accent-30);
+  border-style: solid;
+  background-color: var(--accent-8);
+  border-color: var(--accent-8);
+  color: var(--accent-30);
 }
 
 .child.neutral-unvisited {
-    border: 1px dashed var(--accent-20);
-    background-color: var(--accent-0);
-    color: var(--accent-20);
-    font-variation-settings: "CASL" 1, "CRSV" 1, "slnt" -15;
+  border: 1px dashed var(--accent-20);
+  background-color: var(--accent-0);
+  color: var(--accent-20);
+  font-variation-settings:
+    "CASL" 1,
+    "CRSV" 1,
+    "slnt" -15;
 }
 
 .child.neutral-unvisited.inactive,
 .child.neutral-visited.inactive {
-    color: var(--accent-10);
-    border-color: var(--accent-10);
+  color: var(--accent-10);
+  border-color: var(--accent-10);
 }
 
 .child.neutral-visited.inactive {
-    color: var(--accent-15);
+  color: var(--accent-15);
 }
 
 .child.neutral-visited:hover,
 .child.neutral-unvisited:hover,
 .child.neutral-unvisited.active {
-    color: var(--bg);
-    border-style: solid;
-    background-color: var(--accent-30);
-    border-color: var(--accent-30);
-    font-variation-settings: "CASL" 0, "CRSV" 0, "slnt" 0;
+  color: var(--bg);
+  border-style: solid;
+  background-color: var(--accent-30);
+  border-color: var(--accent-30);
+  font-variation-settings:
+    "CASL" 0,
+    "CRSV" 0,
+    "slnt" 0;
 }
 
 /* landing */
 
 .landing {
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    z-index: 2;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  z-index: 2;
 }
 
 .landing-container {
-    margin-top: 200px;
+  margin-top: 200px;
 }
 
 h1 {
-    font: 54px/54px "Obviously Wide Light", "Arial Narrow", sans-serif;
-    text-transform: uppercase;
+  font:
+    54px/54px "Obviously Wide Light",
+    "Arial Narrow",
+    sans-serif;
+  text-transform: uppercase;
 }
 
 .landing-subtitle {
-    text-transform: uppercase;
-    font-size: 2.14vw;
-    font: 500 2.14vw/1 "Obviously", sans-serif;
-    text-align: center;
+  text-transform: uppercase;
+  font-size: 2.14vw;
+  font:
+    500 2.14vw/1 "Obviously",
+    sans-serif;
+  text-align: center;
 }
 
 .landing-blurb {
-    max-width: 700px;
-    font-size: 18px;
+  max-width: 700px;
+  font-size: 18px;
 }
 
 .landing-blurb > p {
-    white-space: normal;
+  white-space: normal;
 }
-
 
 /* key input */
 
 .key-input-container {
-    width: 425px;
-    margin-top: 80px;
-    background-color: var(--blurred-0);
-    backdrop-filter: blur(10px);
+  width: 425px;
+  margin-top: 80px;
+  background-color: var(--blurred-0);
+  backdrop-filter: blur(10px);
 }
 
 .key-valid {
-    border-color: var(--ok);
-    box-shadow:inset 0px 0px 0px 1px var(--ok);
+  border-color: var(--ok);
+  box-shadow: inset 0px 0px 0px 1px var(--ok);
 }
 
 .key-valid:focus {
-    border-color: var(--ok);
+  border-color: var(--ok);
 }
 
 .key-invalid {
-    border-color: var(--err);
+  border-color: var(--err);
 }
 
 /* library */
 
 .library-icon {
-    padding-top: 10px;
+  padding-top: 10px;
 }
 
 .library {
-    margin: var(--space-full) auto;
-    max-width: 1200px;
-    overflow: auto;
-    height: 90vh;
+  margin: var(--space-full) auto;
+  max-width: 1200px;
+  overflow: auto;
+  height: 90vh;
 }
 
 .library-button:hover {
-    background: var(--accent-25);
-    color: var(--bg);
+  background: var(--accent-25);
+  color: var(--bg);
 }
 
 .library-items {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: var(--space-full);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: var(--space-full);
 }
 
 .library-item {
-    font-size: 2rem;
-    background-color: var(--accent-2);
-    border-color: var(--accent-3);
+  font-size: 2rem;
+  background-color: var(--accent-2);
+  border-color: var(--accent-3);
 }
 
 .library-item-meta {
-    font: 8px/1 "Obviously", sans-serif;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--accent-30);
+  font:
+    8px/1 "Obviously",
+    sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-30);
 }
 
 .library-item h2 {
-    font-family: "Obviously Narrow", "Arial Narrow", sans-serif;
-    margin-top: -2rem;
-    font-size: 13rem;
-    line-height: 12rem;
-    margin-bottom: 3rem;
+  font-family: "Obviously Narrow", "Arial Narrow", sans-serif;
+  margin-top: -2rem;
+  font-size: 13rem;
+  line-height: 12rem;
+  margin-bottom: 3rem;
 }
 
 .library-item:hover {
-    border-color: var(--accent-25);
-    background-color: var(--accent-25);
-    cursor: pointer;
+  border-color: var(--accent-25);
+  background-color: var(--accent-25);
+  cursor: pointer;
 }
 
 .library-item:hover > * {
-    color: var(--bg);
+  color: var(--bg);
 }
 
 .library-item-new-story-card {
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .library-delete-story {
-	background-color: darkred;
-	color: var(--fg);
-	padding: 6px 8px;
-	border-radius: 4px;
+  background-color: darkred;
+  color: var(--fg);
+  padding: 6px 8px;
+  border-radius: 4px;
 }
 
 .library-delete-story:hover {
-	background-color: #9f0000;
+  background-color: #9f0000;
 }
 
 .source-code {
-    color: var(--acccent-20);
+  color: var(--acccent-20);
 }
 
 /* radial map */
 
 .radial-map {
-    height: 100%;
+  height: 100%;
 }
 
 .radial-map-story {
-	background-color: var(--blurred--0);
-	border: 1px solid var(--blurred-0);
-	border-radius: 20px;
-	width: 40vw;
+  background-color: var(--blurred--0);
+  border: 1px solid var(--blurred-0);
+  border-radius: 20px;
+  width: 40vw;
 }
 
 .neutral-tree-map-node-root {
-    fill: var(--accent-30);
-    stroke: var(--accent-30);
-    stroke-width: 3px;
-    cursor: pointer;
+  fill: var(--accent-30);
+  stroke: var(--accent-30);
+  stroke-width: 3px;
+  cursor: pointer;
 }
 
 .neutral-tree-map-node-current {
-    cursor: pointer;
-    fill: var(--accent-20);
-    stroke: var(--accent-30);
-    stroke-width: 3px;
+  cursor: pointer;
+  fill: var(--accent-20);
+  stroke: var(--accent-30);
+  stroke-width: 3px;
 }
 
 .neutral-tree-map-node-current-dim {
-    fill: var(--accent-10);
-    stroke: var(--accent-10);
-    stroke-width: 3px;
-    cursor: pointer;
+  fill: var(--accent-10);
+  stroke: var(--accent-10);
+  stroke-width: 3px;
+  cursor: pointer;
 }
 
 .neutral-tree-map-node-current-superseded {
-    fill: var(--accent-30);
-    stroke: var(--accent-30);
-    cursor: pointer;
+  fill: var(--accent-30);
+  stroke: var(--accent-30);
+  cursor: pointer;
 }
 
 .neutral-tree-map-node-highlight {
-    cursor: pointer;
-    fill: var(--accent-30);
-    stroke: var(--accent-30);
-    stroke-width: 3px;
+  cursor: pointer;
+  fill: var(--accent-30);
+  stroke: var(--accent-30);
+  stroke-width: 3px;
 }
 
 .neutral-tree-map-node-active {
-    fill: var(--highlight);
-    cursor: pointer;
+  fill: var(--highlight);
+  cursor: pointer;
 }
 
 .neutral-tree-map-node-inactive {
-    fill: var(--accent-10);
-    cursor: pointer;
+  fill: var(--accent-10);
+  cursor: pointer;
 }
 
 .neutral-tree-map-node-prospective {
-    fill: none;
-    stroke: var(--accent-20);
-    stroke-dasharray: 4;
-    cursor: pointer;
+  fill: none;
+  stroke: var(--accent-20);
+  stroke-dasharray: 4;
+  cursor: pointer;
 }
 
-.neutral-tree-map-node-active:hover, .neutral-tree-map-node-root:hover, .neutral-tree-map-node-current:hover, .neutral-tree-map-node-inactive:hover  {
-    fill: var(--fg);
-    cursor: pointer;
+.neutral-tree-map-node-active:hover,
+.neutral-tree-map-node-root:hover,
+.neutral-tree-map-node-current:hover,
+.neutral-tree-map-node-inactive:hover {
+  fill: var(--fg);
+  cursor: pointer;
 }
 
-.hidden {display: none;}
-.neutral-hidden {display: none;}
-.fantasy-hidden {display: none;}
-.sci-fi-hidden      {display: none;}
-.poetic-hidden  {display: none;}
+.hidden {
+  display: none;
+}
+.neutral-hidden {
+  display: none;
+}
+.fantasy-hidden {
+  display: none;
+}
+.sci-fi-hidden {
+  display: none;
+}
+.poetic-hidden {
+  display: none;
+}
 
 .fantasy-tree-map-node-root {
-    fill: var(--fantasy-6);
-    stroke: var(--fantasy-6);
-    stroke-width: 3px;
-    cursor: pointer;
+  fill: var(--fantasy-6);
+  stroke: var(--fantasy-6);
+  stroke-width: 3px;
+  cursor: pointer;
 }
 
 .fantasy-tree-map-node-current {
-    cursor: pointer;
-    fill: var(--fantasy-4);
-    stroke: var(--fantasy-6);
-    stroke-width: 3px;
+  cursor: pointer;
+  fill: var(--fantasy-4);
+  stroke: var(--fantasy-6);
+  stroke-width: 3px;
 }
 
 .fantasy-tree-map-node-current-dim {
-    fill: var(--fantasy-4);
-    stroke: var(--fantasy-4);
-    stroke-width: 3px;
-    cursor: pointer;
+  fill: var(--fantasy-4);
+  stroke: var(--fantasy-4);
+  stroke-width: 3px;
+  cursor: pointer;
 }
 
 .fantasy-tree-map-node-current-superseded {
-    fill: var(--fantasy-6);
-    stroke: var(--fantasy-6);
-    cursor: pointer;
-    stroke-width: 3px;
+  fill: var(--fantasy-6);
+  stroke: var(--fantasy-6);
+  cursor: pointer;
+  stroke-width: 3px;
 }
 
 .fantasy-tree-map-node-highlight {
-    cursor: pointer;
-    fill: var(--fantasy-6);
-    stroke: var(--fantasy-6);
-    stroke-width: 3px;
+  cursor: pointer;
+  fill: var(--fantasy-6);
+  stroke: var(--fantasy-6);
+  stroke-width: 3px;
 }
 
 .fantasy-tree-map-node-active {
-    fill: var(--fantasy-6);
-    cursor: pointer;
+  fill: var(--fantasy-6);
+  cursor: pointer;
 }
 
 .fantasy-tree-map-node-inactive {
-    fill: var(--fantasy-4);
-    cursor: pointer;
+  fill: var(--fantasy-4);
+  cursor: pointer;
 }
 
 .fantasy-tree-map-node-prospective {
-    fill: none;
-    stroke: var(--fantasy-5);
-    stroke-dasharray: 4;
-    cursor: pointer;
+  fill: none;
+  stroke: var(--fantasy-5);
+  stroke-dasharray: 4;
+  cursor: pointer;
 }
 
-.fantasy-tree-map-node-active:hover, .fantasy-tree-map-node-root:hover, .fantasy-tree-map-node-current:hover, .fantasy-tree-map-node-inactive:hover  {
-    fill: var(--fantasy-7);
-    cursor: pointer;
+.fantasy-tree-map-node-active:hover,
+.fantasy-tree-map-node-root:hover,
+.fantasy-tree-map-node-current:hover,
+.fantasy-tree-map-node-inactive:hover {
+  fill: var(--fantasy-7);
+  cursor: pointer;
 }
 
 .sci-fi-tree-map-node-root {
-    fill: var(--sci-fi-6);
-    stroke: var(--sci-fi-6);
-    stroke-width: 3px;
-    cursor: pointer;
+  fill: var(--sci-fi-6);
+  stroke: var(--sci-fi-6);
+  stroke-width: 3px;
+  cursor: pointer;
 }
 
 .sci-fi-tree-map-node-current {
-    cursor: pointer;
-    fill: var(--sci-fi-4);
-    stroke: var(--sci-fi-6);
-    stroke-width: 3px;
+  cursor: pointer;
+  fill: var(--sci-fi-4);
+  stroke: var(--sci-fi-6);
+  stroke-width: 3px;
 }
 
 .sci-fi-tree-map-node-current-dim {
-    fill: var(--sci-fi-4);
-    stroke: var(--sci-fi-4);
-    stroke-width: 3px;
-    cursor: pointer;
+  fill: var(--sci-fi-4);
+  stroke: var(--sci-fi-4);
+  stroke-width: 3px;
+  cursor: pointer;
 }
 
 .sci-fi-tree-map-node-current-superseded {
-    fill: var(--sci-fi-6);
-    stroke: var(--sci-fi-6);
-    cursor: pointer;
-    stroke-width: 3px;
+  fill: var(--sci-fi-6);
+  stroke: var(--sci-fi-6);
+  cursor: pointer;
+  stroke-width: 3px;
 }
 
 .sci-fi-tree-map-node-highlight {
-    cursor: pointer;
-    fill: var(--sci-fi-6);
-    stroke: var(--sci-fi-6);
-    stroke-width: 3px;
+  cursor: pointer;
+  fill: var(--sci-fi-6);
+  stroke: var(--sci-fi-6);
+  stroke-width: 3px;
 }
 
 .sci-fi-tree-map-node-active {
-    fill: var(--sci-fi-6);
-    cursor: pointer;
+  fill: var(--sci-fi-6);
+  cursor: pointer;
 }
 
 .sci-fi-tree-map-node-inactive {
-    fill: var(--sci-fi-4);
-    cursor: pointer;
+  fill: var(--sci-fi-4);
+  cursor: pointer;
 }
 
 .sci-fi-tree-map-node-prospective {
-    fill: node;
-    stroke: var(--sci-fi-5);
-    stroke-dasharray: 4;
-    cursor: pointer;
+  fill: node;
+  stroke: var(--sci-fi-5);
+  stroke-dasharray: 4;
+  cursor: pointer;
 }
 
-.sci-fi-tree-map-node-active:hover, .sci-fi-tree-map-node-root:hover, .sci-fi-tree-map-node-current:hover, .sci-fi-tree-map-node-inactive:hover  {
-    fill: var(--sci-fi-7);
-    cursor: pointer;
+.sci-fi-tree-map-node-active:hover,
+.sci-fi-tree-map-node-root:hover,
+.sci-fi-tree-map-node-current:hover,
+.sci-fi-tree-map-node-inactive:hover {
+  fill: var(--sci-fi-7);
+  cursor: pointer;
 }
 
 .poetic-tree-map-node-root {
-    fill: var(--poetic-6);
-    stroke: var(--poetic-6);
-    stroke-width: 3px;
-    cursor: pointer;
+  fill: var(--poetic-6);
+  stroke: var(--poetic-6);
+  stroke-width: 3px;
+  cursor: pointer;
 }
 
 .poetic-tree-map-node-current {
-    cursor: pointer;
-    fill: var(--poetic-4);
-    stroke: var(--poetic-6);
-    stroke-width: 3px;
+  cursor: pointer;
+  fill: var(--poetic-4);
+  stroke: var(--poetic-6);
+  stroke-width: 3px;
 }
 
 .poetic-tree-map-node-current-dim {
-    fill: var(--poetic-4);
-    stroke: var(--poetic-4);
-    stroke-width: 3px;
-    cursor: pointer;
+  fill: var(--poetic-4);
+  stroke: var(--poetic-4);
+  stroke-width: 3px;
+  cursor: pointer;
 }
 
 .poetic-tree-map-node-current-superseded {
-    fill: var(--poetic-6);
-    stroke: var(--poetic-6);
-    cursor: pointer;
-    stroke-width: 3px;
+  fill: var(--poetic-6);
+  stroke: var(--poetic-6);
+  cursor: pointer;
+  stroke-width: 3px;
 }
 
 .poetic-tree-map-node-highlight {
-    cursor: pointer;
-    fill: var(--poetic-6);
-    stroke: var(--poetic-6);
-    stroke-width: 3px;
+  cursor: pointer;
+  fill: var(--poetic-6);
+  stroke: var(--poetic-6);
+  stroke-width: 3px;
 }
 
 .poetic-tree-map-node-active {
-    fill: var(--poetic-6);
-    cursor: pointer;
+  fill: var(--poetic-6);
+  cursor: pointer;
 }
 
 .poetic-tree-map-node-inactive {
-    fill: var(--poetic-4);
-    cursor: pointer;
+  fill: var(--poetic-4);
+  cursor: pointer;
 }
 
 .poetic-tree-map-node-prospective {
-    fill: node;
-    stroke: var(--poetic-5);
-    stroke-dasharray: 4;
-    cursor: pointer;
+  fill: node;
+  stroke: var(--poetic-5);
+  stroke-dasharray: 4;
+  cursor: pointer;
 }
 
-.poetic-tree-map-node-active:hover, .poetic-tree-map-node-root:hover, .poetic-tree-map-node-current:hover, .poetic-tree-map-node-inactive:hover  {
-    fill: var(--poetic-7);
-    cursor: pointer;
+.poetic-tree-map-node-active:hover,
+.poetic-tree-map-node-root:hover,
+.poetic-tree-map-node-current:hover,
+.poetic-tree-map-node-inactive:hover {
+  fill: var(--poetic-7);
+  cursor: pointer;
 }
 
 .neutral-tree-map-link {
-    fill: none;
-    stroke: var(--accent-10);
-    stroke-width: 1px;
+  fill: none;
+  stroke: var(--accent-10);
+  stroke-width: 1px;
 }
 
 .neutral-tree-map-link-active {
-    fill: none;
-    stroke: var(--highlight);
-    stroke-width: 2px;
+  fill: none;
+  stroke: var(--highlight);
+  stroke-width: 2px;
 }
 
 .neutral-tree-map-link-prospective {
-    fill: none;
-    stroke: var(--accent-20);
-    stroke-width: 1px;
-    stroke-dasharray: 4;
+  fill: none;
+  stroke: var(--accent-20);
+  stroke-width: 1px;
+  stroke-dasharray: 4;
 }
 
 .fantasy-tree-map-link {
-    fill: none;
-    stroke: var(--fantasy-4);
-    stroke-width: 1px;
+  fill: none;
+  stroke: var(--fantasy-4);
+  stroke-width: 1px;
 }
 
 .fantasy-tree-map-link-active {
-    fill: none;
-    stroke: var(--fantasy-6);
-    stroke-width: 2px;
+  fill: none;
+  stroke: var(--fantasy-6);
+  stroke-width: 2px;
 }
 
 .fantasy-tree-map-link-prospective {
-    fill: none;
-    stroke: var(--fantasy-6);
-    stroke-width: 1px;
-    stroke-dasharray: 4;
+  fill: none;
+  stroke: var(--fantasy-6);
+  stroke-width: 1px;
+  stroke-dasharray: 4;
 }
 
 .sci-fi-tree-map-link {
-    fill: none;
-    stroke: var(--sci-fi-4);
-    stroke-width: 1px;
+  fill: none;
+  stroke: var(--sci-fi-4);
+  stroke-width: 1px;
 }
 
 .sci-fi-tree-map-link-active {
-    fill: none;
-    stroke: var(--sci-fi-6);
-    stroke-width: 2px;
+  fill: none;
+  stroke: var(--sci-fi-6);
+  stroke-width: 2px;
 }
 
 .sci-fi-tree-map-link-prospective {
-    fill: none;
-    stroke: var(--sci-fi-6);
-    stroke-width: 1px;
-    stroke-dasharray: 4;
+  fill: none;
+  stroke: var(--sci-fi-6);
+  stroke-width: 1px;
+  stroke-dasharray: 4;
 }
 
 .poetic-tree-map-link {
-    fill: none;
-    stroke: var(--poetic-4);
-    stroke-width: 1px;
+  fill: none;
+  stroke: var(--poetic-4);
+  stroke-width: 1px;
 }
 
 .poetic-tree-map-link-active {
-    fill: none;
-    stroke: var(--poetic-6);
-    stroke-width: 2px;
+  fill: none;
+  stroke: var(--poetic-6);
+  stroke-width: 2px;
 }
 
 .poetic-tree-map-link-prospective {
-    fill: none;
-    stroke: var(--poetic-6);
-    stroke-width: 1px;
-    stroke-dasharray: 4;
+  fill: none;
+  stroke: var(--poetic-6);
+  stroke-width: 1px;
+  stroke-dasharray: 4;
 }
