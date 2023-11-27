@@ -18,8 +18,7 @@
    {:on-pointer-down #(rf/dispatch [:new-story/template template])
     :class (when (= active template) "template-toggle-active shadow-small")}
    [icon]
-   [:span.tooltip.rounded.shadow-small
-    {:style {:left "0" :top "120%"}}
+   [:span.tooltip.rounded.shadow-small.tooltip-new-story
     tooltip]])
 
 (defn templates []

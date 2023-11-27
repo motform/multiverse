@@ -13,12 +13,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  transition:
-    color 100ms,
-    background-color 100ms,
-    border-color 100ms,
-    font-weight 100ms,
-    font-style 100ms;
+  transition: all 200ms;
 }
 
 input,
@@ -370,7 +365,10 @@ textarea:focus {
   z-index: 1;
   top: 90%;
   left: 50%;
+  transform: translate(-50%, -375%);
   border-radius: 4px;
+  width: fit-content;
+  white-space: nowrap;
 }
 
 .tooltip-large {
@@ -385,6 +383,10 @@ textarea:focus {
 
 .tooltip-container:hover .tooltip {
   opacity: 100%;
+}
+
+.tooltip-new-story {
+  transform: translate(-50%, -275%);
 }
 
 /* header */
