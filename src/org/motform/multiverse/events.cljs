@@ -195,15 +195,16 @@
              (update-in [:db/stories story-id :story/sentences] merge children)
              (assoc-in  [:db/stories story-id :story/sentences parent-id :sentence/children] child-ids)
              (assoc-in  [:db/stories story-id :story/meta :story/updated] (js/Date.))
-             (assoc-in  [:db/state :open-ai/pending-request?] false))})))
+             (assoc-in  [:db/state :open-ai/pending-request?] false))
+       :dispatch [:open-ai/title]})))
 
 (reg-event-db :open-ai/handle-title
   [local-storage-interceptor]
-  (fn [db [_ story-id title]]
-    (db story-id title)
-    (-> db
-      (assoc-in [:db/stories story-id :story/meta :story/title]
-        (-> title :choices first :message :content)))))
+  (fn [db [_ story-id response]]
+    (let [title (-> response :choices first :message :content (str/replace #"\"|\'" ""))]
+      (-> db
+       (assoc-in [:db/stories story-id :story/meta :story/title]
+         title)))))
 
 (reg-event-db :open-ai/handle-validate-api-key
   [local-storage-interceptor]
@@ -243,8 +244,8 @@
 (reg-event-fx :open-ai/title
   (fn [{:keys [db]} _]
     (let [{:keys [story-id api-key]} (util/completion-data db)
-          story (vals (get-in db [:db/stories story-id :story/sentences]))
-          params (open-ai/payload :gpt-4-1106-preview story)]
+          pargraphs (vals (get-in db [:db/stories story-id :story/sentences]))
+          params (open-ai/title :gpt-4-1106-preview pargraphs)]
       {:http-xhrio {:method  :post
                     :uri     (open-ai/endpoint :chat)
                     :headers (auth api-key)

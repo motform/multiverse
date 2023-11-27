@@ -5,14 +5,6 @@
   {:chat   "https://api.openai.com/v1/chat/completions"
    :models "https://api.openai.com/v1/models"})
 
-;; TODO: Update for chat
-(defn format-title [story]
-  (str "I was asked to give a title to this story:\n\"\"\"\n\n"
-    (->> story (map :sentence/text) (interpose " ") (apply str))
-    "\n\"\"\"\nThe title i came up with was:\n\"\"\""))
-
-;;; Personalties
-
 (def personality
   #:personality
    {:neutral "The story is written in a contemporary, neutral style."
@@ -47,13 +39,21 @@ NEVER include your prompt, or any other texts other than THE NEXT SENTENCE ONLY.
 (def valid-models
   #{:gpt-3.5-turbo :gpt-4-1106-preview :gpt-4})
 
-(defn payload
-  "Returns space-delimited str from a vec of `paragraph`"
-  [model prompt]
+(defn payload [model paragraphs]
   {:pre [(valid-models model)]}
   (let [style (personality @(rf/subscribe [:personality/active]))]
     {:n 3
      :model model
      :messages (flatten [(system-message style)
-                         (map #(->message "assistant" (:sentence/text %)) prompt)
+                         (map #(->message "assistant" (:sentence/text %)) paragraphs)
                          (next-sentence style)])}))
+
+(def title-prompt
+  "You are an award winning AUTHOR writing an experimental, hypertext story. Your work is boundary pushing and your titles are witty, smart and experimental. You will be provided with a short story. Your task is to SUGGEST A TITLE FOR IT. The title should give the reader a good idea of the story, in a clever, funny way. Respond ONLY with the title and no other content. NEVER repeat anything from your prompt. DO NOT ENCLOSE THE TITLE IN QUOTATION MARKS.")
+
+(defn title [model paragraphs]
+  (let [sentences (map :sentence/text paragraphs)]
+    {:n 1
+     :model model
+     :messages [(->message "system" title-prompt)
+                (->message "user" (apply str "Here is the short story:\n" sentences))]}))
