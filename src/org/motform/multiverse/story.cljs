@@ -2,15 +2,20 @@
   (:require
     [org.motform.multiverse.util :as util]))
 
-(defn ->sentence [id text path children]
+(defn ->sentence [text & {:keys [id path children]}]
   #:sentence{:id id :text text :path path :children children})
 
-(defn ->story [story-id sentence-id prompt]
-  {:story/meta {:story/id story-id
+(defn ->story [prompt & {:keys [id sentence-id model version]}]
+  {:story/meta {:story/id id
                 :story/title ""
                 :story/updated (js/Date.)
-                :sentence/active sentence-id}
-   :story/sentences {sentence-id (->sentence sentence-id prompt [sentence-id] [])}})
+                :sentence/active sentence-id
+                :open-ai/model model
+                :story/prompt-version version}
+   :story/sentences {sentence-id (->sentence prompt
+                                             :id sentence-id
+                                             :path [sentence-id]
+                                             :children [])}})
 
 (def prompt-templates
   #:template
@@ -22,8 +27,12 @@
 
 (defn ->children
   "Make children map to be merged into sentences."
-  [parent-path child-ids texts]
+  [texts & {:keys [child-ids parent-path]}]
   (let [child-pairs (util/pairs child-ids texts)]
     (reduce (fn [children [id text]]
-              (assoc children id (->sentence id text (conj parent-path id) [])))
+              (assoc children id
+                     (->sentence text
+                                 :id id
+                                 :path (conj parent-path id)
+                                 :children [])))
             {} child-pairs)))

@@ -101,7 +101,8 @@
     (let [story-id    (nano-id 10)
           sentence-id (nano-id 10)]
       {:db (-> db
-               (assoc-in  [:db/stories story-id] (story/->story story-id sentence-id prompt))
+               (assoc-in  [:db/stories story-id]
+                          (story/->story prompt :id story-id :sentence-id sentence-id))
                (assoc-in  [:db/state :story/active] story-id)
                (assoc-in  [:db/state :sentence/active] sentence-id)
                (assoc-in  [:db/state :sentence/highlight] {:id sentence-id :source :page/new-story})
@@ -134,9 +135,9 @@
                 (let [parent-path (get-in db [:db/stories story-id :story/sentences parent-id :sentence/path])
                       child-ids (repeatedly 3 #(nano-id 10))
                       children (story/->children
-                                 parent-path
-                                 child-ids
-                                 (open-ai/completion-texts completions))]
+                                 (open-ai/completion-texts completions)
+                                 :child-ids child-ids
+                                 :parent-path parent-path)]
                   {:db (-> db
                            (update-in [:db/stories story-id :story/sentences] merge children)
                            (assoc-in  [:db/stories story-id :story/sentences parent-id :sentence/children] child-ids)
