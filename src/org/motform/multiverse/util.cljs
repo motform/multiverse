@@ -29,6 +29,10 @@
           (update $ 0 str/capitalize) ; always capitalize the leading word
           (str/join " " $))))
 
+(defn format-date [date]
+  (-> (js/Intl.DateTimeFormat. "en-US" #js {:year "numeric" :month "2-digit" :day "2-digit"})
+      (.format date)))
+
 ;; Graphical elements
 
 (defn Spinner []

@@ -1,13 +1,11 @@
 (ns org.motform.multiverse.components.library
   (:require
+    [clojure.string :as str]
     [nano-id.core :refer [nano-id]]
     [org.motform.multiverse.routes :as routes]
+    [org.motform.multiverse.story :as story]
     [org.motform.multiverse.util :as util]
     [re-frame.core :as rf]))
-
-(defn- format-date [date]
-  (-> (js/Intl.DateTimeFormat. "en-US" #js {:year "numeric" :month "2-digit" :day "2-digit"})
-      (.format date)))
 
 (defn open-story [id]
   (rf/dispatch [:story/active id])
@@ -23,7 +21,7 @@
      [:td model]
      [:td (or prompt-version "N/A")]
      [:td (count sentences)]
-     [:td (format-date updated)]]))
+     [:td (util/format-date updated)]]))
 
 (defn LibraryItems []
   [:table.library-items
@@ -37,13 +35,16 @@
      [:th "Date"]]]
    [:tbody
     (for [story (reverse @(rf/subscribe [:db/stories]))]
-      ^{:key (get-in story [:story/meta :story/id])} [LibraryItemRow story])]])
+      ^{:key (get-in story [:story/meta :story/id])}
+      [LibraryItemRow story])]])
 
 (defn export-library
   "SOURCE: https://gist.github.com/zoren/cc74758198b503b1755b75d1a6b376e7"
   []
-  (let [library   (js/Blob. #js [(prn-str @(rf/subscribe [:db/stories]))] #js {:type "application/edn"})
-        file-name (nano-id)
+  (let [stories @(rf/subscribe [:db/stories])
+        md (->> stories (map story/->md) (str/join "\n\n"))
+        library   (js/Blob. #js [(prn-str md)] #js {:type "application/edn"})
+        file-name (str "multiverse-library-export-" (nano-id) ".md")
         edn-url   (js/URL.createObjectURL library)
         anchor    (doto (js/document.createElement "a")
                     (-> .-href (set! edn-url))
