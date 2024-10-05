@@ -1,6 +1,6 @@
 (ns org.motform.multiverse.subs
   (:require
-    [org.motform.multiverse.util :as util]
+    [org.motform.multiverse.db :as db]
     [re-frame.core :as rf :refer [reg-sub]]))
 
 (defn from-state [k]
@@ -47,7 +47,7 @@
 (reg-sub
   :sentence/children
   (fn [db [_ parent-id story-id]]
-    (vals (util/children db parent-id story-id))))
+    (vals (db/children db parent-id story-id))))
 
 ;; db
 
@@ -86,7 +86,7 @@
   (fn [db [_ sentence-id story-id]]
     (let [story-id (or story-id @(rf/subscribe [:story/active]))
           sentence-id (or sentence-id @(rf/subscribe [:sentence/active story-id]))]
-      (util/paragraph db story-id sentence-id))))
+      (db/paragraph db story-id sentence-id))))
 
 (defn sentence-tree-level [sentences sentence-id active-sentence-id parent-id]
   (let [{:sentence/keys [children]} (sentences sentence-id)]

@@ -1,5 +1,8 @@
 (ns org.motform.multiverse.open-ai)
 
+(defn auth [api-key]
+  {"Authorization" (str "Bearer " api-key)})
+
 (def endpoint
   {:chat   "https://api.openai.com/v1/chat/completions"
    :models "https://api.openai.com/v1/models"})
@@ -15,6 +18,10 @@
   [role ^String content]
   (:pre [(valid-role? role)])
   {:role (name role) :content content})
+
+(defn completion-texts [completion]
+  (map #(-> % :message :content)
+       (:choices completion)))
 
 ;; Chat 
 

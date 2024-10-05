@@ -44,3 +44,24 @@
  (fn [cofx _]
    (assoc cofx :local-store-collections
           (some->> (.getItem js/localStorage ls-key) (reader/read-string)))))
+
+(defn children
+  ([db parent-id] (children db parent-id nil))
+  ([db parent-id story-id]
+   (let [story-id (or story-id (get-in db [:db/state :story/active]))]
+     (select-keys (get-in db [:db/stories story-id :story/sentences])
+                  (get-in db [:db/stories story-id :story/sentences parent-id :sentence/children])))))
+
+(defn completion-meta [db]
+  (let [story-id  (get-in db [:db/state :story/active])
+        parent-id (get-in db [:db/stories story-id :story/meta :sentence/active])
+        api-key   (get-in db [:db/state :open-ai/key :open-ai/api-key])]
+    {:story-id  story-id
+     :parent-id parent-id
+     :api-key   api-key}))
+
+(defn paragraph [db story-id sentence-id]
+  (reduce
+    (fn [sentences id]
+      (conj sentences (get-in db [:db/stories story-id :story/sentences id])))
+    [] (get-in db [:db/stories story-id :story/sentences sentence-id :sentence/path])))

@@ -1,7 +1,8 @@
 (ns org.motform.multiverse.routes
-  (:require [bidi.bidi :as bidi]
-            [re-frame.core :as rf]
-            [pushy.core :as pushy]))
+  (:require
+    [bidi.bidi :as bidi]
+    [pushy.core :as pushy]
+    [re-frame.core :as rf]))
 
 (def titles
   {:page/new-story "New story"

@@ -109,7 +109,7 @@
          [map/RadialMap :source/story]])
       [:section.v-stack.gap-full.pad-full
        (if request?
-         [:section.children.pad-full [util/spinner]]
+         [:section.children.pad-full [util/Spinner]]
          [:section.children.h-equal-3.gap-full
           (for [{:sentence/keys [id text children]} children] ^{:key id}
                [ChildSelector text id (seq children)])])]]]))
