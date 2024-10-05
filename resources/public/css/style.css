@@ -197,7 +197,6 @@ textarea:focus {
 }
 
 .textarea-large {
-  height: 125px;
   width: 100%;
   overflow: scroll;
 }
@@ -407,13 +406,10 @@ textarea:focus {
 }
 
 .tab-label {
-  font-weight: 700;
-  align-self: center;
-  margin-top: -5px;
-  color: var(--fg);
+  margin-top: -1px;
 }
 
-.tab-label {
+.floating-tab-label {
   font-weight: 700;
   align-self: center;
   margin-top: -5px;
@@ -591,6 +587,7 @@ textarea:focus {
   align-items: center;
   transform: scale(110%);
   border: 1px solid transparent;
+  user-select: none;
 }
 
 .template-toggle:hover {
@@ -614,7 +611,10 @@ textarea:focus {
 
 .template-tip {
   width: 100%;
-  margin-top: -20px;
+  margin-bottom: 8px;
+  margin-inline: 16px;
+  font-size: 12px;
+  white-space: pre;
 }
 
 /* new-story */
@@ -622,6 +622,20 @@ textarea:focus {
 .new-story {
   align-items: center;
   max-width: 700px;
+  padding-block-start: 40px;
+}
+
+.prompt {
+  padding-block-start: 24px;
+}
+
+.prompt-label {
+  font:
+    12px/1 "Obviously",
+    sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--accent-30);
 }
 
 .prompt-background {
@@ -664,16 +678,20 @@ textarea:focus {
   color: var(--accent-20);
 }
 
-#prompt-textarea {
+.prompt-textarea {
   border-color: var(--blurred-0);
 }
 
-#prompt-textarea:hover {
+.prompt-textarea:disabled {
+  color: var(--accent-30);
+}
+
+.prompt-textarea:hover {
   background-color: var(--blurred-1);
   border-color: var(--blurred-1);
 }
 
-#prompt-textarea:focus {
+.prompt-textarea:focus {
   background-color: var(--blurred-2);
   border-color: var(--blurred-2);
 }

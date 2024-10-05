@@ -5,6 +5,7 @@
     [nano-id.core :refer [nano-id]]
     [org.motform.multiverse.db :as db]
     [org.motform.multiverse.open-ai :as open-ai]
+    [org.motform.multiverse.prompts :refer [prompts]]
     [org.motform.multiverse.routes :as routes]
     [org.motform.multiverse.story :as story]
     [re-frame.core :as rf :refer [reg-event-db reg-event-fx reg-fx inject-cofx after]]))
@@ -100,36 +101,49 @@
 (reg-event-db
   :new-story/prompt-version
   (fn [db [_ version]]
-    (assoc-in db [:db/state :new-story/prompt-version] version)))
+    (-> db
+        (assoc-in [:db/state :new-story/prompt-version] version)
+        (assoc-in [:db/state :new-story/system-message] (get-in prompts [version :system] ""))
+        (assoc-in [:db/state :new-story/user-message]   (get-in prompts [version :user]   "")))))
+
+(reg-event-db
+  :new-story/update
+  (fn [db [_ k v]]
+    {:pre [(#{:new-story/prompt :new-story/system-message :new-story/user-message} k)
+           (string? v)]}
+    (assoc-in db [:db/state k] v)))
 
 (reg-event-fx
   :new-story/submit
   (fn [{:keys [db]} _]
     (let [prompt (get-in db [:db/state :new-story/prompt])
           model  (get-in db [:db/state :new-story/model])
-          version (get-in db [:db/state :new-story/prompt-version])]
+          version (get-in db [:db/state :new-story/prompt-version])
+          system-message (get-in db [:db/state :new-story/system-message])
+          user-message (get-in db [:db/state :new-story/user-message])]
       {:db (assoc-in db [:db/state :new-story/prompt] "")
-       :dispatch [:story/new prompt model version]})))
+       :dispatch [:story/new prompt model version system-message user-message]})))
 
 (reg-event-fx
   :story/new
   [local-storage-interceptor]
-  (fn [{:keys [db]} [_ prompt model version]]
+  (fn [{:keys [db]} [_ prompt model version system-message user-message]]
     (let [story-id    (nano-id 10)
-          sentence-id (nano-id 10)]
+          sentence-id (nano-id 10)
+          story       (story/->story prompt
+                                     :id story-id
+                                     :sentence-id sentence-id
+                                     :model model
+                                     :version version
+                                     :system-message system-message
+                                     :user-message user-message)]
       {:db (-> db
-               (assoc-in  [:db/stories story-id]
-                          (story/->story prompt :id story-id :sentence-id sentence-id :model model :version version))
+               (assoc-in  [:db/stories story-id] story)
                (assoc-in  [:db/state :story/active] story-id)
                (assoc-in  [:db/state :sentence/active] sentence-id)
                (assoc-in  [:db/state :sentence/highlight] {:id sentence-id :source :page/new-story})
                (update-in [:db/state :story/recent] conj story-id))
        :dispatch [:open-ai/title]})))
-
-(reg-event-db
-  :new-story/update-prompt
-  (fn [db [_ prompt]]
-    (assoc-in db [:db/state :new-story/prompt] prompt)))
 
 ;; Library
 
@@ -200,8 +214,12 @@
 (reg-event-fx
   :open-ai/completions
   (fn [{:keys [db]} [_ parent-id prompt]]
-    (let [{:keys [story-id api-key model]} (db/request-data db)
-          params (open-ai/request-next-sentence model prompt)]
+    (let [{:keys [story-id api-key model system-message user-message]} (db/request-data db)
+          params (open-ai/request-next-sentence
+                   :model model
+                   :paragraphs prompt
+                   :system-message system-message
+                   :user-message user-message)]
       {:db (assoc-in db [:db/state :open-ai/pending-request?] true)
        :http-xhrio
        {:method  :post

@@ -2,6 +2,7 @@
   (:require
     [cljs.reader :as reader]
     [org.motform.multiverse.open-ai :as-alias open-ai]
+    [org.motform.multiverse.prompts :refer [prompts]]
     [re-frame.core :as rf]))
 
 ;; We store sentences as tree implemented by as an indexed map.
@@ -22,8 +23,10 @@
   {:db/stories {}
    :db/state
    {:page/active              :page/landing
-    :new-story/prompt         ""
+    :new-story/prompt         "" ; the initial sentence
     :new-story/prompt-version :prompt/v1 ; :prompt/v1, :prompt/v2
+    :new-story/system-message (get-in prompts [:prompt/v1 :system])
+    :new-story/user-message   (get-in prompts [:prompt/v1 :user])
     :new-story/model          ::open-ai/gpt-3.5-turbo ; ::open-ai/gpt-4o
     :story/active             nil
     :story/recent             []
@@ -55,11 +58,14 @@
                   (get-in db [:db/stories story-id :story/sentences parent-id :sentence/children])))))
 
 (defn request-data [db]
-  (let [story-id  (get-in db [:db/state :story/active])]
+  (let [story-id  (get-in db [:db/state :story/active])
+        story-meta #(conj [:db/stories story-id :story/meta] %)]
     {:story-id  story-id
-     :parent-id (get-in db [:db/stories story-id :story/meta :sentence/active])
      :api-key   (get-in db [:db/state :open-ai/key :open-ai/api-key])
-     :model     (get-in db [:db/stories story-id :story/meta :story/model])}))
+     :parent-id (get-in db (story-meta :sentence/active))
+     :model     (get-in db (story-meta :story/model))
+     :system-message (get-in db (story-meta :story/system-message))
+     :user-message   (get-in db (story-meta :story/user-message))}))
 
 (defn paragraph [db story-id sentence-id]
   (reduce

@@ -5,13 +5,15 @@
 (defn ->sentence [text & {:keys [id path children]}]
   #:sentence{:id id :text text :path path :children children})
 
-(defn ->story [prompt & {:keys [id sentence-id model version]}]
+(defn ->story [prompt & {:keys [id sentence-id model version system-message user-message]}]
   {:story/meta {:story/id id
                 :story/title ""
                 :story/updated (js/Date.)
                 :sentence/active sentence-id
                 :story/model model
-                :story/prompt-version version}
+                :story/prompt-version version
+                :story/system-message system-message
+                :story/user-message user-message}
    :story/sentences {sentence-id (->sentence prompt
                                              :id sentence-id
                                              :path [sentence-id]

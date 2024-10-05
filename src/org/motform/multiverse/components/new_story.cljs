@@ -25,11 +25,9 @@
 (defn PromptVersions []
   (let [active @(rf/subscribe [:new-story/prompt-version])
         Toggle (partial Toggle active :new-story/prompt-version)]
-    [:section.v-stack.gap-quarter
-     [:span.toggle-label "Prompt"]
-     [:section.template-toggles.h-stack.gap-quarter
-      [Toggle :prompt/v1 "v1"]
-      [Toggle :prompt/v2 "v2"]]]))
+    [:section.template-toggles.h-stack.gap-quarter
+     [Toggle :prompt/v1 "v1"]
+     [Toggle :prompt/v2 "v2"]]))
 
 (defn submit-story []
   (rf/dispatch [:new-story/submit])
@@ -39,19 +37,48 @@
 
 (defn Prompt []
   (let [prompt @(rf/subscribe [:new-story/prompt])
+        system-message @(rf/subscribe [:new-story/system-message])
+        user-message @(rf/subscribe [:new-story/user-message])
+        promt-version @(rf/subscribe [:new-story/prompt-version])
         blank? (str/blank? prompt)]
-    [:section.prompt.prompt-background.v-stack.gap-half.rounded-large.shadow-large.pad-half
-     [:textarea#prompt-textarea.textarea-large.rounded.shadow-large.pad-half
-      {:value prompt
-       :auto-focus true
-       :on-change #(rf/dispatch [:new-story/update-prompt (.. % -target -value)])
-       :on-key-down #(when (and (or (.-metaKey %) (.-ctrlKey %))
-                                (= (.-key %) "Enter"))
-                       (submit-story))}]
+    [:section.prompt.prompt-background.v-stack.gap-full.rounded-large.shadow-large.pad-half
+
+     [:section.v-stack.gap-half
+      [:span.prompt-label "System Message"]
+      [:section.v-stack.gap-quarter
+       [:textarea#system-prompt.prompt-textarea.textarea-large.rounded.shadow-large.pad-half
+        {:value system-message
+         :rows 10
+         :disabled (= promt-version :prompt/v1)
+         :on-change #(rf/dispatch [:new-story/update :new-story/system-message (.. % -target -value)])}]
+       [:p.template-tip "The system message is the message that the AI will see before generating the story.\nOpenAI claims it is weighted more heavily than the user message."]]
+
+      [:span.prompt-label "User Message"]
+      [:section.v-stack.gap-quarter
+       [:textarea#system-prompt.prompt-textarea.textarea-large.rounded.shadow-large.pad-half
+        {:value user-message
+         :rows 4
+         :disabled (= promt-version :prompt/v1)
+         :on-change #(rf/dispatch [:new-story/update :new-story/user-message (.. % -target -value)])}]
+       [:p.template-tip "The user message is the last message the AI sees, after having been given the entire story up to this point."]]
+
+
+      [PromptVersions]]
+
+     [:section.v-stack.gap-half
+      [:span.prompt-label "Story Prompt"]
+      [:textarea#story-prompt.prompt-textarea.textarea-large.rounded.shadow-large.pad-half
+       {:value prompt
+        :rows 3
+        :auto-focus true
+        :on-change #(rf/dispatch [:new-story/update :new-story/prompt (.. % -target -value)])
+        :on-key-down #(when (and (or (.-metaKey %) (.-ctrlKey %))
+                                 (= (.-key %) "Enter"))
+                        (submit-story))}]]
+
+
      [:section.h-stack.spaced {:style {:align-items "flex-end"}}
-      [:section.h-stack.gap-half
-       [Models]
-       [PromptVersions]]
+      [Models]
       [:button.rounded.shadow-medium.tab.prompt-button-submit.blurred
        {:disabled blank?
         :on-pointer-down #(when-not blank? (submit-story))}

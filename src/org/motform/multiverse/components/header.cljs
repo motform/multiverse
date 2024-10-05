@@ -20,7 +20,7 @@
           label]
          (when (and (= type :new-story)
                     (or @*visible? active?))
-           [:label.tab-label
+           [:label.floating-tab-label
             {:class (when (and @*visible? (not active?)) "tab-label-inactive")}
             "Add new story"])]))))
 
@@ -34,7 +34,7 @@
                           (rf/dispatch [:page/active :page/story])
                           (. (.-history js/window) pushState #js {} "" (routes/url-for :page/story)))}
    [:<>
-    [:p title]
+    [:p.tab-label title]
     (when (= id @(rf/subscribe [:tab/highlight]))
       [:div.tab-map.rounded.shadow-large
        [map/RadialMap :source/header id {} {:w 400 :h 250}]])]])
@@ -53,4 +53,4 @@
      [:section.header-content.h-stack.gap-half
       [Tabs]
       [Item :page/new-story active-page :new-story icon/plus]]
-     [Item :page/library active-page :library (count @(rf/subscribe [:story/recent]))]]))
+     [Item :page/library active-page :library "Library"]]))
