@@ -1,27 +1,41 @@
 (ns org.motform.multiverse.components.new-story
   (:require
     [clojure.string :as str]
-    [org.motform.multiverse.icon :as icon]
+    [org.motform.multiverse.open-ai :as-alias open-ai]
     [org.motform.multiverse.routes :as routes]
     [re-frame.core :as rf]))
 
-(defn TemplateToggle [active icon template tooltip]
+(defn Toggle [active db-key value label]
   [:div.template-toggle.tooltip-container
-   {:on-pointer-down #(rf/dispatch [:new-story/template template])
-    :class (when (= active template) "template-toggle-active shadow-small")}
-   [icon]
-   [:span.tooltip.rounded.shadow-small.tooltip-new-story
-    tooltip]])
+   {:on-pointer-down #(rf/dispatch [db-key value])
+    :class (when (= active value) "template-toggle-active shadow-small")}
+   label
+   #_[:span.tooltip.rounded.shadow-small.tooltip-new-story
+    label]])
 
-(defn Templates []
-  (let [active-template @(rf/subscribe [:new-story/template])
-        toggle (partial TemplateToggle active-template)]
-    [:section.template-toggles.h-stack.gap-quarter
-     [toggle icon/file     :template/blank   "Blank"]
-     [toggle icon/building :template/urban   "Urban experience"]
-     [toggle icon/boombox  :template/musical "Musical"]
-     [toggle icon/news     :template/news    "Newsworthy"]
-     [toggle icon/cpu      :template/ai      "AI co-existance"]]))
+(defn Models []
+  (let [active @(rf/subscribe [:new-story/model])
+        Toggle (partial Toggle active :new-story/model)]
+    [:section.v-stack.gap-quarter
+     [:span.toggle-label "GPT"]
+     [:section.template-toggles.h-stack.gap-quarter
+      [Toggle ::open-ai/gpt-3.5-turbo "3.5"]
+      [Toggle ::open-ai/gpt-4o-2024-08-06 "4o"]]]))
+
+(defn PromptVersions []
+  (let [active @(rf/subscribe [:new-story/prompt-version])
+        Toggle (partial Toggle active :new-story/prompt-version)]
+    [:section.v-stack.gap-quarter
+     [:span.toggle-label "Prompt"]
+     [:section.template-toggles.h-stack.gap-quarter
+      [Toggle :prompt/v1 "v1"]
+      [Toggle :prompt/v2 "v2"]]]))
+
+(defn submit-story []
+  (rf/dispatch [:new-story/submit])
+  (rf/dispatch [:page/active :page/story])
+  (. (.-history js/window)
+     pushState #js {} "" (routes/url-for :page/story)))
 
 (defn Prompt []
   (let [prompt @(rf/subscribe [:new-story/prompt])
@@ -30,24 +44,19 @@
      [:textarea#prompt-textarea.textarea-large.rounded.shadow-large.pad-half
       {:value prompt
        :auto-focus true
-       :on-change #(rf/dispatch [:new-story/update-prompt (.. % -target -value)])}]
-     [:section.h-stack.spaced
-      [Templates]
+       :on-change #(rf/dispatch [:new-story/update-prompt (.. % -target -value)])
+       :on-key-down #(when (and (or (.-metaKey %) (.-ctrlKey %))
+                                (= (.-key %) "Enter"))
+                       (submit-story))}]
+     [:section.h-stack.spaced {:style {:align-items "flex-end"}}
+      [:section.h-stack.gap-half
+       [Models]
+       [PromptVersions]]
       [:button.rounded.shadow-medium.tab.prompt-button-submit.blurred
        {:disabled blank?
-        :on-pointer-down #(when (not blank?)
-                            (rf/dispatch [:new-story/submit]) ; TODO move into route controller
-                            (rf/dispatch [:page/active :page/story])
-                            (. (.-history js/window) pushState #js {} "" (routes/url-for :page/story)))} ; TODO move into routing
+        :on-pointer-down #(when-not blank? (submit-story))}
        "Explore"]]]))
 
 (defn NewStory []
   [:main.new-story.v-stack.gap-full
-   [:div.gap-half.landing-blurb.v-stack
-    [:h3 "Literary style"]
-    [:p "The style affects the direction that the exploration is taking by nudging the algorithm. Don't think too hard about it, you can change style at any point."]]
-   [:div.gap-half.landing-blurb.v-stack
-    [:h3 "Story prompt"]
-    [:p "The prompt serves as a root from which all other points in the literary space will branch. Language models, despite being trained on massive data sets of text, always require something to instagate the generative process. Experiment with points of view, given names or even pop-cultural references."]]
-   [Prompt]
-   [:p.template-tip "Start with a blank slate or a template."]])
+   [Prompt]])

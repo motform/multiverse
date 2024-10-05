@@ -1,6 +1,7 @@
 (ns org.motform.multiverse.db
   (:require
     [cljs.reader :as reader]
+    [org.motform.multiverse.open-ai :as-alias open-ai]
     [re-frame.core :as rf]))
 
 ;; We store sentences as tree implemented by as an indexed map.
@@ -22,7 +23,8 @@
    :db/state
    {:page/active              :page/landing
     :new-story/prompt         ""
-    :new-story/template       :template/blank
+    :new-story/prompt-version :prompt/v1 ; :prompt/v1, :prompt/v2
+    :new-story/model          ::open-ai/gpt-3.5-turbo ; ::open-ai/gpt-4o
     :story/active             nil
     :story/recent             []
     :sentence/active          nil
@@ -52,13 +54,12 @@
      (select-keys (get-in db [:db/stories story-id :story/sentences])
                   (get-in db [:db/stories story-id :story/sentences parent-id :sentence/children])))))
 
-(defn completion-meta [db]
-  (let [story-id  (get-in db [:db/state :story/active])
-        parent-id (get-in db [:db/stories story-id :story/meta :sentence/active])
-        api-key   (get-in db [:db/state :open-ai/key :open-ai/api-key])]
+(defn request-data [db]
+  (let [story-id  (get-in db [:db/state :story/active])]
     {:story-id  story-id
-     :parent-id parent-id
-     :api-key   api-key}))
+     :parent-id (get-in db [:db/stories story-id :story/meta :sentence/active])
+     :api-key   (get-in db [:db/state :open-ai/key :open-ai/api-key])
+     :model     (get-in db [:db/stories story-id :story/meta :story/model])}))
 
 (defn paragraph [db story-id sentence-id]
   (reduce

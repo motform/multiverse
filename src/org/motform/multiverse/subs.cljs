@@ -10,7 +10,8 @@
 ;; new-story
 
 (reg-sub :new-story/prompt (from-state :new-story/prompt))
-(reg-sub :new-story/template (from-state :new-story/template))
+(reg-sub :new-story/model (from-state :new-story/model))
+(reg-sub :new-story/prompt-version (from-state :new-story/prompt-version))
 
 ;; tabs
 

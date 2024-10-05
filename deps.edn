@@ -2,7 +2,7 @@
 
  :deps {bidi/bidi                  {:mvn/version "2.1.6"}
         binaryage/devtools         {:mvn/version "1.0.7"}
-        cider/cider-nrepl          {:mvn/version "0.43.3"}
+        cider/cider-nrepl          {:mvn/version "0.50.2"}
         clj-commons/pushy          {:mvn/version "0.3.10"}
         cljsjs/d3                  {:mvn/version "7.6.1-0"}
         day8.re-frame/http-fx      {:mvn/version "0.2.4"}
@@ -10,10 +10,11 @@
         day8.re-frame/tracing      {:mvn/version "0.6.2"}
         nano-id/nano-id            {:mvn/version "1.0.0"}
         org.clojure/core.async     {:mvn/version "1.6.681"}
+        org.clojure/clojure        {:mvn/version "1.12.0"}
         re-frame/re-frame          {:mvn/version "1.4.0"}
         reagent/reagent            {:mvn/version "1.2.0"}
-        thheller/shadow-cljs       {:mvn/version "2.26.2"}}
+        thheller/shadow-cljs       {:mvn/version "2.28.16"}}
 
  :aliases {:shadow-cljs
-           {:extra-deps {thheller/shadow-cljs {:mvn/version "2.26.2"}}
+           {:extra-deps {thheller/shadow-cljs {:mvn/version "2.28.16"}}
             :main-opts ["-m" "shadow.cljs.devtools.cli"]}}}

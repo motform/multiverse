@@ -54,7 +54,7 @@
 (defn Empty []
   [:section>p "The Library is empty, go" [:br]
    [:a {:href (routes/url-for :page/new-story)} "explore"]
-   " a literary space."])
+   " a new story."])
 
 (defn Library []
   [:main.library.v-stack.gap-double.pad-half

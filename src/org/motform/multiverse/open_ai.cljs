@@ -8,10 +8,10 @@
    :models "https://api.openai.com/v1/models"})
 
 (def valid-model?
-  #{:gpt-3.5-turbo :gpt-4-1106-preview :gpt-4})
+  #{::gpt-3.5-turbo ::gpt-4-1106-preview ::gpt-4o-2024-08-06})
 
 (def valid-role?
-  #{:user :assistant :system})
+  #{::user ::assistant ::system})
 
 (defn ->message
   "Create a message map with the given role and content."
@@ -26,7 +26,7 @@
 ;; Chat 
 
 (def system-message
-  (->message :system
+  (->message ::system
              "You are an award winning AUTHOR writing an experimental, hypertext story.
 Your work is boundary pushing and the stories you write are often nonlinear.
 Twists and turns are your specialty. Characters meander through your stories,
@@ -38,7 +38,7 @@ It is very important that you only respond WITH A SINGLE SENTENCE, or else the g
 NEVER include your prompt, or any other texts other than THE NEXT SENTENCE ONLY."))
 
 (def next-sentence
-  (->message :user
+  (->message ::user
              "Now it is your time to write the next sentence.
 It is VERY important that respond in the style you were ask to emulate.
 As a reminder, your style is: The story is written in a contemporary, neutral style.
@@ -51,7 +51,7 @@ The next sentence is:"))
    :model model
    :messages (flatten
                [system-message
-                (map #(->message :assistant (:sentence/text %)) paragraphs)
+                (map #(->message ::assistant (:sentence/text %)) paragraphs)
                 next-sentence])})
 
 ;; Title
@@ -69,5 +69,5 @@ DO NOT ENCLOSE THE TITLE IN QUOTATION MARKS.")
   (let [sentences (map :sentence/text paragraphs)]
     {:n 1
      :model model
-     :messages [(->message :system title-prompt)
-                (->message :user (apply str "Here is the short story:\n" sentences))]}))
+     :messages [(->message ::system title-prompt)
+                (->message ::user (apply str "Here is the short story:\n" sentences))]}))

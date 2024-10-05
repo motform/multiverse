@@ -59,6 +59,18 @@ body {
   }
 }
 
+dialog {
+  background-color: var(--blurred-0);
+  padding: unset;
+  border: none;
+  border-radius: 24px;
+}
+
+dialog::backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+}
+
 a {
   color: var(--fg);
   text-decoration: none;
@@ -560,6 +572,13 @@ textarea:focus {
   padding: 0 10px;
 }
 
+.toggle-label {
+  color: var(--accent-30);
+  text-transform: uppercase;
+  font-size: 12px;
+  margin-inline-start: 14px;
+}
+
 .template-toggle {
   border-radius: 9999px;
   background-color: transparent;
@@ -606,7 +625,6 @@ textarea:focus {
 }
 
 .prompt-background {
-  margin: 0 40px;
   width: 750px;
 
   border: 1px solid var(--blurred-border);
