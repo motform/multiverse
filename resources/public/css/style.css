@@ -13,7 +13,7 @@
 *::before,
 *::after {
   box-sizing: border-box;
-  transition: all 200ms;
+  transition: all 150ms ease-out;
 }
 
 input,
@@ -189,6 +189,7 @@ textarea:hover {
 textarea:focus {
   background-color: var(--blurred-2);
   border-color: var(--blurred-0);
+  box-shadow: 0 0 12px 2px var(--blurred-0);
 }
 
 .textarea-small {
@@ -219,6 +220,12 @@ textarea:focus {
 
 .centered {
   align-items: center;
+}
+
+.full-width {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 1 !important;
 }
 
 .center-flex {
@@ -562,7 +569,7 @@ textarea:focus {
 }
 
 .template-toggles {
-  align-self: flex-end;
+  align-self: flex-start;
   background: var(--blurred-0);
   border-radius: 99999px;
   padding: 0 10px;
@@ -611,7 +618,8 @@ textarea:focus {
 
 .template-tip {
   width: 100%;
-  margin-bottom: 8px;
+  margin-block-start: -8px;
+  margin-block-end: 8px;
   margin-inline: 16px;
   font-size: 12px;
   white-space: pre;
@@ -621,12 +629,20 @@ textarea:focus {
 
 .new-story {
   align-items: center;
-  max-width: 700px;
+  max-width: 1400px;
+  width: 100%
   padding-block-start: 40px;
 }
 
+.prompt-container {
+  margin-inline: 16px;
+}
+
 .prompt {
-  padding-block-start: 24px;
+  display: grid;
+  padding-top: 24px;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
 }
 
 .prompt-label {
@@ -635,11 +651,13 @@ textarea:focus {
     sans-serif;
   text-transform: uppercase;
   letter-spacing: 1px;
-  color: var(--accent-30);
+  color: var(--accent-50);
+  margin-inline-start: 14px;
+  font-weight: 600;
 }
 
 .prompt-background {
-  width: 750px;
+  width: 100%;
 
   border: 1px solid var(--blurred-border);
   background: var(--blurred-0);
