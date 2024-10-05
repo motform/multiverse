@@ -1,30 +1,43 @@
 (ns org.motform.multiverse.components.library
   (:require
-    [clojure.string :as str]
     [nano-id.core :refer [nano-id]]
     [org.motform.multiverse.routes :as routes]
     [org.motform.multiverse.util :as util]
     [re-frame.core :as rf]))
 
-(defn LibraryItem [{:story/keys [meta sentences]}]
-  (let [{:story/keys [title id]} meta]
-    [:a.library-item.v-stack.spaced.gap-full.rounded.shadow-large.pad-half.border
-     [:div
-      {:href (routes/url-for :story)
-       :on-pointer-down #(do (rf/dispatch [:story/active id])
-                             (rf/dispatch [:page/active :page/story])
-                             (. (.-history js/window) pushState #js {} "" (routes/url-for :page/story)))}
-      [:h2 (if-not (str/blank? title) (util/title-case title) "Generating title...")]]
-     [:section.h-stack.spaced.library-item-meta.centered
-      [:p (str (count sentences) " sentences")]
-      [:p.library-delete-story
-       {:on-pointer-down #(rf/dispatch [:story/delete id])}
-       "Delete Story"]]]))
+(defn- format-date [date]
+  (-> (js/Intl.DateTimeFormat. "en-US" #js {:year "numeric" :month "2-digit" :day "2-digit"})
+      (.format date)))
+
+(defn open-story [id]
+  (rf/dispatch [:story/active id])
+  (rf/dispatch [:page/active :page/story])
+  (. (.-history js/window) pushState #js {} "" (routes/url-for :page/story)))
+
+(defn LibraryItemRow [{:story/keys [meta sentences]}]
+  (let [{:story/keys [title id model prompt-version updated]} meta]
+    [:tr.library-item-row
+     {:on-pointer-down #(open-story id)}
+     [:td (or (util/title-case title) "Generating title...")]
+     [:td id]
+     [:td model]
+     [:td (or prompt-version "N/A")]
+     [:td (count sentences)]
+     [:td (format-date updated)]]))
 
 (defn LibraryItems []
-  [:section.library-items
-   (for [story (reverse @(rf/subscribe [:db/stories]))]
-     ^{:key (get-in story [:story/meta :story/id])} [LibraryItem story])])
+  [:table.library-items
+   [:thead
+    [:tr
+     [:th "Generated Title"]
+     [:th "ID"]
+     [:th "Model"]
+     [:th "Prompt"]
+     [:th "Length"]
+     [:th "Date"]]]
+   [:tbody
+    (for [story (reverse @(rf/subscribe [:db/stories]))]
+      ^{:key (get-in story [:story/meta :story/id])} [LibraryItemRow story])]])
 
 (defn export-library
   "SOURCE: https://gist.github.com/zoren/cc74758198b503b1755b75d1a6b376e7"
@@ -44,7 +57,7 @@
     "Source code avalible on GitHub"]
    [:section.h-stack.gap-half
     [:button.shadow-medium.button-secondary.rounded
-     {:on-pointer-down #(when (.confirm js/window "Do you really want to clear the library? This can not be undone!")
+     {:on-pointer-down #(when (.confirm js/window "Do you really want to empty the library? This deletes all stories and can not be undone!")
                           (rf/dispatch [:library/clear]))}
      "empty library"]
     [:button.button-secondary.rounded.shadow-medium

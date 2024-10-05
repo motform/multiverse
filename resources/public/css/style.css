@@ -156,7 +156,6 @@ button:disabled {
 
 .button-secondary {
   padding: 10px 18px;
-  background: var(--bg);
   border: 1px solid var(--accent-10);
   color: var(--accent-25);
   font:
@@ -167,8 +166,9 @@ button:disabled {
 }
 
 .button-secondary:hover {
-  color: var(--bg);
-  border-color: var(--accent-30);
+  background-color: var(--blurred-1);
+  color: var(--fg);
+  box-shadow: 0 0 12px 2px var(--blurred-0);
 }
 
 textarea {
@@ -1134,48 +1134,39 @@ h1 {
   color: var(--bg);
 }
 
-.library-items {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: var(--space-full);
+table {
+  padding: 16px;
+  border-radius: 8px;
+  background-color: var(--blurred-0);
+  border-collapse: separate;
 }
 
-.library-item {
-  font-size: 2rem;
-  background-color: var(--accent-2);
-  border-color: var(--accent-3);
+td, th {
+  padding: 4px 4px;
 }
 
-.library-item-meta {
-  font:
-    8px/1 "Obviously",
-    sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  color: var(--accent-30);
+td:first-child {
+  border-radius: 10px 0 0 10px;
+  padding-left: 8px;
 }
 
-.library-item h2 {
-  font-family: "Obviously Narrow", "Arial Narrow", sans-serif;
-  margin-top: -2rem;
-  font-size: 13rem;
-  line-height: 12rem;
-  margin-bottom: 3rem;
+td:last-child {
+  border-radius: 0 10px 10px 0;
+  padding-right: 8px;
 }
 
-.library-item:hover {
-  border-color: var(--accent-25);
-  background-color: var(--accent-25);
-  cursor: pointer;
+
+th {
+  font-weight: 600;
+  color: var(--accent-20);
 }
 
-.library-item:hover > * {
-  color: var(--bg);
-}
+.library-item-row {
 
-.library-item-new-story-card {
-  align-items: center;
-  justify-content: center;
+  &:hover {
+    background-color: var(--blurred-1);
+    cursor: pointer;
+  }
 }
 
 .library-delete-story {
