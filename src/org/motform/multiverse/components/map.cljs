@@ -1,17 +1,17 @@
 (ns org.motform.multiverse.components.map
-  (:require [cljsjs.d3]
-            [re-frame.core :as rf]
-            [reagent.core :as r]
-            [reagent.dom :as rdom]))
+  (:require
+    [cljsjs.d3]
+    [re-frame.core :as rf]
+    [reagent.core :as r]
+    [reagent.dom :as rdom]))
 
 (defn link-class [{:keys [active-path active-sentence prospective-child? source]
                    {highlight :id} :highlight}]
   (fn [link]
     (let [target-id (.. link -target -data -name)
           source-id (.. link -source -data -name)
-          has-children? (seq (.. link -target -data -children))
-          ^string personality (.. link -target -data -personality)]
-      (str personality "-"
+          has-children? (seq (.. link -target -data -children))]
+      (str "neutral-"
            (cond (active-path target-id) "tree-map-link-active"
                  has-children?           "tree-map-link"
                  (= highlight source-id) "tree-map-link-prospective"
@@ -35,9 +35,8 @@
                    {highlight :id} :highlight}]
   (fn [node]
     (let [id (.. node  -data -name)
-          parent-id (.. node -data -info)
-          ^string personality (.. node -data -personality)]
-      (str personality "-"
+          parent-id (.. node -data -info)]
+      (str "neutral-"
            (cond (= active-sentence id) (cond (not highlight)               "tree-map-node-current"
                                               (= highlight active-sentence) "tree-map-node-current"
                                               (contains? active-path id)    "tree-map-node-current-superseded"
@@ -105,27 +104,29 @@
   (fn [this]
     (draw-radial-map (rdom/dom-node this) (r/props this) map-id)))
 
-(defn radial-map-d3 [opts]
+(defn RadialMapD3 [opts]
   (let [map-id (str "mapid-" (random-uuid))]
     (r/create-class
-     {:display-name         (str "radial-tree-map-" map-id)
-      :component-did-mount  (redraw map-id)
-      :component-did-update (redraw map-id)
-      :reagent-render       (fn []
-                              [:section.radial-map
-                               {:class (str "radial-map-" (-> opts :source name))}
-                               [:svg {:id map-id}]])})))
+      {:display-name         (str "radial-tree-map-" map-id)
+       :component-did-mount  (redraw map-id)
+       :component-did-update (redraw map-id)
+       :reagent-render       (fn []
+                               [:section.radial-map
+                                {:class (str "radial-map-" (-> opts :source name))}
+                                [:svg {:id map-id}]])})))
 
-(defn radial-map [source story-id settings dimensions]
+(defn RadialMap [source story-id settings dimensions]
   (fn []
-    [radial-map-d3 (merge {:dimensions         dimensions
-                           :sentence-tree      @(rf/subscribe [:story/sentence-tree story-id])
-                           :active-path        @(rf/subscribe [:story/active-path story-id])
-                           :active-sentence    @(rf/subscribe [:sentence/active story-id])
-                           :highlight          @(rf/subscribe [:sentence/highlight])
-                           :source             source
-                           :prospective-child? (->> @(rf/subscribe [:sentence/children @(rf/subscribe [:sentence/active story-id]) story-id])
-                                                    (map :sentence/id)
-                                                    set)
-                           :root-sentence      @(rf/subscribe [:story/root-sentence story-id])}
-                          settings)]))
+    [RadialMapD3
+     (merge
+       {:dimensions         dimensions
+        :sentence-tree      @(rf/subscribe [:story/sentence-tree story-id])
+        :active-path        @(rf/subscribe [:story/active-path story-id])
+        :active-sentence    @(rf/subscribe [:sentence/active story-id])
+        :highlight          @(rf/subscribe [:sentence/highlight])
+        :source             source
+        :prospective-child? (->> @(rf/subscribe [:sentence/children @(rf/subscribe [:sentence/active story-id]) story-id])
+                                 (map :sentence/id)
+                                 set)
+        :root-sentence      @(rf/subscribe [:story/root-sentence story-id])}
+       settings)]))

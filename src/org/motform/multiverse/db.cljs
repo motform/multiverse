@@ -1,6 +1,7 @@
 (ns org.motform.multiverse.db
-  (:require [cljs.reader :as reader]
-            [re-frame.core :as rf]))
+  (:require
+    [cljs.reader :as reader]
+    [re-frame.core :as rf]))
 
 ;; We store sentences as tree implemented by as an indexed map.
 ;; The map uses nano id's to index at root level, an entry always looks like this:
@@ -17,24 +18,21 @@
 ;; — LLA, 200514
 
 (def default-db
-  {:db/state {:page/active              :page/landing
-              :new-story/prompt         ""
-              :new-story/template       :template/blank
-              :story/active             nil
-              :story/recent             []
-              :personality/active       :personality/neutral
-              :sentence/active          nil
-              :sentence/highlight       {:id nil :source nil}
-              :sentence/preview         nil
-              :sentence/tab             nil
-              :open-ai/pending-request? false
-              :open-ai/key              #:open-ai{:api-key "" :validated? false}}
+  {:db/stories {}
+   :db/state
+   {:page/active              :page/landing
+    :new-story/prompt         ""
+    :new-story/template       :template/blank
+    :story/active             nil
+    :story/recent             []
+    :sentence/active          nil
+    :sentence/highlight       {:id nil :source nil}
+    :sentence/preview         nil
+    :sentence/tab             nil
+    :open-ai/pending-request? false
+    :open-ai/key              #:open-ai{:api-key "" :validated? false}}})
 
-   :db/personalities [:personality/neutral :personality/sci-fi :personality/fantasy :personality/poetic]
-
-   :db/stories {}})
-
-;;; local-storage
+;; local-storage
 
 (def ls-key "multiverse.stories")
 

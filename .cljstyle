@@ -1,0 +1,4 @@
+{:files {:ignore #{"checkouts" "target"}}
+ :rules {:blank-lines {:max-consecutive 2
+                       :insert-padding? false}
+         :functions  {:enabled? false}}}
