@@ -328,22 +328,11 @@ textarea:focus {
   animation: gradient 1s ease infinite;
 }
 
-.background-neutral {
+.background {
   background: var(--neutral-background);
   background-size: 400%;
 }
-.background-sci-fi {
-  background: var(--sci-fi-background);
-  background-size: 400%;
-}
-.background-fantasy {
-  background: var(--fantasy-background);
-  background-size: 400%;
-}
-.background-poetic {
-  background: var(--poetic-background);
-  background-size: 400%;
-}
+
 .background-landing {
   background: var(--background-mixed);
   background-size: 400%;
@@ -652,45 +641,6 @@ textarea:focus {
   border: 1px solid var(--blurred-0);
 }
 
-.prompt-personalities {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.prompt-personality-toggle {
-  cursor: pointer;
-}
-.prompt-personality-toggle label {
-  cursor: pointer;
-}
-
-.prompt-personality-toggle {
-  border: 1px solid transparent;
-}
-
-.prompt-personality-toggle:hover {
-  background-color: var(--blurred-1);
-  border: 1px solid var(--blurred-0);
-}
-
-.prompt-personality-toggle-active {
-  background-color: var(--blurred-1);
-  border: 1px solid var(--blurred-0);
-  box-shadow:
-    1.4px 1.4px 3.2px rgba(0, 0, 0, 0.008),
-    3.3px 3.3px 7.7px rgba(0, 0, 0, 0.012),
-    6.3px 6.3px 14.1px rgba(0, 0, 0, 0.015),
-    11.2px 11.2px 23.9px rgba(0, 0, 0, 0.018),
-    20.9px 20.9px 40px rgba(0, 0, 0, 0.022),
-    50px 50px 80px rgba(0, 0, 0, 0.03);
-}
-
-.personality-label {
-  font-size: 10px;
-  color: var(--fg);
-  font-weight: 600;
-}
-
 .prompt-description {
   font-size: 11px;
   color: var(--accent-20);
@@ -786,95 +736,6 @@ textarea:focus {
 .level {
   cursor: pointer;
 }
-
-/* personalities */
-
-.personalities {
-  grid-row: span 1;
-}
-
-.personality {
-  height: 45px;
-  width: 45px;
-  border-radius: 50%;
-  background: var(--accent-8);
-  cursor: pointer;
-  /* z-index: 0; */
-  align-items: center;
-  justify-content: center;
-  color: var(--bg);
-  transition: transform 0.5s;
-  border: 1px solid var(--blurred-0);
-}
-
-.personality-active {
-  background: var(--accent-20);
-}
-
-.personality-replace {
-  box-shadow:
-    0px 0px 2.3px rgba(255, 255, 255, 0.07),
-    0px 0px 6.8px rgba(255, 255, 255, 0.101),
-    0px 0px 14.7px rgba(255, 255, 255, 0.125),
-    0px 0px 28.7px rgba(255, 255, 255, 0.149),
-    0px 0px 49px rgba(255, 255, 255, 0.18),
-    0px 0px 65px rgba(255, 255, 255, 0.25);
-}
-
-.personality-replace:hover {
-  box-shadow:
-    0px 0px 2.3px rgba(255, 255, 255, 0.101),
-    0px 0px 6.8px rgba(255, 255, 255, 0.145),
-    0px 0px 14.7px rgba(255, 255, 255, 0.18),
-    0px 0px 28.7px rgba(255, 255, 255, 0.215),
-    0px 0px 49px rgba(255, 255, 255, 0.259),
-    0px 0px 65px rgba(255, 255, 255, 0.36);
-}
-
-.personality-neutral-inactive {
-  background-color: var(--accent-10);
-}
-.personality-neutral-inactive:hover,
-.prompt-personality-toggle:hover > .personality-neutral-inactive {
-  background-color: var(--accent-30);
-}
-.personality-neutral-active {
-  background-color: var(--accent-30);
-}
-
-.personality-fantasy-inactive {
-  background-color: var(--fantasy-5);
-}
-.personality-fantasy-inactive:hover,
-.prompt-personality-toggle:hover > .personality-fantasy-inactive {
-  background-color: var(--fantasy-7);
-}
-.personality-fantasy-active {
-  background-color: var(--fantasy-7);
-}
-
-.personality-sci-fi-inactive {
-  background-color: var(--sci-fi-3);
-}
-.personality-sci-fi-inactive:hover,
-.prompt-personality-toggle:hover > .personality-sci-fi-inactive {
-  background-color: var(--sci-fi-7);
-}
-.personality-sci-fi-active {
-  background-color: var(--sci-fi-7);
-}
-
-.personality-poetic-inactive {
-  background-color: var(--poetic-4);
-}
-.personality-poetic-inactive:hover,
-.prompt-personality-toggle:hover > .personality-poetic-inactive {
-  background-color: var(--poetic-7);
-}
-.personality-poetic-active {
-  background-color: var(--poetic-7);
-}
-
 @keyframes gradient {
   0% {
     background-position: 0% 50%;
@@ -936,6 +797,7 @@ textarea:focus {
   border-width: 0 2px 0 0;
   content: "";
   margin: 0 2px;
+  border-color: var(--accent-20);
 }
 
 .weak-branch-mark {
@@ -943,34 +805,7 @@ textarea:focus {
   border-width: 0 2px 0 0;
   content: "";
   margin: 0 2px;
-}
-
-.branch-mark.neutral-branch-mark {
-  border-color: var(--accent-20);
-}
-.weak-branch-mark.neutral-branch-mark {
   border-color: var(--accent-10);
-}
-
-.branch-mark.fantasy-branch-mark {
-  border-color: var(--fantasy-6);
-}
-.weak-branch-mark.fantasy-branch-mark {
-  border-color: var(--fantasy-3);
-}
-
-.branch-mark.sci-fi-branch-mark {
-  border-color: var(--sci-fi-6);
-}
-.weak-branch-mark.sci-fi-branch-mark {
-  border-color: var(--sci-fi-3);
-}
-
-.branch-mark.poetic-branch-mark {
-  border-color: var(--poetic-6);
-}
-.weak-branch-mark.poetic-branch-mark {
-  border-color: var(--poetic-3);
 }
 
 .sentence {
@@ -1126,14 +961,14 @@ textarea:focus {
 
 /* Neutral */
 
-.child.neutral-visited {
+.child.visited {
   border-style: solid;
   background-color: var(--accent-8);
   border-color: var(--accent-8);
   color: var(--accent-30);
 }
 
-.child.neutral-unvisited {
+.child.unvisited {
   border: 1px dashed var(--accent-20);
   background-color: var(--accent-0);
   color: var(--accent-20);
@@ -1143,19 +978,19 @@ textarea:focus {
     "slnt" -15;
 }
 
-.child.neutral-unvisited.inactive,
-.child.neutral-visited.inactive {
+.child.unvisited.inactive,
+.child.visited.inactive {
   color: var(--accent-10);
   border-color: var(--accent-10);
 }
 
-.child.neutral-visited.inactive {
+.child.visited.inactive {
   color: var(--accent-15);
 }
 
-.child.neutral-visited:hover,
-.child.neutral-unvisited:hover,
-.child.neutral-unvisited.active {
+.child.visited:hover,
+.child.unvisited:hover,
+.child.unvisited.active {
   color: var(--bg);
   border-style: solid;
   background-color: var(--accent-30);
@@ -1317,61 +1152,61 @@ h1 {
   width: 40vw;
 }
 
-.neutral-tree-map-node-root {
+.tree-map-node-root {
   fill: var(--accent-30);
   stroke: var(--accent-30);
   stroke-width: 3px;
   cursor: pointer;
 }
 
-.neutral-tree-map-node-current {
+.tree-map-node-current {
   cursor: pointer;
   fill: var(--accent-20);
   stroke: var(--accent-30);
   stroke-width: 3px;
 }
 
-.neutral-tree-map-node-current-dim {
+.tree-map-node-current-dim {
   fill: var(--accent-10);
   stroke: var(--accent-10);
   stroke-width: 3px;
   cursor: pointer;
 }
 
-.neutral-tree-map-node-current-superseded {
+.tree-map-node-current-superseded {
   fill: var(--accent-30);
   stroke: var(--accent-30);
   cursor: pointer;
 }
 
-.neutral-tree-map-node-highlight {
+.tree-map-node-highlight {
   cursor: pointer;
   fill: var(--accent-30);
   stroke: var(--accent-30);
   stroke-width: 3px;
 }
 
-.neutral-tree-map-node-active {
+.tree-map-node-active {
   fill: var(--highlight);
   cursor: pointer;
 }
 
-.neutral-tree-map-node-inactive {
+.tree-map-node-inactive {
   fill: var(--accent-10);
   cursor: pointer;
 }
 
-.neutral-tree-map-node-prospective {
+.tree-map-node-prospective {
   fill: none;
   stroke: var(--accent-20);
   stroke-dasharray: 4;
   cursor: pointer;
 }
 
-.neutral-tree-map-node-active:hover,
-.neutral-tree-map-node-root:hover,
-.neutral-tree-map-node-current:hover,
-.neutral-tree-map-node-inactive:hover {
+.tree-map-node-active:hover,
+.tree-map-node-root:hover,
+.tree-map-node-current:hover,
+.tree-map-node-inactive:hover {
   fill: var(--fg);
   cursor: pointer;
 }
@@ -1379,271 +1214,22 @@ h1 {
 .hidden {
   display: none;
 }
-.neutral-hidden {
-  display: none;
-}
-.fantasy-hidden {
-  display: none;
-}
-.sci-fi-hidden {
-  display: none;
-}
-.poetic-hidden {
-  display: none;
-}
 
-.fantasy-tree-map-node-root {
-  fill: var(--fantasy-6);
-  stroke: var(--fantasy-6);
-  stroke-width: 3px;
-  cursor: pointer;
-}
-
-.fantasy-tree-map-node-current {
-  cursor: pointer;
-  fill: var(--fantasy-4);
-  stroke: var(--fantasy-6);
-  stroke-width: 3px;
-}
-
-.fantasy-tree-map-node-current-dim {
-  fill: var(--fantasy-4);
-  stroke: var(--fantasy-4);
-  stroke-width: 3px;
-  cursor: pointer;
-}
-
-.fantasy-tree-map-node-current-superseded {
-  fill: var(--fantasy-6);
-  stroke: var(--fantasy-6);
-  cursor: pointer;
-  stroke-width: 3px;
-}
-
-.fantasy-tree-map-node-highlight {
-  cursor: pointer;
-  fill: var(--fantasy-6);
-  stroke: var(--fantasy-6);
-  stroke-width: 3px;
-}
-
-.fantasy-tree-map-node-active {
-  fill: var(--fantasy-6);
-  cursor: pointer;
-}
-
-.fantasy-tree-map-node-inactive {
-  fill: var(--fantasy-4);
-  cursor: pointer;
-}
-
-.fantasy-tree-map-node-prospective {
-  fill: none;
-  stroke: var(--fantasy-5);
-  stroke-dasharray: 4;
-  cursor: pointer;
-}
-
-.fantasy-tree-map-node-active:hover,
-.fantasy-tree-map-node-root:hover,
-.fantasy-tree-map-node-current:hover,
-.fantasy-tree-map-node-inactive:hover {
-  fill: var(--fantasy-7);
-  cursor: pointer;
-}
-
-.sci-fi-tree-map-node-root {
-  fill: var(--sci-fi-6);
-  stroke: var(--sci-fi-6);
-  stroke-width: 3px;
-  cursor: pointer;
-}
-
-.sci-fi-tree-map-node-current {
-  cursor: pointer;
-  fill: var(--sci-fi-4);
-  stroke: var(--sci-fi-6);
-  stroke-width: 3px;
-}
-
-.sci-fi-tree-map-node-current-dim {
-  fill: var(--sci-fi-4);
-  stroke: var(--sci-fi-4);
-  stroke-width: 3px;
-  cursor: pointer;
-}
-
-.sci-fi-tree-map-node-current-superseded {
-  fill: var(--sci-fi-6);
-  stroke: var(--sci-fi-6);
-  cursor: pointer;
-  stroke-width: 3px;
-}
-
-.sci-fi-tree-map-node-highlight {
-  cursor: pointer;
-  fill: var(--sci-fi-6);
-  stroke: var(--sci-fi-6);
-  stroke-width: 3px;
-}
-
-.sci-fi-tree-map-node-active {
-  fill: var(--sci-fi-6);
-  cursor: pointer;
-}
-
-.sci-fi-tree-map-node-inactive {
-  fill: var(--sci-fi-4);
-  cursor: pointer;
-}
-
-.sci-fi-tree-map-node-prospective {
-  fill: node;
-  stroke: var(--sci-fi-5);
-  stroke-dasharray: 4;
-  cursor: pointer;
-}
-
-.sci-fi-tree-map-node-active:hover,
-.sci-fi-tree-map-node-root:hover,
-.sci-fi-tree-map-node-current:hover,
-.sci-fi-tree-map-node-inactive:hover {
-  fill: var(--sci-fi-7);
-  cursor: pointer;
-}
-
-.poetic-tree-map-node-root {
-  fill: var(--poetic-6);
-  stroke: var(--poetic-6);
-  stroke-width: 3px;
-  cursor: pointer;
-}
-
-.poetic-tree-map-node-current {
-  cursor: pointer;
-  fill: var(--poetic-4);
-  stroke: var(--poetic-6);
-  stroke-width: 3px;
-}
-
-.poetic-tree-map-node-current-dim {
-  fill: var(--poetic-4);
-  stroke: var(--poetic-4);
-  stroke-width: 3px;
-  cursor: pointer;
-}
-
-.poetic-tree-map-node-current-superseded {
-  fill: var(--poetic-6);
-  stroke: var(--poetic-6);
-  cursor: pointer;
-  stroke-width: 3px;
-}
-
-.poetic-tree-map-node-highlight {
-  cursor: pointer;
-  fill: var(--poetic-6);
-  stroke: var(--poetic-6);
-  stroke-width: 3px;
-}
-
-.poetic-tree-map-node-active {
-  fill: var(--poetic-6);
-  cursor: pointer;
-}
-
-.poetic-tree-map-node-inactive {
-  fill: var(--poetic-4);
-  cursor: pointer;
-}
-
-.poetic-tree-map-node-prospective {
-  fill: node;
-  stroke: var(--poetic-5);
-  stroke-dasharray: 4;
-  cursor: pointer;
-}
-
-.poetic-tree-map-node-active:hover,
-.poetic-tree-map-node-root:hover,
-.poetic-tree-map-node-current:hover,
-.poetic-tree-map-node-inactive:hover {
-  fill: var(--poetic-7);
-  cursor: pointer;
-}
-
-.neutral-tree-map-link {
+.tree-map-link {
   fill: none;
   stroke: var(--accent-10);
   stroke-width: 1px;
 }
 
-.neutral-tree-map-link-active {
+.tree-map-link-active {
   fill: none;
   stroke: var(--highlight);
   stroke-width: 2px;
 }
 
-.neutral-tree-map-link-prospective {
+.tree-map-link-prospective {
   fill: none;
   stroke: var(--accent-20);
-  stroke-width: 1px;
-  stroke-dasharray: 4;
-}
-
-.fantasy-tree-map-link {
-  fill: none;
-  stroke: var(--fantasy-4);
-  stroke-width: 1px;
-}
-
-.fantasy-tree-map-link-active {
-  fill: none;
-  stroke: var(--fantasy-6);
-  stroke-width: 2px;
-}
-
-.fantasy-tree-map-link-prospective {
-  fill: none;
-  stroke: var(--fantasy-6);
-  stroke-width: 1px;
-  stroke-dasharray: 4;
-}
-
-.sci-fi-tree-map-link {
-  fill: none;
-  stroke: var(--sci-fi-4);
-  stroke-width: 1px;
-}
-
-.sci-fi-tree-map-link-active {
-  fill: none;
-  stroke: var(--sci-fi-6);
-  stroke-width: 2px;
-}
-
-.sci-fi-tree-map-link-prospective {
-  fill: none;
-  stroke: var(--sci-fi-6);
-  stroke-width: 1px;
-  stroke-dasharray: 4;
-}
-
-.poetic-tree-map-link {
-  fill: none;
-  stroke: var(--poetic-4);
-  stroke-width: 1px;
-}
-
-.poetic-tree-map-link-active {
-  fill: none;
-  stroke: var(--poetic-6);
-  stroke-width: 2px;
-}
-
-.poetic-tree-map-link-prospective {
-  fill: none;
-  stroke: var(--poetic-6);
   stroke-width: 1px;
   stroke-dasharray: 4;
 }

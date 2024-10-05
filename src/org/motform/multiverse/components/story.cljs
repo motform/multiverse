@@ -23,7 +23,7 @@
 (defn ChildSelector [text id visited?]
   [:div>div.shadow-large
    {:id id
-    :class (str "neutral-" (when-not visited? "un") "visited child " (highlight? id)) ; NOTE
+    :class (str (when-not visited? "un") "visited child " (highlight? id)) ; NOTE
     :on-pointer-down #(rf/dispatch [:sentence/active id])
     :on-pointer-over #(rf/dispatch [:sentence/highlight id :source/children])
     :on-pointer-out  #(rf/dispatch [:sentence/remove-highlight])}
@@ -40,9 +40,9 @@
   (let [count-branches @(rf/subscribe [:sentence/count-realized-children id])]
     [:span.branch-marks
      (if (zero? count-branches)
-       [:span.weak-branch-mark {:class "neutral-branch-mark"}]
+       [:span.weak-branch-mark]
        (for [i (range count-branches)] ^{:key i}
-            [:span.branch-mark {:class "neutral-branch-mark"}]))]))
+            [:span.branch-mark]))]))
 
 (defn Sentence [{:sentence/keys [id text]} sentences prospect-path]
   (let [sentence-not-in-story? (and (not (contains? (set sentences) prospect-path))

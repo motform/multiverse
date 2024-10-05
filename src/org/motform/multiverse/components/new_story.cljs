@@ -27,7 +27,6 @@
   (let [prompt @(rf/subscribe [:new-story/prompt])
         blank? (str/blank? prompt)]
     [:section.prompt.prompt-background.v-stack.gap-half.rounded-large.shadow-large.pad-half
-     {:class "prompt-neutral"}
      [:textarea#prompt-textarea.textarea-large.rounded.shadow-large.pad-half
       {:value prompt
        :auto-focus true

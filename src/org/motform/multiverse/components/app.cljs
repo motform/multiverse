@@ -23,7 +23,7 @@
     :page/landing
     "background-landing"
     (:page/new-story :page/story)
-    (str "background-neutral"
+    (str "background"
          (when @(rf/subscribe [:open-ai/pending-request?]) " fast"))
     "background-other"))
 

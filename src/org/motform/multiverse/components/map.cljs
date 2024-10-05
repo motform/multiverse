@@ -5,22 +5,22 @@
     [reagent.core :as r]
     [reagent.dom :as rdom]))
 
-(defn link-class [{:keys [active-path active-sentence prospective-child? source]
-                   {highlight :id} :highlight}]
+(defn link-class
+  [{:keys [active-path active-sentence prospective-child? source]
+    {highlight :id} :highlight}]
   (fn [link]
     (let [target-id (.. link -target -data -name)
           source-id (.. link -source -data -name)
           has-children? (seq (.. link -target -data -children))]
-      (str "neutral-"
-           (cond (active-path target-id) "tree-map-link-active"
-                 has-children?           "tree-map-link"
-                 (= highlight source-id) "tree-map-link-prospective"
-                 (and (= source :source/compare) (= active-sentence source-id)) "hidden"
-                 (and (= active-sentence source-id) (prospective-child? highlight)) "tree-map-link-prospective"
-                 (and highlight (prospective-child? target-id)) "hidden"
-                 (prospective-child? target-id) "tree-map-link-prospective"
-                 (= active-sentence source-id)  "tree-map-link"
-                 :else "hidden")))))
+      (cond (active-path target-id) "tree-map-link-active"
+            has-children?           "tree-map-link"
+            (= highlight source-id) "tree-map-link-prospective"
+            (and (= source :source/compare) (= active-sentence source-id)) "hidden"
+            (and (= active-sentence source-id) (prospective-child? highlight)) "tree-map-link-prospective"
+            (and highlight (prospective-child? target-id)) "hidden"
+            (prospective-child? target-id) "tree-map-link-prospective"
+            (= active-sentence source-id)  "tree-map-link"
+            :else "hidden"))))
 
 ;; TODO this size should probably be set dynamically in response to the amount of nodes in the graph
 (defn node-size [root active source]
@@ -36,21 +36,20 @@
   (fn [node]
     (let [id (.. node  -data -name)
           parent-id (.. node -data -info)]
-      (str "neutral-"
-           (cond (= active-sentence id) (cond (not highlight)               "tree-map-node-current"
-                                              (= highlight active-sentence) "tree-map-node-current"
-                                              (contains? active-path id)    "tree-map-node-current-superseded"
-                                              :else "tree-map-node-current-dim")
-                 (= highlight id)                "tree-map-node-highlight"
-                 (= root-sentence id)            "tree-map-node-root"
-                 (contains? active-path id)      "tree-map-node-active"
-                 (seq (.. node -data -children)) "tree-map-node-inactive"
-                 (and (= active-sentence highlight) (prospective-child? id))        "tree-map-node-prospective" ; hover on child
-                 (and (= active-sentence parent-id) (prospective-child? highlight)) "tree-map-node-prospective" ; hover on parent
-                 (and (= source :source/compare) (= active-sentence parent-id))  "hidden"
-                 (and highlight (prospective-child? id)) "hidden"
-                 (or (= parent-id highlight) (prospective-child? id)) "tree-map-node-prospective"
-                 :else "hidden")))))
+      (cond (= active-sentence id) (cond (not highlight)               "tree-map-node-current"
+                                         (= highlight active-sentence) "tree-map-node-current"
+                                         (contains? active-path id)    "tree-map-node-current-superseded"
+                                         :else "tree-map-node-current-dim")
+            (= highlight id)                "tree-map-node-highlight"
+            (= root-sentence id)            "tree-map-node-root"
+            (contains? active-path id)      "tree-map-node-active"
+            (seq (.. node -data -children)) "tree-map-node-inactive"
+            (and (= active-sentence highlight) (prospective-child? id))        "tree-map-node-prospective" ; hover on child
+            (and (= active-sentence parent-id) (prospective-child? highlight)) "tree-map-node-prospective" ; hover on parent
+            (and (= source :source/compare) (= active-sentence parent-id))  "hidden"
+            (and highlight (prospective-child? id)) "hidden"
+            (or (= parent-id highlight) (prospective-child? id)) "tree-map-node-prospective"
+            :else "hidden"))))
 
 (defn draw-radial-map
   "Based on: https://medium.com/analytics-vidhya/creating-a-radial-tree-using-d3-js-for-javascript-be943e23b74e"
