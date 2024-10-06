@@ -7,6 +7,13 @@
     [org.motform.multiverse.util :as util]
     [re-frame.core :as rf]))
 
+
+(defn export-markdown []
+  (util/download-file
+    (->> @(rf/subscribe [:db/stories]) (map story/->md) (str/join "\n\n"))
+    (str "multiverse-library-export-" (nano-id) ".md")
+    "text/markdown"))
+
 (defn open-story [id]
   (rf/dispatch [:story/active id])
   (rf/dispatch [:page/active :page/story])
@@ -18,7 +25,7 @@
      {:on-pointer-down #(open-story id)}
      [:td (or (util/title-case title) "Generating title...")]
      [:td id]
-     [:td model]
+     [:td (name model)]
      [:td (or prompt-version "N/A")]
      [:td (count sentences)]
      [:td (util/format-date updated)]]))
@@ -38,20 +45,6 @@
       ^{:key (get-in story [:story/meta :story/id])}
       [LibraryItemRow story])]])
 
-(defn export-library
-  "SOURCE: https://gist.github.com/zoren/cc74758198b503b1755b75d1a6b376e7"
-  []
-  (let [stories @(rf/subscribe [:db/stories])
-        md (->> stories (map story/->md) (str/join "\n\n"))
-        library   (js/Blob. #js [(prn-str md)] #js {:type "application/edn"})
-        file-name (str "multiverse-library-export-" (nano-id) ".md")
-        edn-url   (js/URL.createObjectURL library)
-        anchor    (doto (js/document.createElement "a")
-                    (-> .-href (set! edn-url))
-                    (-> .-download (set! file-name)))]
-    (.click anchor)
-    (js/URL.revokeObjectURL edn-url)))
-
 (defn LibraryToggles []
   [:section.h-stack.spaced.centered
    [:p>a.source-code {:href "https://github.com/motform/multiverse" :target "_bank"}
@@ -62,7 +55,7 @@
                           (rf/dispatch [:library/clear]))}
      "empty library"]
     [:button.button-secondary.rounded.shadow-medium
-     {:on-pointer-down #(export-library)}
+     {:on-pointer-down #(export-markdown)}
      "export library"]]])
 
 (defn Empty []

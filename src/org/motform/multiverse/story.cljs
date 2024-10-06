@@ -45,10 +45,10 @@
   (let [meta (:story/meta story)]
     (str
       "# " (:story/title meta) "\n"
-      "---"
+      "---\n"
       "id:" (:story/id meta) "\n"
-      "model:" (:story/model meta) "\n"
+      "model:" (name (:story/model meta)) "\n"
       "prompt:" (:story/prompt meta) "\n"
       "date:" (util/format-date (:story/updated meta)) "\n"
-      "---"
+      "---\n"
       (longest-sentence story))))

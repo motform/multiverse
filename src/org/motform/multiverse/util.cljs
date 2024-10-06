@@ -45,8 +45,20 @@
 
 (defn spinner-small []
   [:div.v-stack.centered
-   [:svg {:height 21
-          :width 54}
+   [:svg {:height 21 :width 54}
     [:circle.spinner-small-1 {:cx 6  :cy 6 :r 5 :fill "var(--spinner-fill)"}]
     [:circle.spinner-small-2 {:cx 26 :cy 6 :r 5 :fill "var(--spinner-fill)"}]
     [:circle.spinner-small-3 {:cx 46 :cy 6 :r 5 :fill "var(--spinner-fill)"}]]])
+
+;; DOM
+
+(defn download-file
+  "SOURCE: https://gist.github.com/zoren/cc74758198b503b1755b75d1a6b376e7"
+  [^String data ^String file-name ^String type]
+  (let [blob  (js/Blob. #js [data] #js {:type type})
+        data-url (js/URL.createObjectURL blob)
+        anchor   (doto (js/document.createElement "a")
+                   (-> .-href (set! data-url))
+                   (-> .-download (set! file-name)))]
+    (.click anchor)
+    (js/URL.revokeObjectURL data-url)))
