@@ -14,6 +14,7 @@
 (reg-sub :new-story/prompt-version (from-state :new-story/prompt-version))
 (reg-sub :new-story/system-message (from-state :new-story/system-message))
 (reg-sub :new-story/user-message (from-state :new-story/user-message))
+(reg-sub :new-story/title (from-state :new-story/title))
 
 ;; tabs
 

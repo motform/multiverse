@@ -106,32 +106,38 @@
         (assoc-in [:db/state :new-story/system-message] (get-in prompts [version :system] ""))
         (assoc-in [:db/state :new-story/user-message]   (get-in prompts [version :user]   "")))))
 
+(def key-of-new-story?
+  #{:new-story/prompt :new-story/system-message :new-story/user-message :new-story/title})
+
 (reg-event-db
   :new-story/update
   (fn [db [_ k v]]
-    {:pre [(#{:new-story/prompt :new-story/system-message :new-story/user-message} k)
-           (string? v)]}
+    {:pre [(key-of-new-story? k) (string? v)]}
     (assoc-in db [:db/state k] v)))
 
 (reg-event-fx
   :new-story/submit
   (fn [{:keys [db]} _]
     (let [prompt (get-in db [:db/state :new-story/prompt])
+          title  (get-in db [:db/state :new-story/title])
           model  (get-in db [:db/state :new-story/model])
           version (get-in db [:db/state :new-story/prompt-version])
           system-message (get-in db [:db/state :new-story/system-message])
           user-message (get-in db [:db/state :new-story/user-message])]
-      {:db (assoc-in db [:db/state :new-story/prompt] "")
-       :dispatch [:story/new prompt model version system-message user-message]})))
+      {:db (-> db
+               (assoc-in [:db/state :new-story/prompt] "")
+               (assoc-in [:db/state :new-story/title] ""))
+       :dispatch [:story/new prompt title model version system-message user-message]})))
 
 (reg-event-fx
   :story/new
   [local-storage-interceptor]
-  (fn [{:keys [db]} [_ prompt model version system-message user-message]]
+  (fn [{:keys [db]} [_ prompt title model version system-message user-message]]
     (let [story-id    (nano-id 10)
           sentence-id (nano-id 10)
           story       (story/->story prompt
                                      :id story-id
+                                     :title title
                                      :sentence-id sentence-id
                                      :model model
                                      :version version
@@ -142,8 +148,7 @@
                (assoc-in  [:db/state :story/active] story-id)
                (assoc-in  [:db/state :sentence/active] sentence-id)
                (assoc-in  [:db/state :sentence/highlight] {:id sentence-id :source :page/new-story})
-               (update-in [:db/state :story/recent] conj story-id))
-       :dispatch [:open-ai/title]})))
+               (update-in [:db/state :story/recent] conj story-id))})))
 
 ;; Library
 
@@ -177,17 +182,7 @@
                (update-in [:db/stories story-id :story/sentences] merge children)
                (assoc-in  [:db/stories story-id :story/sentences parent-id :sentence/children] child-ids)
                (assoc-in  [:db/stories story-id :story/meta :story/updated] (js/Date.))
-               (assoc-in  [:db/state :open-ai/pending-request?] false))
-       :dispatch [:open-ai/title]})))
-
-(reg-event-db
-  :open-ai/handle-title
-  [local-storage-interceptor]
-  (fn [db [_ story-id response]]
-    (let [title (-> response :choices first :message :content (str/replace #"\"|\'" ""))]
-      (-> db
-          (assoc-in [:db/stories story-id :story/meta :story/title]
-                    title)))))
+               (assoc-in  [:db/state :open-ai/pending-request?] false))})))
 
 (reg-event-db
   :open-ai/handle-validate-api-key
@@ -230,21 +225,6 @@
         :response-format (ajax/json-response-format {:keywords? true})
         :on-success [:open-ai/handle-children story-id parent-id]
         :on-failure [:open-ai/failure]}})))
-
-(reg-event-fx
-  :open-ai/title
-  (fn [{:keys [db]} _]
-    (let [{:keys [story-id api-key model]} (db/request-data db)
-          pargraphs (vals (get-in db [:db/stories story-id :story/sentences]))
-          params (open-ai/request-title model pargraphs)]
-      {:http-xhrio {:method  :post
-                    :uri     (open-ai/endpoint :chat)
-                    :headers (open-ai/auth api-key)
-                    :params  params
-                    :format  (ajax/json-request-format)
-                    :response-format (ajax/json-response-format {:keywords? true})
-                    :on-success [:open-ai/handle-title story-id]
-                    :on-failure [:open-ai/failure]}})))
 
 (reg-event-db
   :open-ai/failure

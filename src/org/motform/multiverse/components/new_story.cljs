@@ -39,6 +39,7 @@
 
 (defn Prompt []
   (let [prompt @(rf/subscribe [:new-story/prompt])
+        title @(rf/subscribe [:new-story/title])
         system-message @(rf/subscribe [:new-story/system-message])
         user-message @(rf/subscribe [:new-story/user-message])
         promt-version @(rf/subscribe [:new-story/prompt-version])
@@ -49,8 +50,7 @@
        [:section.v-stack.gap-half
         [:span.prompt-label "System Message"]
         [:textarea#system-prompt.prompt-textarea.textarea-large.rounded.shadow-large.pad-half
-         {:value system-message
-          :rows 10
+         {:value system-message :rows 11
           :disabled (= promt-version :prompt/v1)
           :on-change #(rf/dispatch [:new-story/update :new-story/system-message (.. % -target -value)])}]
         [:p.template-tip "The system message is the message that the AI will see before generating the story.\nOpenAI claims it is weighted more heavily than the user message."]]
@@ -58,8 +58,7 @@
        [:section.v-stack.gap-half
         [:span.prompt-label "User Message"]
         [:textarea#system-prompt.prompt-textarea.textarea-large.rounded.shadow-large.pad-half
-         {:value user-message
-          :rows 6
+         {:value user-message :rows 6
           :disabled (= promt-version :prompt/v1)
           :on-change #(rf/dispatch [:new-story/update :new-story/user-message (.. % -target -value)])}]
         [:p.template-tip "The user message is the last message the AI sees, after having been given the entire story up to this point."]]
@@ -68,11 +67,15 @@
 
       [:section.v-stack.gap-full.full-width
        [:section.v-stack.gap-half
-        [:span.prompt-label "Story Prompt"]
+        [:span.prompt-label "Title"]
         [:textarea#story-prompt.prompt-textarea.textarea-large.rounded.shadow-large.pad-half
-         {:value prompt
-          :rows 4
-          :auto-focus true
+         {:value title :rows 1 :auto-focus true
+          :on-change #(rf/dispatch [:new-story/update :new-story/title (.. % -target -value)])}]]
+
+       [:section.v-stack.gap-half
+        [:span.prompt-label {:style {:padding-top "4px"}} "Story Prompt"]
+        [:textarea#story-prompt.prompt-textarea.textarea-large.rounded.shadow-large.pad-half
+         {:value prompt :rows 4
           :on-change #(rf/dispatch [:new-story/update :new-story/prompt (.. % -target -value)])
           :on-key-down #(when (and (or (.-metaKey %) (.-ctrlKey %))
                                    (= (.-key %) "Enter"))

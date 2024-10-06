@@ -23,6 +23,7 @@
   {:db/stories {}
    :db/state
    {:page/active              :page/landing
+    :new-story/title          ""
     :new-story/prompt         "" ; the initial sentence
     :new-story/prompt-version :prompt/v1 ; :prompt/v1, :prompt/v2
     :new-story/system-message (get-in prompts [:prompt/v1 :system])
