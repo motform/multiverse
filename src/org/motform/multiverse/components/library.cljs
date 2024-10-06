@@ -10,7 +10,10 @@
 
 (defn export-markdown []
   (util/download-file
-    (->> @(rf/subscribe [:db/stories]) (map story/->md) (str/join "\n\n"))
+    (->> @(rf/subscribe [:db/stories])
+         (map story/->md)
+         (str/join "\n\n")
+         (str "# Multiverse Export (" (util/format-date (js/Date.)) ")\n\n"))
     (str "multiverse-library-export-" (nano-id) ".md")
     "text/markdown"))
 

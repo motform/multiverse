@@ -43,12 +43,12 @@
 (defn ->md [story]
   (let [meta (:story/meta story)]
     (str
-      "# " (:story/title meta) "\n"
+      "## " (:story/title meta) "\n"
       "---\n"
-      "id:" (:story/id meta) "\n"
-      "model:" (name (:story/model meta)) "\n"
-      "prompt-version:" (:story/prompt-version meta) "\n"
-      "date:" (util/format-date (:story/updated meta)) "\n"
+      "id: " (:story/id meta) "\n"
+      "model: " (name (:story/model meta)) "\n"
+      "prompt-version: " (name (:story/prompt-version meta)) "\n"
+      "date: " (util/format-date (:story/updated meta)) "\n"
       "---\n"
       (longest-sentence story))))
 

@@ -1,6 +1,4 @@
-(ns org.motform.multiverse.open-ai
-  (:require
-    [org.motform.multiverse.prompts :as prompts]))
+(ns org.motform.multiverse.open-ai)
 
 (defn auth [api-key]
   {"Authorization" (str "Bearer " api-key)})
@@ -35,13 +33,3 @@
                [(->message ::system system-message)
                 (map #(->message ::assistant (:sentence/text %)) paragraphs)
                 (->message ::user user-message)])})
-
-;; Title
-
-(defn request-title [model paragraphs]
-  {:pre [(valid-model? model)]}
-  (let [sentences (map :sentence/text paragraphs)]
-    {:n 1
-     :model model
-     :messages [(->message ::system prompts/title)
-                (->message ::user (apply str "Here is the short story:\n" sentences))]}))
