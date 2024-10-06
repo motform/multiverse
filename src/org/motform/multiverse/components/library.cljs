@@ -47,16 +47,19 @@
 
 (defn LibraryToggles []
   [:section.h-stack.spaced.centered
-   [:p>a.source-code {:href "https://github.com/motform/multiverse" :target "_bank"}
-    "Source code avalible on GitHub"]
    [:section.h-stack.gap-half
-    [:button.shadow-medium.button-secondary.rounded
-     {:on-pointer-down #(when (.confirm js/window "Do you really want to empty the library? This deletes all stories and can not be undone!")
-                          (rf/dispatch [:library/clear]))}
-     "empty library"]
     [:button.button-secondary.rounded.shadow-medium
      {:on-pointer-down #(export-markdown)}
-     "export library"]]])
+     "export as Markdown"]
+
+    [:button.button-secondary.rounded.shadow-medium
+     {:on-pointer-down #(export-markdown)}
+     "export as CSV"]]
+
+   [:button.shadow-medium.button-secondary.rounded
+    {:on-pointer-down #(when (.confirm js/window "Do you really want to empty the library? This deletes all stories and can not be undone!")
+                         (rf/dispatch [:library/clear]))}
+    "Delete all stories"]])
 
 (defn Empty []
   [:section>p "The Library is empty, go" [:br]
@@ -66,7 +69,7 @@
 (defn Library []
   [:main.library.v-stack.gap-double.pad-half
    (if @(rf/subscribe [:db/stories])
-     [:<>
-      [LibraryItems]
-      [LibraryToggles]]
+     [:section.v-stack.gap-half
+      [LibraryToggles]
+      [LibraryItems]]
      [Empty])])
