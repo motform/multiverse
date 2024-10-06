@@ -40,7 +40,6 @@
         children-texts (map #(get-in sentences [% :sentence/text]) children)]
     (str/join "\n" (cons (:sentence/text base-sentence) children-texts))))
 
-;; TODO: Respect newline formatting in export
 (defn ->md [story]
   (let [meta (:story/meta story)]
     (str
@@ -48,7 +47,20 @@
       "---\n"
       "id:" (:story/id meta) "\n"
       "model:" (name (:story/model meta)) "\n"
-      "prompt:" (:story/prompt meta) "\n"
+      "prompt-version:" (:story/prompt-version meta) "\n"
       "date:" (util/format-date (:story/updated meta)) "\n"
       "---\n"
       (longest-sentence story))))
+
+
+(def csv-header
+  "id,model,prompt-version,date,sentences")
+
+(defn ->csv [story]
+  (let [meta (:story/meta story)]
+    (str
+      "\"" (:story/id meta) "\","
+      "\"" (name (:story/model meta)) "\","
+      "\"" (:story/prompt-version meta) "\","
+      "\"" (util/format-date (:story/updated meta)) "\","
+      "\"" (str/replace (longest-sentence story) #"\"" "'") "\"")))

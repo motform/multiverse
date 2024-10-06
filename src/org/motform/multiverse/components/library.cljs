@@ -14,6 +14,15 @@
     (str "multiverse-library-export-" (nano-id) ".md")
     "text/markdown"))
 
+(defn export-csv []
+  (util/download-file
+    (->> @(rf/subscribe [:db/stories])
+         (map story/->csv)
+         (str/join "\n")
+         (str story/csv-header "\n"))
+    (str "multiverse-library-export-" (nano-id) ".csv")
+    "text/csv"))
+
 (defn open-story [id]
   (rf/dispatch [:story/active id])
   (rf/dispatch [:page/active :page/story])
@@ -49,16 +58,17 @@
   [:section.h-stack.spaced.centered
    [:section.h-stack.gap-half
     [:button.button-secondary.rounded.shadow-medium
-     {:on-pointer-down #(export-markdown)}
+     {:on-pointer-down export-markdown}
      "export as Markdown"]
 
     [:button.button-secondary.rounded.shadow-medium
-     {:on-pointer-down #(export-markdown)}
+     {:on-pointer-down export-csv}
      "export as CSV"]]
 
    [:button.shadow-medium.button-secondary.rounded
-    {:on-pointer-down #(when (.confirm js/window "Do you really want to empty the library? This deletes all stories and can not be undone!")
-                         (rf/dispatch [:library/clear]))}
+    {:on-pointer-down
+     #(when (.confirm js/window "Do you really want to empty the library? This deletes all stories and can not be undone!")
+        (rf/dispatch [:library/clear]))}
     "Delete all stories"]])
 
 (defn Empty []
